@@ -1,5 +1,21 @@
 #Savannah Kreider s5501023 CFGAA Assignment
 - Assignment Ideas
-- What Im planning on doing
 -
+- Given Notes
 -
+- small library of real world physics(gravity, friction springs)
+- 3D game using open gl w obj collision
+- L-system
+- fantasy ui
+- Encouraged use of NGL graphics library- what is this?
+- 
+- Sample Projects
+- 
+- cloth sim
+- flocking sim
+- dirt and junk
+- veggitation
+- 
+- 
+- 
+- fire sim https://matthias-research.github.io/pages/tenMinutePhysics/21-fire.pdf
