@@ -9,13 +9,15 @@
 - fantasy ui
 - Encouraged use of NGL graphics library- what is this?
 - 
-- Sample Projects
-- 
-- cloth sim
+-  Projects
+-  
+- weather sim (rain, snow, lightning)
+- interactive terrain 
 - flocking sim
-- dirt and junk
-- veggitation
-- 
-- 
-- 
+- trash pile/ junk
+- l system /veggitation sim
 - fire sim https://matthias-research.github.io/pages/tenMinutePhysics/21-fire.pdf
+- smoke sim
+- 2D pixel physics sandbox (simple water, fire, terrain blocks falling, weather, create a pizel ecosystem)
+- physics destroy it sim to break 3d structures with tools like hammer, flame throweer, watergun
+- 
