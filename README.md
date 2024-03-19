@@ -18,7 +18,7 @@
 - smoke sim
 
 - 
-- 3D "pixel"physics sandbox (simple water, fire, terrain blocks falling, weather, create a pizel ecosystem)https://store.steampowered.com/app/265810/The_Sandbox/
-- physics destroy it sim to break 3d structures with tools like hammer, flame throweer, watergun 
+-Idea#1: 3D "pixel"physics sandbox (simple water, fire, terrain blocks falling, weather, create a pizel ecosystem)https://store.steampowered.com/app/265810/The_Sandbox/
+  Idea#1.5: physics destroy it sim to break 3d structures with tools like hammer, flame throweer, watergun 
 -  https://m.youtube.com/watch?v=KRu9aLFvq6M
-- Most extream way to kill a cockroach (big flipflop, fire, hammer, similar to destroy it sim) 
+- Idea#2: Most extream way to kill a cockroach (big flipflop, fire, hammer, similar to destroy it sim) 
