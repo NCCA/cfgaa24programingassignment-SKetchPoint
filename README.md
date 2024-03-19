@@ -1,5 +1,5 @@
 #Savannah Kreider s5501023 CFGAA Assignment
-- Assignment Ideas
+- Assignment Ideas/Work Doc
 -
 - Given Notes
 -
@@ -18,7 +18,31 @@
 - smoke sim
 
 - 
--Idea#1: 3D "pixel"physics sandbox (simple water, fire, terrain blocks falling, weather, create a pizel ecosystem)https://store.steampowered.com/app/265810/The_Sandbox/
-  Idea#1.5: physics destroy it sim to break 3d structures with tools like hammer, flame throweer, watergun 
+-Idea#1: 3D "pixel"physics sandbox (simple water, fire, terrain blocks falling, weather, create a pixel ecosystem)https://store.steampowered.com/app/265810/The_Sandbox/
+-  Idea#1.5: physics destroy it sim to break 3d structures with tools like hammer, flame thrower, watergun 
 -  https://m.youtube.com/watch?v=KRu9aLFvq6M
-- Idea#2: Most extream way to kill a cockroach (big flipflop, fire, hammer, similar to destroy it sim) 
+-
+-Plan:
+-Idea#1
+-
+-Creating a sandbox 3D game that simulates simple water, fire like particles, and changes in 3D block "pixels" with sand being heated to change to glass, water on dirt to make mud, lightning on metal to make a little current. Heavuly Inspired by the game "The Sandbox" that was initially made in 2D with less elements to play with
+-and/or
+-"Destroy it" sandbox game where you have weapons to destroy the level creatively. The more you destroy, the better you score in a certain time. Inspired by "Teardown" game. Having things like flamethrowers and explosions to have blocks explode into smaller particles with applied effect(fire rises up in a controlled wave, explosion Sperkler effect, etc..)
+-Design of Game:
+-User Control: Via wsad keyboard to move around, right mouse moves camera, left to aim, e to attack
+-weapons: damage animation or particle to hit destructible areas, if hits takes damage that the weapon can cause, type of damage it causes (color changes?), size of damage that it affects the surface(radius)
+-different materials: material strength/health, if it shows/life, material type for max health, color that can change if burned, location
+-grouping prebuilt structures to spawn? grouping of area damaged, if high enough, could also do separate chunks and indv blocks
+-(sandbox mode? to create structures?)
+-build of block + ray tracing (lights, shadows) for the display of the game
+-count down display
+-score display (each damage count to blocks/ # of attacks)
+-restart game
+-  
+- Idea#2:
+-  Most extreme way to kill a cockroach (big flipflop, fire, hammer, similar to destroy it sim)
+-  prebuilt structure made up of blocks with different materials that can be smashed, squashed, burned, destroyed,ect
+-  -cockroach (smaller than building blocks) scampers about the room as you try to smash it and your surroundings
+-  win immediately by eliminating all of cockroach health
+-  score similar to Idea 1
+-  -
