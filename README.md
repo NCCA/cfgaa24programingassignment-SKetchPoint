@@ -44,4 +44,25 @@
 -  -cockroach (smaller than building blocks) scampers about the room as you try to smash it and your surroundings
 -  win immediately by eliminating all of cockroach health
 -  score similar to Idea 1
--  -
+  -
+  -Idea#3:
+  -
+  -3D game stacking game
+  -catch falling plushies based on the game "Scoops"
+  -a few diffrent items will be valid to catch with your plate, making it climb higher and higher
+  -negative items (trash/ horror version of plushies) taking away a life and/or power downs 
+  -going in an enviroment to where you use your mouse to drag around your plate (avoiding a complete top-down view)
+  -pause/ play
+  -score based on items catched, gained exponentially more as you go up in height
+  -cam follow as you go up to more 2D perspective as speed of drop increases
+  -lose 1 point for each valid item missed, 2 points gained for a catch starting
+  -
+  -Idea #4
+- Dice rolling sim with effects
+- digital dice roll for DND campaignes
+- 8 dice to pick (standard set+D2)
+- user can customize the dice and pick dice through slider ui for base color, lettering, and additional appearances as well as picking their dice through it
+-once landing can pick effect( water ripple, fire, smoke, sparking) as it hits around the virtual dice tray and landing
+-effect for hitting a nat 1 or nat 20
+-recording the last few rolls in a side panel of "log book" page 
+-
