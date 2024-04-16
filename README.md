@@ -1,14 +1,11 @@
 #Savannah Kreider s5501023 CFGAA Assignment
 - Assignment Ideas/Work Doc
 -
-- Idea #3
--  Projects
-- 
-- Idea#1: 3D "pixel"physics sandbox (simple water, fire, terrain blocks falling, weather, create a pixel ecosystem)https://store.steampowered.com/app/265810/The_Sandbox/
--  Idea#1.5: physics destroy it sim to break 3d structures with tools like hammer, flame thrower, watergun 
--  https://m.youtube.com/watch?v=KRu9aLFvq6M
--
-- Plan:
+-Design of classes/structures:
+
+- Planning on doing:
+- Idea #4, if not approved Idea #3
+- Ideation
 - Idea#1- Scrapped
 -
 - Creating a sandbox 3D game that simulates simple water, fire like particles, and changes in 3D block "pixels" with sand being heated to change to glass, water on dirt to make mud, lightning on metal to make a little current. Heavuly Inspired by the game "The Sandbox" that was initially made in 2D with less elements to play with
@@ -32,7 +29,7 @@
 -  win immediately by eliminating all of cockroach health
 -  score similar to Idea 1
 -
- -Idea#3:?
+ -Idea#3:backup?
 -
 -3D game stacking game
 -catch falling plushies based on the game "Scoops"
@@ -44,7 +41,7 @@
  -cam follow as you go up to more 2D perspective as speed of drop increases
  -lose 1 point for each valid item missed, 2 points gained for a catch starting
 -
--Idea #4- scrapped
+-Idea #4- 
 - Dice rolling sim with effects
 - digital dice roll for DND campaignes
 - 8 dice to pick (standard set+D2)
