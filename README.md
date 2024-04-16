@@ -29,7 +29,7 @@
 -  win immediately by eliminating all of cockroach health
 -  score similar to Idea 1
 -
--Idea#3:backup?
+- Idea#3:backup?
 -
 -3D game stacking game
 -catch falling plushies based on the game "Scoops"
