@@ -29,17 +29,17 @@
 -  win immediately by eliminating all of cockroach health
 -  score similar to Idea 1
 -
- -Idea#3:backup?
+-Idea#3:backup?
 -
 -3D game stacking game
 -catch falling plushies based on the game "Scoops"
- -a few diffrent items will be valid to catch with your plate, making it climb higher and higher
+-a few diffrent items will be valid to catch with your plate, making it climb higher and higher
 -negative items (trash/ horror version of plushies) taking away a life and/or power downs 
 -going in an enviroment to where you use your mouse to drag around your plate (avoiding a complete top-down view)
 -pause/ play
 -score based on items catched, gained exponentially more as you go up in height
- -cam follow as you go up to more 2D perspective as speed of drop increases
- -lose 1 point for each valid item missed, 2 points gained for a catch starting
+-cam follow as you go up to more 2D perspective as speed of drop increases
+-lose 1 point for each valid item missed, 2 points gained for a catch starting
 -
 -Idea #4- 
 - Dice rolling sim with effects
