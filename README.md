@@ -1,28 +1,15 @@
 #Savannah Kreider s5501023 CFGAA Assignment
 - Assignment Ideas/Work Doc
 -
-- Given Notes
--
-- small library of real world physics(gravity, friction springs)
-- 3D game using open gl w obj collision
-- L-system
-- fantasy ui
-- Encouraged use of NGL graphics library- what is this?
-- 
+- Idea #3
 -  Projects
--  
-- weather sim (rain, snow, lightning)
-- interactive terrain 
-- trash pile/ junk
-- fire sim https://matthias-research.github.io/pages/tenMinutePhysics/21-fire.pdf
-- smoke sim
 - 
 - Idea#1: 3D "pixel"physics sandbox (simple water, fire, terrain blocks falling, weather, create a pixel ecosystem)https://store.steampowered.com/app/265810/The_Sandbox/
 -  Idea#1.5: physics destroy it sim to break 3d structures with tools like hammer, flame thrower, watergun 
 -  https://m.youtube.com/watch?v=KRu9aLFvq6M
 -
 - Plan:
-- Idea#1
+- Idea#1- Scrapped
 -
 - Creating a sandbox 3D game that simulates simple water, fire like particles, and changes in 3D block "pixels" with sand being heated to change to glass, water on dirt to make mud, lightning on metal to make a little current. Heavuly Inspired by the game "The Sandbox" that was initially made in 2D with less elements to play with
 - and/or
@@ -38,26 +25,26 @@
 - score display (each damage count to blocks/ # of attacks)
 - restart game
 -  
-- Idea#2:
+- Idea#2:scrapped
 -  Most extreme way to kill a cockroach (big flipflop, fire, hammer, similar to destroy it sim)
 -  prebuilt structure made up of blocks with different materials that can be smashed, squashed, burned, destroyed,ect
 -  -cockroach (smaller than building blocks) scampers about the room as you try to smash it and your surroundings
 -  win immediately by eliminating all of cockroach health
 -  score similar to Idea 1
-  -
-  -Idea#3:
-  -
-  -3D game stacking game
-  -catch falling plushies based on the game "Scoops"
-  -a few diffrent items will be valid to catch with your plate, making it climb higher and higher
-  -negative items (trash/ horror version of plushies) taking away a life and/or power downs 
-  -going in an enviroment to where you use your mouse to drag around your plate (avoiding a complete top-down view)
-  -pause/ play
-  -score based on items catched, gained exponentially more as you go up in height
-  -cam follow as you go up to more 2D perspective as speed of drop increases
-  -lose 1 point for each valid item missed, 2 points gained for a catch starting
-  -
-  -Idea #4
+-
+ -Idea#3:?
+-
+-3D game stacking game
+-catch falling plushies based on the game "Scoops"
+ -a few diffrent items will be valid to catch with your plate, making it climb higher and higher
+-negative items (trash/ horror version of plushies) taking away a life and/or power downs 
+-going in an enviroment to where you use your mouse to drag around your plate (avoiding a complete top-down view)
+-pause/ play
+-score based on items catched, gained exponentially more as you go up in height
+ -cam follow as you go up to more 2D perspective as speed of drop increases
+ -lose 1 point for each valid item missed, 2 points gained for a catch starting
+-
+-Idea #4- scrapped
 - Dice rolling sim with effects
 - digital dice roll for DND campaignes
 - 8 dice to pick (standard set+D2)
