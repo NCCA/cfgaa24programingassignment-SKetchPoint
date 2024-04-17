@@ -1,11 +1,11 @@
 #Savannah Kreider s5501023 CFGAA Assignment
 - Assignment Ideas/Work Doc
--
+- ----------------------------------------------------------------------------------------------------------------------------------------------
 -Design of classes/structures:
-
+- ---------------------------------------------------------------------------------------------------------------------------------------------
 - Planning on doing:
 - Idea #4, if not approved Idea #3
--
+-----------------------------------------------------------------------------------------------------------------------------------------------
 -Idea 4 plan revised
 -
 -Requirements Notes-3D Game, obj subject to gravity, least 2 objs, may wany user control parameters, two or more rigid objs in cubical container
@@ -27,12 +27,7 @@
 - customs bought through 'coins' collected after the game is done calc based on time, score, and ammount of bonuses
 -user pick theme of the gameplay (color scoops, trash, cone, play box, bg and text)
 
--
--
 - -------------------------------------------------------------------------------------------------------------------------------------------------------
--
--
--
 
   -Ideation:
 - Idea#1- Scrapped
