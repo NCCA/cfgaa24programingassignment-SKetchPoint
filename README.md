@@ -27,14 +27,12 @@
 - customs bought through 'coins' collected after the game is done calc based on time, score, and ammount of bonuses
 -user pick theme of the gameplay (color scoops, trash, cone, play box, bg and text)
 
-
-
-
-
-
-
-
-
+-
+-
+- -------------------------------------------------------------------------------------------------------------------------------------------------------
+-
+-
+-
 
   -Ideation:
 - Idea#1- Scrapped
