@@ -5,7 +5,29 @@
 
 - Planning on doing:
 - Idea #4, if not approved Idea #3
-- Ideation
+-
+-Idea 4 plan revised
+-
+-Requirements Notes-3D Game, obj subject to gravity, least 2 objs, may wany user control parameters, two or more rigid objs in cubical container
+-Setting up gameplay box to contain the 'cone' controlled by the user through wsad or follows mouse
+-'cone' allows for 'scoops' and 'trash' to be caught by user,but can also not be caught if it hits the floor
+-'scoops' increase score(displayed) and height, 'trash' decreases life(displayed),
+-faster bonus 'scoops' allow for powerups (life increase, speed falling decrease, shielf from trash)
+-allowing to adjust perspective through mouse click and drag, wsad to move, issue is as it builds height
+-streach goals on plan revised
+-maybe have an effect to lower height to keep things seen or "water" rising after each round complete
+-increase effect sparks for landing 'scoops' on 'cone'ok, good, and perfect, sparks bounce on objs easier than 'trash' or 'scoops'
+- pause and resume game
+- able to start a new game w/o open and close 
+- save user data?
+-jump cone with space bar
+-friction adjust gameplay box with E and R
+-color changes of 'scoops'
+-user pick 'scoops' and 'trash' mesh via buy w 'coins' collected after play
+- customs bought through 'coins' collected after the game is done calc based on time, score, and ammount of bonuses
+-user pick theme of the gameplay (color scoops, trash, cone, play box, bg and text)
+
+- Ideation:
 - Idea#1- Scrapped
 -
 - Creating a sandbox 3D game that simulates simple water, fire like particles, and changes in 3D block "pixels" with sand being heated to change to glass, water on dirt to make mud, lightning on metal to make a little current. Heavuly Inspired by the game "The Sandbox" that was initially made in 2D with less elements to play with
