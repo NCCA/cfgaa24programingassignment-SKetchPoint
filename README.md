@@ -27,7 +27,7 @@
 - customs bought through 'coins' collected after the game is done calc based on time, score, and ammount of bonuses
 -user pick theme of the gameplay (color scoops, trash, cone, play box, bg and text)
 
-- Ideation:
+  Ideation:
 - Idea#1- Scrapped
 -
 - Creating a sandbox 3D game that simulates simple water, fire like particles, and changes in 3D block "pixels" with sand being heated to change to glass, water on dirt to make mud, lightning on metal to make a little current. Heavuly Inspired by the game "The Sandbox" that was initially made in 2D with less elements to play with
