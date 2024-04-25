@@ -1,24 +1,25 @@
 #Savannah Kreider s5501023 CFGAA Assignment
 - Assignment Ideas/Work Doc
 - ----------------------------------------------------------------------------------------------------------------------------------------------
--Design of classes/structures:
+-  Design of classes/structures:
 -
--Main game class: initialize game playable area, handeling input, updategame state, render, game flow
--Scene class: playabl areas and wall generated, collisions to walls handled from cone and scoops
--Block class:collectable blocks falling , properties include position, type either scoop or trash, initial speeds on anxisi, points
--Cone class :players movable cone, properties include positon, lives, points, movement input, collision detect from falling block, update score and lives
--Game Menu class: manages game start, pause, and end, input for starting pausing and restarting the game
--End Screen class: allows player to pick to either exit window(closing it) or to play again on a new game
+- Main game class: initialize game playable area, handeling input, updategame state, render, game flow
+
+- Scene class: playabl areas and wall generated, collisions to walls handled from cone and scoops
+- Block class:collectable blocks falling , properties include position, type either scoop or trash, initial speeds on anxisi, points
+- Cone class :players movable cone, properties include positon, lives, points, movement input, collision detect from falling block, update score and lives
+- Game Menu class: manages game start, pause, and end, input for starting pausing and restarting the game
+- End Screen class: allows player to pick to either exit window(closing it) or to play again on a new game
 -
--Streach Goals:
+- Streach Goals:
 -
--Highscore class: saves the high score between game sessions
--Pause Menu class: pausing and resuming game with e to pause the game and r to resume 
--Effect class:  manges visual effect of sparks for a sucessful landing 
+- Highscore class: saves the high score between game sessions
+- Pause Menu class: pausing and resuming game with e to pause the game and r to resume 
+- Effect class:  manges visual effect of sparks for a sucessful landing 
 -
--state oriented structure, perhase some observer
+- state oriented structure, perhase some observer
 -
--NOTE: grab mouse movement from 25 April labcode to rotate scene around
+- NOTE: grab mouse movement from 25 April labcode to rotate scene around
 -
 -----------------------------------------------------------------------------------------------------------------------------------------------
 -Idea 4 plan revised
