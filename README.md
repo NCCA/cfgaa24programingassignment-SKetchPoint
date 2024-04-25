@@ -2,13 +2,27 @@
 - Assignment Ideas/Work Doc
 -
 -Design of classes/structures:
-
-- Planning on doing:
-- Idea #4, if not approved Idea #3
+-
+-Main game class: initialize game playable area, handeling input, updategame state, render, game flow
+-Scene class: playabl areas and wall generated, collisions to walls handled from cone and scoops
+-Block class:collectable blocks falling , properties include position, type either scoop or trash, initial speeds on anxisi, points
+-Cone class :players movable cone, properties include positon, lives, points, movement input, collision detect from falling block, update score and lives
+-Game Menu class: manages game start, pause, and end, input for starting pausing and restarting the game
+-End Screen class: allows player to pick to either exit window(closing it) or to play again on a new game
+-
+-Streach Goals:
+-
+-Highscore class: saves the high score between game sessions
+-Pause Menu class: pausing and resuming game with e to pause the game and r to resume 
+-Effect class:  manges visual effect of sparks for a sucessful landing 
+-
+-state oriented structure, perhase some observer
+-
+-NOTE: grab mouse movement from 25 April labcode to rotate scene around
 -
 -Idea 4 plan revised
 -
--Requirements Notes-3D Game, obj subject to gravity, least 2 objs, may wany user control parameters, two or more rigid objs in cubical container
+-Requirements Notes-3D Game, obj subject to gravity, least 2 objs, may wany user control parameters, two or more rigid objs in cubical container, VIDEO PROOF WORKS
 -Setting up gameplay box to contain the 'cone' controlled by the user through wsad or follows mouse
 -'cone' allows for 'scoops' and 'trash' to be caught by user,but can also not be caught if it hits the floor
 -'scoops' increase score(displayed) and height, 'trash' decreases life(displayed),
@@ -72,3 +86,4 @@
 - effect for hitting a nat 1 or nat 20
 - recording the last few rolls in a side panel of "log book" page 
 -
+
