@@ -2,7 +2,7 @@
 - Assignment Ideas/Work Doc
 - ----------------------------------------------------------------------------------------------------------------------------------------------
 -  Design of classes/structures:
--
+- 
 - Main game class: initialize game playable area, handeling input, updategame state, render, game flow
 
 - Scene class: playabl areas and wall generated, collisions to walls handled from cone and scoops
@@ -10,16 +10,25 @@
 - Cone class :players movable cone, properties include positon, lives, points, movement input, collision detect from falling block, update score and lives
 - Game Menu class: manages game start, pause, and end, input for starting pausing and restarting the game
 - End Screen class: allows player to pick to either exit window(closing it) or to play again on a new game
--
-- Streach Goals:
+- 
+- Streach Goals(if time allowed):
 -
 - Highscore class: saves the high score between game sessions
 - Pause Menu class: pausing and resuming game with e to pause the game and r to resume 
 - Effect class:  manges visual effect of sparks for a sucessful landing 
--
-- state oriented structure, perhase some observer
--
-- NOTE: grab mouse movement from 25 April labcode to rotate scene around
+- 
+- 
+- Directory Structure:
+- 
+- src:MainGame,Scene,Block,Cone,GameMenu,EndScreen.cpp
+- include:MainGame,Scene,Block,Cone,GameMenu,EndScreen.h
+- CMakeList.txt
+- .github (and .gitignore)
+- README.md
+- 
+- 
+- 
+- NOTE: look at photos to try to get blankNGL up from prior week and grab mouse movement from 25 April labcode to rotate scene around
 -
 -----------------------------------------------------------------------------------------------------------------------------------------------
 -Idea 4 plan revised
