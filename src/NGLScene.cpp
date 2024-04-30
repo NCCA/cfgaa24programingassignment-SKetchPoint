@@ -43,7 +43,7 @@ void NGLScene::initializeGL()
   glEnable(GL_DEPTH_TEST);
   // enable multisampling for smoother drawing
   glEnable(GL_MULTISAMPLE);
-  m_emitter=std::make_unique<Emitter>(10000,5000);
+
   ngl::ShaderLib::loadShader("ParticleShader","shaders/ParticleVertex.glsl","shaders/ParticleFragment.glsl");
   ngl::ShaderLib::use("ParticleShader");
   m_view=ngl::lookAt({0,100,100},{0,0,0},{0,1,0});
@@ -57,7 +57,6 @@ void NGLScene::initializeGL()
 
 void NGLScene::timerEvent(QTimerEvent *_event)
 {
-    m_emitter->update();
     update();
 }
 
@@ -77,7 +76,6 @@ void NGLScene::paintGL()
 
   ngl::ShaderLib::setUniform("MVP",m_project*m_view*mouseRotation);
   glPointSize(4);
-  m_emitter->render();
   //ngl::VAOPrimitives::draw("bunny");
 }
 

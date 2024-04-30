@@ -4,7 +4,6 @@
 #include "WindowParams.h"
 // this must be included after NGL includes else we get a clash with gl libs
 #include <QOpenGLWindow>
-#include "Emitter.h"
 #include<memory>
 #include<ngl/Mat4.h>
 
@@ -83,7 +82,6 @@ private:
     WinParams m_win;
     /// position for our model
     ngl::Vec3 m_modelPos;
-    std::unique_ptr<Emitter>m_emitter;
     ngl::Mat4 m_view;
     ngl::Mat4 m_project;
 

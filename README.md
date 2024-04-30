@@ -19,8 +19,8 @@
 - 
 - Directory Structure:
 - 
-- src:MainGame,Scene,Block,Cone,GameMenu,EndScreen.cpp
-- include:MainGame,Scene,Block,Cone,GameMenu,EndScreen.h
+- src:MainGame,Scene,Block,Cone
+- include:MainGame,Scene,Block,Cone
 - CMakeList.txt
 - .github (and .gitignore)
 - README.md
