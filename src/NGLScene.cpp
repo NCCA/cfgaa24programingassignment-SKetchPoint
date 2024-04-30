@@ -7,6 +7,7 @@
 
 #include <ngl/Util.h>
 #include<ngl/ShaderLib.h>
+#include<ngl/Transformation.h>
 
 #include <iostream>
 
@@ -47,11 +48,8 @@ void NGLScene::initializeGL()
   ngl::ShaderLib::loadShader("ParticleShader","shaders/ParticleVertex.glsl","shaders/ParticleFragment.glsl");
   ngl::ShaderLib::use("ParticleShader");
   m_view=ngl::lookAt({0,100,100},{0,0,0},{0,1,0});
-  //ngl::ShaderLib::use(ngl::nglColourShader);
-  //ngl::ShaderLib::setUniform("Colour",1.0f,0.0f,0.0f,1.0f);
-  //ngl::ShaderLib::setUniform("MVP",ngl::Mat4());
-  //ngl::VAOPrimitives::createSphere("sphere",1.0f,10);
-
+  //base plane created : name, width, height, division w, division h, col in vec3
+  ngl::VAOPrimitives::createTrianglePlane("plane", 70, 70, 1,1, ngl::Vec3(0.353, 0.42, 0.612));
   startTimer(10);
 }
 
@@ -65,19 +63,19 @@ void NGLScene::paintGL()
   // clear the screen and depth buffer
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   glViewport(0,0,m_win.width,m_win.height);
-//apply mouse rotation
+  //apply mouse rotation
   auto rotX=ngl::Mat4::rotateX(m_win.spinXFace);
   auto rotY = ngl::Mat4::rotateY(m_win.spinYFace);
   auto mouseRotation= rotX * rotY;
   mouseRotation.m_m[3][0]= m_modelPos.m_x;
   mouseRotation.m_m[3][0]= m_modelPos.m_x;
   mouseRotation.m_m[3][0]= m_modelPos.m_x;
-
-
+  //mouse rotation to viewport
   ngl::ShaderLib::setUniform("MVP",m_project*m_view*mouseRotation);
-  glPointSize(4);
-  //ngl::VAOPrimitives::draw("bunny");
+  // Draw the triangular plane
+  ngl::VAOPrimitives::draw("plane");
 }
+
 
 //----------------------------------------------------------------------------------------------------------------------
 
