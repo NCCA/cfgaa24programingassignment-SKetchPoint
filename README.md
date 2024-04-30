@@ -61,3 +61,38 @@
 - 
 - From my understanding of observer from reading Patterns in C, it could be benificial for inputs to help manage these two things in my game. Things such as player stats like points, scoring overall, lives , all displayed as player stats visually too would use more of an Observer pattern. Observer pattter could handle specific events such as the player moving around for my game. However, I could expand it to collision detection that triggers an event from the wall or to the blocks falling, UI elements clicking , power ups, and enviroment changes potentially. I could split up inputs into player inputs and menu input handeler as well, however, I'm still very unsure until I start handelling these things if it would be worth putting in at an early stage.
 - 
+- Game Programming Patterns:
+- Gameprogrammingpatterns.com. (2014). Game Loop · Sequencing Patterns · Game Programming Patterns. [online] Available at: https://gameprogrammingpatterns.com/game-loop.html.
+- 
+- Having the stucture of:
+-while (true)
+{
+  processInput();//all user inputs from last update
+  update();//updating the game 
+  render();//renders to screen as frame
+  sleep(start + MS_PER_FRAME - getCurrentTime());//delay render
+}
+-will allow me to have user inputs handled since the last call, updates it visuall, then renders it on the screen. The game loop will run continuously and can be used to control the rate of gameplay. However, Robert Nystrom mentions two things is to control  that th game dosen't run too fast if it processes fames too quicky and to not force patterns. While a game loop will be benificial, fps also needs to account for thus a sleep function ise useful. However, its fails to consider what happens if the computer can't handle the calculations thus revising to account for lag as well to catch up with the player:
+-
+-double previous = getCurrentTime();
+double lag = 0.0;//ensures catch up of multipe updates occures gradually over time making for a smoother gameplay
+//MS_PER_UPDATE-consistent rate indepentent of system performance
+while (true)
+{
+  double current = getCurrentTime();
+  double elapsed = current - previous;
+  previous = current;
+  lag += elapsed;
+
+  processInput();
+
+  while (lag >= MS_PER_UPDATE)
+  {
+    update();
+    lag -= MS_PER_UPDATE;
+  }
+
+  render(lag / MS_PER_UPDATE);
+}
+
+
