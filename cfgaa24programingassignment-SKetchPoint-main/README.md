@@ -94,5 +94,6 @@ double lag = 0.0;//ensures catch up of multipe updates occures gradually over ti
 
   render(lag / MS_PER_UPDATE);
 }
+- REMINDER: copy ngl shaders edit config build
 
 
