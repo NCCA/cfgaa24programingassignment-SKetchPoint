@@ -24,8 +24,7 @@
 - CMakeList.txt
 - .github (and .gitignore)
 - README.md
-- 
-- NOTE: look at photos to try to get blankNGL up from prior week and grab mouse movement from 25 April labcode to rotate scene around
+-
 ------------------------------------------------------------------------------------------------------------------------------------
 
 - Game Mechanics Inspiration:
