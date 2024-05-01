@@ -6,7 +6,7 @@
 #include <QOpenGLWindow>
 #include<memory>
 #include<ngl/Mat4.h>
-
+#include <ngl/Transformation.h>
 //----------------------------------------------------------------------------------------------------------------------
 /// @file NGLScene.h
 /// @brief this class inherits from the Qt OpenGLWindow and allows us to use NGL to draw OpenGL
@@ -76,14 +76,42 @@ private:
     /// inherited from QObject and overridden here.
     /// @param _event the Qt Event structure
     //----------------------------------------------------------------------------------------------------------------------
-    void wheelEvent( QWheelEvent *_event) override;
+    //----------------------------------------------------------------------------------------------------------------------
+    /// @brief method to load transform matrices to the shader
+    //----------------------------------------------------------------------------------------------------------------------
+    void loadMatricesToShader();
+    //----------------------------------------------------------------------------------------------------------------------
     void timerEvent(QTimerEvent*_event) override;
+    //----------------------------------------------------------------------------------------------------------------------
+    //----------------------------------------------------------------------------------------------------------------------
+    /// @brief draw our scene passing in the shader to use
+    /// @param[in] _shader the name of the shader to use when drawing
+    //----------------------------------------------------------------------------------------------------------------------
+    void drawScene(const std::string &_shader);
     /// @brief windows parameters for mouse control etc.
     WinParams m_win;
     /// position for our model
     ngl::Vec3 m_modelPos;
     ngl::Mat4 m_view;
     ngl::Mat4 m_project;
+    ///mouse transformation global
+    ngl::Mat4 m_mouseGlobalTX;
+    /// @brief transformation stack for the gl transformations etc
+    //----------------------------------------------------------------------------------------------------------------------
+    ngl::Transformation m_transform;
+    //----------------------------------------------------------------------------------------------------------------------
+    /// @brief a simple light use to illuminate the screen
+    //----------------------------------------------------------------------------------------------------------------------
+    ngl::Vec4 m_lightPos;
+    //----------------------------------------------------------------------------------------------------------------------
+    /// @brief timer id for the animation timer
+    //----------------------------------------------------------------------------------------------------------------------
+    int m_lightTimer{};
+    //----------------------------------------------------------------------------------------------------------------------
+    /// the angle of the light updated when the timer triggers to make it rotate
+    //----------------------------------------------------------------------------------------------------------------------
+    ngl::Real m_lightAngle{};
+
 
 };
 

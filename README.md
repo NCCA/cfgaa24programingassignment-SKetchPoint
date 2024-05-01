@@ -3,11 +3,11 @@
 - ----------------------------------------------------------------------------------------------------------------------------------------------
 -  Design of classes/structures:
 - 
-- Main game class: initialize game playable area, handeling input, updategame state, render, game flow
+- Main game class: initialize game playable area, handling input, updategame state, render, game flow
 
-- Scene class: playabl areas and wall generated, collisions to walls handled from cone and scoops
+- Scene class: playable areas and wall generated, collisions to walls handled from cone and scoops
 - Block class:collectable blocks falling , properties include position, type either scoop or trash, initial speeds on anxisi, points
-- Cone class :players movable cone, properties include positon, lives, points, movement input, collision detect from falling block, update score and lives
+- Cone class :players movable cone, properties include position, lives, points, movement input, collision detect from falling block, update score and lives
 - Game Menu class: manages game start, pause, and end, input for starting pausing and restarting the game
 - End Screen class: allows player to pick to either exit window(closing it) or to play again on a new game
 - 
@@ -15,7 +15,7 @@
 -
 - Highscore class: saves the high score between game sessions
 - Pause Menu class: pausing and resuming game with e to pause the game and r to resume 
-- Effect class:  manges visual effect of sparks for a sucessful landing 
+- Effect class:  manges visual effect of sparks for a successful landing 
 - 
 - Directory Structure:
 - 
@@ -73,7 +73,6 @@
   sleep(start + MS_PER_FRAME - getCurrentTime());//delay render
 }
 - will allow me to have user inputs handled since the last call, updates it visuall, then renders it on the screen. The game loop will run continuously and can be used to control the rate of gameplay. However, Robert Nystrom mentions two things is to control  that th game dosen't run too fast if it processes fames too quicky and to not force patterns. While a game loop will be benificial, fps also needs to account for thus a sleep function ise useful. However, its fails to consider what happens if the computer can't handle the calculations thus revising to account for lag as well to catch up with the player:
-- 
 - double previous = getCurrentTime();
 double lag = 0.0;//ensures catch up of multipe updates occures gradually over time making for a smoother gameplay
 //MS_PER_UPDATE-consistent rate indepentent of system performance
@@ -94,6 +93,12 @@ double lag = 0.0;//ensures catch up of multipe updates occures gradually over ti
 
   render(lag / MS_PER_UPDATE);
 }
+-
+- Jon's Teapot: Getting Started with the Programming Assignment The SpaceShip
+- Jon Macey (2012). Jon’s Teapot: Getting Started with the Programming Assignment Pt 4 The SpaceShip. [online] Jon’s Teapot. Available at: http://jonmacey.blogspot.com/2012/02/getting-started-with-programming_8527.html
+- 
+- Taking a look at how someone that has handle keys in NGL and overall game loops, there's a few things that I need to implement such as processing holding a key down consistently to continually move  by processing the key pressed in the object you want to move and draw it in the paintGL. While not entierly nessicary to look at, it would be a good resource when developing my game to ensure the general logic is well planned with what I want certian items in-game to do.
+- 
 - REMINDER: copy ngl shaders edit config build
 
 
