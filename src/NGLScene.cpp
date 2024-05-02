@@ -79,17 +79,18 @@ void NGLScene::initializeGL()
 
     ngl::ShaderLib::setUniform("camPos", from);
     // now a light
-    m_lightPos.set(0.0, 2.0f, 2.0f, 1.0f);
+    m_lightPos.set(1.0f, 1.0f, 1.0f, 1.0f);
     // set up the default shader material and light properties
     // these are "uniform" so will retain their values
     ngl::ShaderLib::setUniform("lightPosition", m_lightPos.toVec3());
     ngl::ShaderLib::setUniform("lightColor", 400.0f, 400.0f, 400.0f);
     ngl::ShaderLib::setUniform("exposure", 2.2f);
     //base color=albedo
-    ngl::ShaderLib::setUniform("albedo", 01.0f, 0.5f, 1.0f);
+    ngl::ShaderLib::setUniform("albedo", 0.1f, 0.5f, 0.2f);
     ngl::ShaderLib::setUniform("metallic", 0.1f);
     ngl::ShaderLib::setUniform("roughness", 0.8f);
     ngl::ShaderLib::setUniform("ao", 0.4f);
+
     //create a sphere, cone and plane
     ngl::VAOPrimitives::createSphere("sphere", -0.5f, 50);
     ngl::VAOPrimitives::createTrianglePlane("plane", 10, 10, 1,1, ngl::Vec3(0.353, 0.42, 0.612));

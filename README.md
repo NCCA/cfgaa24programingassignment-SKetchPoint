@@ -1,30 +1,7 @@
 #Savannah Kreider s5501023 CFGAA Assignment
 - Assignment Ideas/Work Doc
 - ----------------------------------------------------------------------------------------------------------------------------------------------
--  Design of classes/structures:
-- 
-- Main game class: initialize game playable area, handling input, updategame state, render, game flow
 
-- Scene class: playable areas and wall generated, collisions to walls handled from cone and scoops
-- Block class:collectable blocks falling , properties include position, type either scoop or trash, initial speeds on anxisi, points
-- Cone class :players movable cone, properties include position, lives, points, movement input, collision detect from falling block, update score and lives
-- Game Menu class: manages game start, pause, and end, input for starting pausing and restarting the game
-- End Screen class: allows player to pick to either exit window(closing it) or to play again on a new game
-- 
-- Streach Goals(if time allowed):
--
-- Highscore class: saves the high score between game sessions
-- Pause Menu class: pausing and resuming game with e to pause the game and r to resume 
-- Effect class:  manges visual effect of sparks for a successful landing 
-- 
-- Directory Structure:
-- 
-- src:MainGame,Scene,Block,Cone
-- include:MainGame,Scene,Block,Cone
-- CMakeList.txt
-- .github (and .gitignore)
-- README.md
--
 ------------------------------------------------------------------------------------------------------------------------------------
 
 - Game Mechanics Inspiration:
