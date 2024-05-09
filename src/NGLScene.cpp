@@ -15,7 +15,7 @@
 NGLScene::NGLScene()
 {
     // re-size the widget to that of the parent (in this case the GLFrame passed in on construction)
-    setTitle("Blank NGL");
+    setTitle("NGL Scoops");
 }
 
 NGLScene::~NGLScene()
@@ -95,7 +95,7 @@ void NGLScene::initializeGL()
     ngl::VAOPrimitives::createSphere("sphere", -0.5f, 50);
     ngl::VAOPrimitives::createTrianglePlane("plane", 10, 10, 1,1, ngl::Vec3(0.353, 0.42, 0.612));
     ngl::VAOPrimitives::createCone("cone", 0.5, 1.4f, 20, 20);
-    startTimer(10);
+    startTimer(16);
 }
 void NGLScene::loadMatricesToShader()
 {
@@ -120,6 +120,7 @@ void NGLScene::loadMatricesToShader()
 
 void NGLScene::drawScene(const std::string &_shader)
 {
+    //mouse rotation of scene
     ngl::ShaderLib::use(_shader);
     // Rotation based on the mouse position for our global transform
     ngl::Mat4 rotX = ngl::Mat4::rotateX(float(m_win.spinXFace));
@@ -130,38 +131,72 @@ void NGLScene::drawScene(const std::string &_shader)
     m_mouseGlobalTX.m_m[3][0] = m_modelPos.m_x;
     m_mouseGlobalTX.m_m[3][1] = m_modelPos.m_y;
     m_mouseGlobalTX.m_m[3][2] = m_modelPos.m_z;
-
-    //initial placement of primitives
     m_transform.reset();
+    m_transform.setPosition(0.0f, 0.0f, 0.0f);
+    loadMatricesToShader();
+    //building the base game box
+    // Draw plane
+    ngl::VAOPrimitives::draw("plane");
+    // Loop to draw cubes around the perimeter
+    float m_cubeX=0.0f;
+    float m_cubeY=0.0f;
+    float m_cubeZ=0.0f;
+    for (int i = 0; i < 4; ++i)
     {
-        m_transform.setPosition(0.0f, 1.0f, 0.0f);
-        loadMatricesToShader();
-        ngl::VAOPrimitives::draw("sphere");
-    } // and before a pop
-
-    m_transform.reset();
-    {
-        m_transform.setPosition(0.0f, 0.0f, 5.0f);
-        loadMatricesToShader();
-        ngl::VAOPrimitives::draw("cube");
-    } // and before a pop
-
-    m_transform.reset();
-    {
-        m_transform.setPosition(0.0f, 1.0f, 0.0f);
-        m_transform.setRotation(90.0f,0.0f,0.0f);
-        loadMatricesToShader();
-        ngl::VAOPrimitives::draw("cone");
-    } // and before a pop
-
-    m_transform.reset();
-    {
-        m_transform.setPosition(0.0f, 0.0f, 0.0f);
-        loadMatricesToShader();
-        ngl::VAOPrimitives::draw("plane");
-    } // and before a pop
+        // Adjust rotation and position for each side
+        switch (i)
+        {
+            case 0://right side
+                m_cubeX=5.5f;
+                m_cubeZ=6.5f;
+                m_transform.reset();
+                for (int j=0;j<11;j++)
+                {
+                    m_cubeZ-=1.0f;
+                    m_transform.setPosition(m_cubeX, m_cubeY, m_cubeZ);
+                    loadMatricesToShader();
+                    ngl::VAOPrimitives::draw("cube");
+                }
+                break;
+            case 1://bottom
+                m_cubeX=5.5f;
+                m_cubeZ=5.5f;
+                m_transform.reset();
+                for (int j=0;j<11;j++)
+                {
+                    m_cubeX-=1.0f;
+                    m_transform.setPosition(m_cubeX, m_cubeY, m_cubeZ);
+                    loadMatricesToShader();
+                    ngl::VAOPrimitives::draw("cube");
+                }
+                break;
+            case 2: //left
+                m_cubeX=-5.5f;
+                m_cubeZ=5.5f;
+                m_transform.reset();
+                for (int j=0;j<11;j++)
+                {
+                    m_cubeZ-=1.0f;
+                    m_transform.setPosition(m_cubeX, m_cubeY, m_cubeZ);
+                    loadMatricesToShader();
+                    ngl::VAOPrimitives::draw("cube");
+                }
+                break;
+            case 3://top
+                m_cubeX=6.5f;
+                m_cubeZ-5.5f;
+                m_transform.reset();
+                for (int j=0;j<11;j++)
+                {
+                    m_cubeX-=1.0f;
+                    m_transform.setPosition(m_cubeX, m_cubeY, m_cubeZ);
+                    loadMatricesToShader();
+                    ngl::VAOPrimitives::draw("cube");
+                }
+                break;
+        }
+    }
 }
-
 void NGLScene::paintGL()
 {
     // clear the screen and depth buffer
@@ -194,8 +229,18 @@ void NGLScene::keyPressEvent(QKeyEvent *_event)
     //update and redraw
     update();
 }
-
+void NGLScene ::updateScene()
+{
+    m_lightAngle+=0.01f;//example
+    ngl::ShaderLib::use("PBR");
+    ngl::ShaderLib::setUniform("lightPosition", (m_mouseGlobalTX * ngl::Vec3(sinf(m_lightAngle), 2, cosf(m_lightAngle))).toVec3());
+}
+double m_elapsedTime =0.0;
 void NGLScene::timerEvent(QTimerEvent *_event)
 {
+    m_elapsedTime += 0.016;
+    //game loop logic function
+    updateScene();
+
     update();
 }

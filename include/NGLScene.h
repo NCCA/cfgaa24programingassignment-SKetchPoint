@@ -108,6 +108,8 @@ private:
     /// the angle of the light updated when the timer triggers to make it rotate
     //----------------------------------------------------------------------------------------------------------------------
     ngl::Real m_lightAngle{};
+    ///updating scene in timer event, the game loop that is calculated each time
+    void updateScene();
 };
 
 
