@@ -16,6 +16,8 @@ NGLScene::NGLScene()
 {
     // re-size the widget to that of the parent (in this case the GLFrame passed in on construction)
     setTitle("NGL Scoops");
+    m_updateConeTimer= startTimer(2);
+    m_redrawTimer=startTimer(16);
 }
 
 NGLScene::~NGLScene()
@@ -29,7 +31,34 @@ void NGLScene::resizeGL(int _w , int _h)
     m_win.height = static_cast<int>( _h * devicePixelRatio() );
     m_project = ngl::perspective(45.0f, float(_w)/float(_h),0.1f,200);
 }
-constexpr auto shaderProgram = "PBR";
+void NGLScene::createShaderProgram(const std::string& shaderName, float r,float g,float b,ngl::Vec3 from)
+{
+    //Creating a different shader program to assign when drawing objects
+    //ID is the string you assign, rgb values as floats,and the from needed for the cam position
+    constexpr auto vertexShader = "PBRVertex";
+    constexpr auto fragShader = "PBRFragment";
+
+    ngl::ShaderLib::createShaderProgram(shaderName);
+    ngl::ShaderLib::attachShader(vertexShader, ngl::ShaderType::VERTEX);
+    ngl::ShaderLib::attachShader(fragShader, ngl::ShaderType::FRAGMENT);
+    ngl::ShaderLib::loadShaderSource(vertexShader, "shaders/PBRVertex.glsl");
+    ngl::ShaderLib::loadShaderSource(fragShader, "shaders/PBRFragment.glsl");
+    ngl::ShaderLib::compileShader(vertexShader);
+    ngl::ShaderLib::compileShader(fragShader);
+    ngl::ShaderLib::attachShaderToProgram(shaderName, vertexShader);
+    ngl::ShaderLib::attachShaderToProgram(shaderName, fragShader);
+    ngl::ShaderLib::linkProgramObject(shaderName);
+    ngl::ShaderLib::use(shaderName);
+    ngl::ShaderLib::setUniform("camPos", from);
+    m_lightPos.set(0.0f, 10.0f, 0.0f, 1.0f);
+    ngl::ShaderLib::setUniform("lightPosition", m_lightPos.toVec3());
+    ngl::ShaderLib::setUniform("lightColor", 400.0f, 400.0f, 400.0f);
+    ngl::ShaderLib::setUniform("exposure", 2.2f);
+    ngl::ShaderLib::setUniform("albedo", r, g,b); // Red color
+    ngl::ShaderLib::setUniform("metallic", 0.1f);
+    ngl::ShaderLib::setUniform("roughness", 0.8f);
+    ngl::ShaderLib::setUniform("ao", 0.4f);
+}
 void NGLScene::initializeGL()
 {
     // we must call that first before any other GL commands to load and link the
@@ -43,32 +72,6 @@ void NGLScene::initializeGL()
     m_lightAngle = 0.0;
     m_lightPos.set(sinf(m_lightAngle), 2, cosf(m_lightAngle));
 
-    // now to load the shader and set the values
-
-    // we are creating a shader called PBR to save typos
-    // in the code create some constexpr
-    constexpr auto vertexShader = "PBRVertex";
-    constexpr auto fragShader = "PBRFragment";
-    // create the shader program
-    ngl::ShaderLib::createShaderProgram(shaderProgram);
-    // now we are going to create empty shaders for Frag and Vert
-    ngl::ShaderLib::attachShader(vertexShader, ngl::ShaderType::VERTEX);
-    ngl::ShaderLib::attachShader(fragShader, ngl::ShaderType::FRAGMENT);
-    // attach the source
-    ngl::ShaderLib::loadShaderSource(vertexShader, "shaders/PBRVertex.glsl");
-    ngl::ShaderLib::loadShaderSource(fragShader, "shaders/PBRFragment.glsl");
-    // compile the shaders
-    ngl::ShaderLib::compileShader(vertexShader);
-    ngl::ShaderLib::compileShader(fragShader);
-    // add them to the program
-    ngl::ShaderLib::attachShaderToProgram(shaderProgram, vertexShader);
-    ngl::ShaderLib::attachShaderToProgram(shaderProgram, fragShader);
-    // now we have associated that data we can link the shader
-    ngl::ShaderLib::linkProgramObject(shaderProgram);
-    // and make it active ready to load values
-    ngl::ShaderLib::use(shaderProgram);
-
-
     // We now create our view matrix for a static camera
     ngl::Vec3 from(0.0f, 4.0f, 10.0f);
     ngl::Vec3 to(0.0f, 0.0f, 0.0f);
@@ -76,30 +79,18 @@ void NGLScene::initializeGL()
     // now load to our new camera
     m_view = ngl::lookAt(from, to, up);
     m_project = ngl::perspective(45.0f, 1024.0f/720.0f, 0.05f, 350.0f);
-
-    ngl::ShaderLib::setUniform("camPos", from);
-    // now a light
-    m_lightPos.set(1.0f, 1.0f, 1.0f, 1.0f);
-    // set up the default shader material and light properties
-    // these are "uniform" so will retain their values
-    ngl::ShaderLib::setUniform("lightPosition", m_lightPos.toVec3());
-    ngl::ShaderLib::setUniform("lightColor", 400.0f, 400.0f, 400.0f);
-    ngl::ShaderLib::setUniform("exposure", 2.2f);
-    //base color=albedo
-    ngl::ShaderLib::setUniform("albedo", 0.1f, 0.5f, 0.2f);
-    ngl::ShaderLib::setUniform("metallic", 0.1f);
-    ngl::ShaderLib::setUniform("roughness", 0.8f);
-    ngl::ShaderLib::setUniform("ao", 0.4f);
-
-    //create a sphere, cone and plane
-    ngl::VAOPrimitives::createSphere("sphere", -0.5f, 50);
-    ngl::VAOPrimitives::createTrianglePlane("plane", 10, 10, 1,1, ngl::Vec3(0.353, 0.42, 0.612));
-    ngl::VAOPrimitives::createCone("cone", 0.5, 1.4f, 20, 20);
-    startTimer(16);
+    createShaderProgram("PBR",0.5f,0.5f,0.5f,from);//base grey material
+    createShaderProgram("PBR_Red",1.0f,0.0f,0.0f,from);
+    createShaderProgram("PBR_Green",0.5f,0.74f,0.1f,from);
+    createShaderProgram("PBR_Brown",0.83f,0.43f,0.07f,from);
+    //create a sphere, cone and plane to create officially later
+    ngl::VAOPrimitives::createSphere("sphere", -0.5f, 50);//lands ontop of cone
+    ngl::VAOPrimitives::createTrianglePlane("plane", 10, 10, 1,1, ngl::Vec3(0.353, 0.42, 0.612));//baseplate for gameplay
+    ngl::VAOPrimitives::createCone("cone", 0.5, 1.4f, 20, 20);//cone
 }
-void NGLScene::loadMatricesToShader()
+void NGLScene::loadMatricesToShader(const std::string &_shader)
 {
-    ngl::ShaderLib::use("PBR");
+    ngl::ShaderLib::use(_shader);
     struct transform
     {
         ngl::Mat4 MVP;
@@ -133,7 +124,7 @@ void NGLScene::drawScene(const std::string &_shader)
     m_mouseGlobalTX.m_m[3][2] = m_modelPos.m_z;
     m_transform.reset();
     m_transform.setPosition(0.0f, 0.0f, 0.0f);
-    loadMatricesToShader();
+    loadMatricesToShader(_shader);
     //building the base game box
     // Draw plane
     ngl::VAOPrimitives::draw("plane");
@@ -154,7 +145,7 @@ void NGLScene::drawScene(const std::string &_shader)
                 {
                     m_cubeZ-=1.0f;
                     m_transform.setPosition(m_cubeX, m_cubeY, m_cubeZ);
-                    loadMatricesToShader();
+                    loadMatricesToShader(_shader);
                     ngl::VAOPrimitives::draw("cube");
                 }
                 break;
@@ -166,7 +157,7 @@ void NGLScene::drawScene(const std::string &_shader)
                 {
                     m_cubeX-=1.0f;
                     m_transform.setPosition(m_cubeX, m_cubeY, m_cubeZ);
-                    loadMatricesToShader();
+                    loadMatricesToShader(_shader);
                     ngl::VAOPrimitives::draw("cube");
                 }
                 break;
@@ -178,7 +169,7 @@ void NGLScene::drawScene(const std::string &_shader)
                 {
                     m_cubeZ-=1.0f;
                     m_transform.setPosition(m_cubeX, m_cubeY, m_cubeZ);
-                    loadMatricesToShader();
+                    loadMatricesToShader(_shader);
                     ngl::VAOPrimitives::draw("cube");
                 }
                 break;
@@ -190,7 +181,7 @@ void NGLScene::drawScene(const std::string &_shader)
                 {
                     m_cubeX-=1.0f;
                     m_transform.setPosition(m_cubeX, m_cubeY, m_cubeZ);
-                    loadMatricesToShader();
+                    loadMatricesToShader(_shader);
                     ngl::VAOPrimitives::draw("cube");
                 }
                 break;
@@ -202,6 +193,7 @@ void NGLScene::paintGL()
     // clear the screen and depth buffer
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glViewport(0, 0, m_win.width, m_win.height);
+    //update the base scene(mouse transformation, base-plate w walls)
     drawScene("PBR");
 }
 
@@ -229,18 +221,20 @@ void NGLScene::keyPressEvent(QKeyEvent *_event)
     //update and redraw
     update();
 }
+void NGLScene::keyReleaseEvent(QKeyEvent *_event)
+{
+
+}
 void NGLScene ::updateScene()
 {
-    m_lightAngle+=0.01f;//example
-    ngl::ShaderLib::use("PBR");
-    ngl::ShaderLib::setUniform("lightPosition", (m_mouseGlobalTX * ngl::Vec3(sinf(m_lightAngle), 2, cosf(m_lightAngle))).toVec3());
+
 }
 double m_elapsedTime =0.0;
 void NGLScene::timerEvent(QTimerEvent *_event)
 {
     m_elapsedTime += 0.016;
-    //game loop logic function
-    updateScene();
-
-    update();
+    //get user input
+    //user input of WSAD to move the cone around the scene
+    //updateGameElements(input)
+    //renderGame
 }

@@ -8,11 +8,12 @@
 #include <string_view>
 
 #include <ngl/Obj.h>
+#include <ngl/Transformation.h>
 
 class Cone
 {
 public:
-    Cone(int _lives=3,int _points=10, float _speed=0.1f, ngl::Vec3 _position={0,0,0}, ngl::Vec3 _colour={1,1,0});
+    Cone(int _lives=3,int _points=10, float _speed=0.1f, ngl::Vec3 _position={0.0f,1.0f,0.0f}, ngl::Vec3 _colour={1,1,0});
 
     ngl::Vec3 getPosition() const;
     void setPosition( ngl::Vec3 _pos);
@@ -28,21 +29,19 @@ public:
     //else
     void setPoints(int _points);
 
-    // Movement input methods, do in main game loop?
-//    void moveForward(float _speed);
-//    void moveBackward(float _speed);
-//    void moveLeft(float _speed);
-//    void moveRight(float _speed);
 
     // Collision -w- Blocks checked
     void updateScoreAndLives(int _scoreChange, int _livesChange);
+    void move(float _x,float _y, float _z);
     bool checkCollision(const std::vector<ngl::Vec3> &_blockPositions);
 private:
-    ngl::Vec3 m_position; 
+    ngl::Vec3 m_pos;
     int m_lives; 
     int m_points; 
     float m_speed;
-    ngl::Vec3 m_colour; 
+    ngl::Vec3 m_colour;
+    ngl::Transformation m_transform;
+    void draw(const std::string &_shader, const ngl::Mat4 &_view, const ngl::Mat4 &_project);
 };
 
 #endif

@@ -36,6 +36,7 @@ class NGLScene : public QOpenGLWindow
     /// @brief the initialize class is called once when the window is created and we have a valid GL context
     /// use this to setup any default GL stuff
     //----------------------------------------------------------------------------------------------------------------------
+    void createShaderProgram(const std::string& shaderName, float r,float g,float b,ngl::Vec3 from);
     void initializeGL() override;
     //----------------------------------------------------------------------------------------------------------------------
     /// @brief this is called everytime we want to draw the scene
@@ -53,6 +54,7 @@ private:
     /// @param [in] _event the Qt event to query for size etc
     //----------------------------------------------------------------------------------------------------------------------
     void keyPressEvent(QKeyEvent *_event) override;
+    void keyReleaseEvent(QKeyEvent *_event )override;
     //----------------------------------------------------------------------------------------------------------------------
     /// @brief this method is called every time a mouse is moved
     /// @param _event the Qt Event structure
@@ -79,7 +81,8 @@ private:
     //----------------------------------------------------------------------------------------------------------------------
     /// @brief method to load transform matrices to the shader
     //----------------------------------------------------------------------------------------------------------------------
-    void loadMatricesToShader();
+    //void loadMatricesToShader();
+    void loadMatricesToShader(const std::string &_shader);
     //----------------------------------------------------------------------------------------------------------------------
     void timerEvent(QTimerEvent*_event) override;
     //----------------------------------------------------------------------------------------------------------------------
@@ -110,6 +113,8 @@ private:
     ngl::Real m_lightAngle{};
     ///updating scene in timer event, the game loop that is calculated each time
     void updateScene();
+    int m_updateConeTimer;
+    int m_redrawTimer;
 };
 
 

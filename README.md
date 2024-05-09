@@ -73,7 +73,7 @@ double lag = 0.0;//ensures catch up of multipe updates occures gradually over ti
 - Jon's Teapot: Getting Started with the Programming Assignment The SpaceShip
 - Jon Macey (2012). Jon’s Teapot: Getting Started with the Programming Assignment Pt 4 The SpaceShip. [online] Jon’s Teapot. Available at: http://jonmacey.blogspot.com/2012/02/getting-started-with-programming_8527.html
 - 
-- Taking a look at how someone that has handle keys in NGL and overall game loops, there's a few things that I need to implement such as processing holding a key down consistently to continually move  by processing the key pressed in the object you want to move and draw it in the paintGL. While not entierly nessicary to look at, it would be a good resource when developing my game to ensure the general logic is well planned with what I want certian items in-game to do.
+- Taking a look at how someone that has handle keys in NGL and overall game loops, there's a few things that I need to implement such as processing holding a key down consistently to continually move  by processing the key pressed in the object you want to move and draw it in the paintGL.
 - 
 - REMINDER: copy ngl shaders edit config build
 
