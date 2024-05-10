@@ -4,7 +4,6 @@
 #include "NGLScene.h"
 #include <ngl/NGLInit.h>
 #include <ngl/VAOPrimitives.h>
-
 #include <ngl/Util.h>
 #include<ngl/ShaderLib.h>
 #include<ngl/Transformation.h>
@@ -53,10 +52,10 @@ void NGLScene::createShaderProgram(const std::string& shaderName, float r,float 
     m_lightPos.set(0.0f, 0.0f, -5.0f, 1.0f);
     ngl::ShaderLib::setUniform("lightPosition", m_lightPos.toVec3());
     ngl::ShaderLib::setUniform("lightColor", 400.0f, 240.0f, 160.0f);
-    ngl::ShaderLib::setUniform("exposure", 2.2f);
+    ngl::ShaderLib::setUniform("exposure", 3.0f);
     ngl::ShaderLib::setUniform("albedo", r, g,b); // Red color
-    ngl::ShaderLib::setUniform("metallic", 0.1f);
-    ngl::ShaderLib::setUniform("roughness", 0.8f);
+    ngl::ShaderLib::setUniform("metallic", 0.0f);
+    ngl::ShaderLib::setUniform("roughness", 1.0f);
     ngl::ShaderLib::setUniform("ao", 0.4f);
 }
 void NGLScene::initializeGL()
@@ -80,7 +79,7 @@ void NGLScene::initializeGL()
     m_view = ngl::lookAt(from, to, up);
     m_project = ngl::perspective(45.0f, 1024.0f/720.0f, 0.05f, 350.0f);
     //creating colors to use later
-    createShaderProgram("PBR",0.5f,0.5f,0.5f,from);//base grey material
+    createShaderProgram("PBR",0.5f,0.5f,0.5f,from);
     //create a sphere, cone and plane to create officially later
     ngl::VAOPrimitives::createSphere("sphere", -0.5f, 50);//lands ontop of cone
     ngl::VAOPrimitives::createTrianglePlane("plane", 10, 10, 1,1, ngl::Vec3(0.353, 0.42, 0.612));//baseplate for gameplay
@@ -124,7 +123,7 @@ void NGLScene::drawScene(const std::string &_shader)
     m_mouseGlobalTX.m_m[3][2] = m_modelPos.m_z;
     m_transform.reset();
     m_transform.setPosition(0.0f, 0.0f, 0.0f);
-    ngl::ShaderLib::setUniform("albedo",0.5f, 0.5f,0.5f);
+    ngl::ShaderLib::setUniform("albedo",0.0f, 0.2f,0.6f);//blue bg color
     loadMatricesToShader(_shader);
     //building the base game box
     // Draw plane
@@ -193,7 +192,7 @@ void NGLScene::drawScene(const std::string &_shader)
     m_transform.setPosition(m_cone->getPosition());
     m_transform.setRotation(ngl::Vec3(90.0f,0.0f,0.0f));
     loadMatricesToShader(_shader);
-    m_cone->draw(_shader,0.83f,0.43f,0.07f);
+    m_cone->draw(_shader,0.83f,0.43f,0.07f);//sets cone to brown color
 }
 void NGLScene::paintGL()
 {
@@ -212,7 +211,7 @@ void NGLScene::keyPressEvent(QKeyEvent *_event)
     // this method is called every time the main window receives a key event.
     // we then switch on the key value and set the camera in the GLWindow
     ngl::Vec3 currentPosition = m_transform.getPosition();
-
+    float levelBoundary = 4.7f;
     // Define the movement speed
     switch (_event->key())
     {
@@ -223,11 +222,46 @@ void NGLScene::keyPressEvent(QKeyEvent *_event)
             m_win.spinYFace=0;
             m_modelPos.set(ngl::Vec3::zero());
             break;
+        //WSAD control of cone, one dir at a time
+        case Qt::Key_W:
+            //up
+            m_cone->move(0.0f,0.0f,-(m_cone->getSpeed()),levelBoundary);
+            break;
+        case Qt::Key_S:
+            //down
+            m_cone->move(0.0f,0.0f,m_cone->getSpeed(),levelBoundary);
+            break;
+        case Qt::Key_A:
+            //left
+            m_cone->move(-(m_cone->getSpeed()),0.0f,0.0f,levelBoundary);
+            break;
+        case Qt::Key_D:
+            //right
+            m_cone->move(m_cone->getSpeed(),0.0f,0.0f,levelBoundary);
+            break;
+        //Diagonal movement QEZX(less of a pause)
+        case Qt::Key_Q:
+            //up + left
+            m_cone->move(-(m_cone->getSpeed()),0.0f,-(m_cone->getSpeed()),levelBoundary);
+            break;
+        case Qt::Key_E:
+            //up + right
+            m_cone->move(m_cone->getSpeed(),0.0f,-(m_cone->getSpeed()),levelBoundary);
+            break;
+        case Qt::Key_Z:
+            //down + left
+            m_cone->move(-(m_cone->getSpeed()),0.0f,m_cone->getSpeed(),levelBoundary);
+            break;
+        case Qt::Key_X:
+            //down + right
+            m_cone->move(m_cone->getSpeed(),0.0f,m_cone->getSpeed(),levelBoundary);
+            break;
         default : break;
     }
     //update and redraw
     update();
 }
+
 void NGLScene::keyReleaseEvent(QKeyEvent *_event)
 {
 

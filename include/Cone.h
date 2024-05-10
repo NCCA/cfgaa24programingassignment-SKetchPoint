@@ -29,12 +29,15 @@ public:
     //else
     void setPoints(int _points);
     //movement
+    float getSpeed() const;
+    void setSpeed(int _speed);
     void move(float _x,float _y, float _z, float _boundary);
 
     // Collision -w- Blocks checked
     void updateScoreAndLives(int _scoreChange, int _livesChange);
     bool checkCollision(const std::vector<ngl::Vec3> &_blockPositions);
     void draw(const std::string &_shader,float _r,float _g,float _b);
+
 private:
     ngl::Vec3 m_pos;
     int m_lives; 

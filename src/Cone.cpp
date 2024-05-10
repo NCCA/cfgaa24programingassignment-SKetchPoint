@@ -41,6 +41,15 @@ void Cone::setPoints(int _points)
 {
     m_points = _points;
 }
+float Cone::getSpeed() const
+{
+    return m_speed;
+}
+
+void Cone::setSpeed(int _speed)
+{
+    m_lives = _speed;
+}
 
 void Cone::draw(const std::string &_shader,float _r,float _g,float _b)
 {
