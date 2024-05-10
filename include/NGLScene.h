@@ -2,6 +2,7 @@
 #define NGLSCENE_H_
 #include <ngl/Vec3.h>
 #include "WindowParams.h"
+#include "Cone.h"
 // this must be included after NGL includes else we get a clash with gl libs
 #include <QOpenGLWindow>
 #include<memory>
@@ -115,6 +116,7 @@ private:
     void updateScene();
     int m_updateConeTimer;
     int m_redrawTimer;
+    std::unique_ptr<Cone> m_cone;
 };
 
 

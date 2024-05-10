@@ -50,9 +50,9 @@ void NGLScene::createShaderProgram(const std::string& shaderName, float r,float 
     ngl::ShaderLib::linkProgramObject(shaderName);
     ngl::ShaderLib::use(shaderName);
     ngl::ShaderLib::setUniform("camPos", from);
-    m_lightPos.set(0.0f, 10.0f, 0.0f, 1.0f);
+    m_lightPos.set(0.0f, 0.0f, -5.0f, 1.0f);
     ngl::ShaderLib::setUniform("lightPosition", m_lightPos.toVec3());
-    ngl::ShaderLib::setUniform("lightColor", 400.0f, 400.0f, 400.0f);
+    ngl::ShaderLib::setUniform("lightColor", 400.0f, 240.0f, 160.0f);
     ngl::ShaderLib::setUniform("exposure", 2.2f);
     ngl::ShaderLib::setUniform("albedo", r, g,b); // Red color
     ngl::ShaderLib::setUniform("metallic", 0.1f);
@@ -69,7 +69,7 @@ void NGLScene::initializeGL()
     glEnable(GL_DEPTH_TEST);
     // enable multisampling for smoother drawing
     glEnable(GL_MULTISAMPLE);
-    m_lightAngle = 0.0;
+    m_lightAngle = 20.0;
     m_lightPos.set(sinf(m_lightAngle), 2, cosf(m_lightAngle));
 
     // We now create our view matrix for a static camera
@@ -79,14 +79,14 @@ void NGLScene::initializeGL()
     // now load to our new camera
     m_view = ngl::lookAt(from, to, up);
     m_project = ngl::perspective(45.0f, 1024.0f/720.0f, 0.05f, 350.0f);
+    //creating colors to use later
     createShaderProgram("PBR",0.5f,0.5f,0.5f,from);//base grey material
-    createShaderProgram("PBR_Red",1.0f,0.0f,0.0f,from);
-    createShaderProgram("PBR_Green",0.5f,0.74f,0.1f,from);
-    createShaderProgram("PBR_Brown",0.83f,0.43f,0.07f,from);
     //create a sphere, cone and plane to create officially later
     ngl::VAOPrimitives::createSphere("sphere", -0.5f, 50);//lands ontop of cone
     ngl::VAOPrimitives::createTrianglePlane("plane", 10, 10, 1,1, ngl::Vec3(0.353, 0.42, 0.612));//baseplate for gameplay
     ngl::VAOPrimitives::createCone("cone", 0.5, 1.4f, 20, 20);//cone
+    //creating the player controlled cone
+    m_cone=std::make_unique<Cone>(3,10,0.1,ngl::Vec3(0.0f,1.0f,0.0f));
 }
 void NGLScene::loadMatricesToShader(const std::string &_shader)
 {
@@ -106,7 +106,7 @@ void NGLScene::loadMatricesToShader(const std::string &_shader)
     t.normalMatrix.inverse().transpose();
     ngl::ShaderLib::setUniformBuffer("TransformUBO", sizeof(transform), &t.MVP.m_00);
 
-    ngl::ShaderLib::setUniform("lightPosition", (m_mouseGlobalTX * m_lightPos).toVec3());
+    //ngl::ShaderLib::setUniform("lightPosition", (m_mouseGlobalTX * m_lightPos).toVec3());
 }
 
 void NGLScene::drawScene(const std::string &_shader)
@@ -124,6 +124,7 @@ void NGLScene::drawScene(const std::string &_shader)
     m_mouseGlobalTX.m_m[3][2] = m_modelPos.m_z;
     m_transform.reset();
     m_transform.setPosition(0.0f, 0.0f, 0.0f);
+    ngl::ShaderLib::setUniform("albedo",0.5f, 0.5f,0.5f);
     loadMatricesToShader(_shader);
     //building the base game box
     // Draw plane
@@ -187,13 +188,19 @@ void NGLScene::drawScene(const std::string &_shader)
                 break;
         }
     }
+    // Draw the cone with mouse rotation
+    m_transform.reset();
+    m_transform.setPosition(m_cone->getPosition());
+    m_transform.setRotation(ngl::Vec3(90.0f,0.0f,0.0f));
+    loadMatricesToShader(_shader);
+    m_cone->draw(_shader,0.83f,0.43f,0.07f);
 }
 void NGLScene::paintGL()
 {
     // clear the screen and depth buffer
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glViewport(0, 0, m_win.width, m_win.height);
-    //update the base scene(mouse transformation, base-plate w walls)
+    //update the entire scene (base platform, cone)
     drawScene("PBR");
 }
 

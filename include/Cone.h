@@ -13,7 +13,7 @@
 class Cone
 {
 public:
-    Cone(int _lives=3,int _points=10, float _speed=0.1f, ngl::Vec3 _position={0.0f,1.0f,0.0f}, ngl::Vec3 _colour={1,1,0});
+    Cone(int _lives=3,int _points=10, float _speed=0.1f, ngl::Vec3 _position={0.0f,1.0f,0.0f});
 
     ngl::Vec3 getPosition() const;
     void setPosition( ngl::Vec3 _pos);
@@ -28,12 +28,13 @@ public:
     //getPoints+block.getPointVal
     //else
     void setPoints(int _points);
-
+    //movement
+    void move(float _x,float _y, float _z, float _boundary);
 
     // Collision -w- Blocks checked
     void updateScoreAndLives(int _scoreChange, int _livesChange);
-    void move(float _x,float _y, float _z);
     bool checkCollision(const std::vector<ngl::Vec3> &_blockPositions);
+    void draw(const std::string &_shader,float _r,float _g,float _b);
 private:
     ngl::Vec3 m_pos;
     int m_lives; 
@@ -41,7 +42,7 @@ private:
     float m_speed;
     ngl::Vec3 m_colour;
     ngl::Transformation m_transform;
-    void draw(const std::string &_shader, const ngl::Mat4 &_view, const ngl::Mat4 &_project);
+
 };
 
 #endif
