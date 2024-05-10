@@ -53,6 +53,7 @@ void Cone::setSpeed(int _speed)
 
 void Cone::draw(const std::string &_shader,float _r,float _g,float _b)
 {
+
     ngl::ShaderLib::use(_shader);
     ngl::ShaderLib::setUniform("albedo", _r, _g,_b);
     ngl::VAOPrimitives::draw("cone");

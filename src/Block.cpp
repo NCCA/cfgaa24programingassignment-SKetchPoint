@@ -11,13 +11,13 @@ Block::Block(int _type, bool _isAlive, const ngl::Vec3 &_position, float _initia
     switch (_type)
     {
         case 0: // Trash
-            m_pointVal =-1;
+            m_pointVal =-2;//deducts points
             break;
         case 1: // Scoop
-            m_pointVal =1;
+            m_pointVal =1;//adds point
             break;
         case 2: // Bonus scoop
-            m_pointVal =3;
+            m_pointVal =3;//adds points
             break;
         default:
             std::cerr << "ERROR - Invalid block type: " << _type << std::endl;
@@ -74,7 +74,9 @@ bool Block::isCaught(const ngl::Vec3 &_conePosition) const
 
     // check catching distance
     //helps to have collisions based on spheres instead of their actual geo
-    constexpr float catchDistance = 2.0f;
+    //.5 from center to cube surface, cone 1.0 from top
+    //diagonal
+    constexpr float catchDistance = 1.3f;
     // distance between block position and cone position calc correct?
     float distance = (_conePosition - m_position).length();
     // Check if block is within catch distance
