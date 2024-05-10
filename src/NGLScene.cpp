@@ -85,7 +85,7 @@ void NGLScene::initializeGL()
     ngl::VAOPrimitives::createTrianglePlane("plane", 10, 10, 1,1, ngl::Vec3(0.353, 0.42, 0.612));//baseplate for gameplay
     ngl::VAOPrimitives::createCone("cone", 0.5, 1.4f, 20, 20);//cone
     //creating the player controlled cone
-    m_cone=std::make_unique<Cone>(3,10,0.1,ngl::Vec3(0.0f,1.0f,0.0f));
+    m_cone=std::make_unique<Cone>(3,10,0.1,ngl::Vec3(0.0f,1.5f,0.0f));
 }
 void NGLScene::loadMatricesToShader(const std::string &_shader)
 {
@@ -256,6 +256,11 @@ void NGLScene::keyPressEvent(QKeyEvent *_event)
             //down + right
             m_cone->move(m_cone->getSpeed(),0.0f,m_cone->getSpeed(),levelBoundary);
             break;
+        case Qt::Key_Space:
+            std::cout << "Cone position: "
+                      << m_cone->getPosition().m_x << ", "
+                      << m_cone->getPosition().m_y << ", "
+                      << m_cone->getPosition().m_z << std::endl;
         default : break;
     }
     //update and redraw

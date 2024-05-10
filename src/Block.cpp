@@ -69,16 +69,13 @@ void Block::update(float _deltaTime)
 
 bool Block::isCaught(const ngl::Vec3 &_conePosition) const
 {
-    //distance between block position and cone position is within a threshold
-    // If so, return true (block is caught), otherwise return false
-
-    // check catching distance
-    //helps to have collisions based on spheres instead of their actual geo
-    //.5 from center to cube surface, cone 1.0 from top
-    //diagonal
-    constexpr float catchDistance = 1.3f;
-    // distance between block position and cone position calc correct?
-    float distance = (_conePosition - m_position).length();
-    // Check if block is within catch distance
-    return distance <= catchDistance;
+    float margineCatch= 0.2;
+    //on block side length is 1, so .5 for each corner
+    //block center (0,0,0)
+    //block vertices
+    //(.5,.5,.5),(-.5,.5,.5),(-.5,-.5,.5),(.5,-.5,.5)
+    //(.5,.5,-.5),(-.5,.5,-.5),(-.5,-.5,-.5),(.5,-.5,-.5)
+    //cone center (0,0,0)
+    //cone point(0,-1.5,0)
+    return false;
 }
