@@ -3,6 +3,7 @@
 #include <ngl/Vec3.h>
 #include "WindowParams.h"
 #include "Cone.h"
+#include "Block.h"
 // this must be included after NGL includes else we get a clash with gl libs
 #include <QOpenGLWindow>
 #include<memory>
@@ -115,8 +116,8 @@ private:
     int m_updateConeTimer;
     int m_redrawTimer;
     std::unique_ptr<Cone> m_cone;
+    std::unique_ptr<Block>m_starterScoop;
+
+
 };
-
-
-
 #endif

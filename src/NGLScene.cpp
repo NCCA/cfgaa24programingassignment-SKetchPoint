@@ -86,6 +86,7 @@ void NGLScene::initializeGL()
     ngl::VAOPrimitives::createCone("cone", 0.5, 1.4f, 20, 20);//cone
     //creating the player controlled cone
     m_cone=std::make_unique<Cone>(3,10,0.1,ngl::Vec3(0.0f,1.5f,0.0f));
+    m_starterScoop=std::make_unique<Block>(3,true,ngl::Vec3(0.0f,2.0f,0.0f),0.0);
 }
 void NGLScene::loadMatricesToShader(const std::string &_shader)
 {
@@ -187,12 +188,14 @@ void NGLScene::drawScene(const std::string &_shader)
                 break;
         }
     }
-    // Draw the cone with mouse rotation
+    // Draw the cone with a scoop on top
     m_transform.reset();
     m_transform.setPosition(m_cone->getPosition());
     m_transform.setRotation(ngl::Vec3(90.0f,0.0f,0.0f));
     loadMatricesToShader(_shader);
     m_cone->draw(_shader,0.83f,0.43f,0.07f);//sets cone to brown color
+    m_starterScoop->draw(_shader);
+
 }
 void NGLScene::paintGL()
 {

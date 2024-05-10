@@ -2,7 +2,7 @@
 #define BLOCK_H
 
 #include <ngl/Vec3.h>
-
+#include <ngl/VAOPrimitives.h>
 class Block
 {
 public:
@@ -20,12 +20,13 @@ public:
     // Update block position based on time, position also bound by playable area x and z
     //time in
     void update(float _deltaTime);
-
+    //drawing the block
+    void draw(const std::string &_shader );
     //When touches ground plane or cone (checkCollision from Cone.h) ends life
     bool isCaught(const ngl::Vec3 &_conePosition) const;
 
 private:
-    bool m_type;
+    int m_type;
     bool m_isAlive;
     int m_pointVal;
     ngl::Vec3 m_position;
