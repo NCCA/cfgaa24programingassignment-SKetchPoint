@@ -262,14 +262,6 @@ void NGLScene::keyPressEvent(QKeyEvent *_event)
     update();
 }
 
-void NGLScene::keyReleaseEvent(QKeyEvent *_event)
-{
-
-}
-void NGLScene ::updateScene()
-{
-
-}
 double m_elapsedTime =0.0;
 void NGLScene::timerEvent(QTimerEvent *_event)
 {
