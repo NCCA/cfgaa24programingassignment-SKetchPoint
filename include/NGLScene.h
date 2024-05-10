@@ -117,7 +117,7 @@ private:
     int m_redrawTimer;
     std::unique_ptr<Cone> m_cone;
     std::unique_ptr<Block>m_starterScoop;
-
-
+    float m_zoom=1.0f;
 };
 #endif
+

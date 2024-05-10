@@ -2,7 +2,7 @@
 #include <ngl/Transformation.h>
 #include <ngl/ShaderLib.h>
 #include <ngl/VAOPrimitives.h>
-
+#include <iostream>
 Cone::Cone(int _lives, int _points, float _speed, ngl::Vec3 _position)
 {
     m_lives=_lives;

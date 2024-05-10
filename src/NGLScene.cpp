@@ -99,6 +99,7 @@ void NGLScene::loadMatricesToShader(const std::string &_shader)
     };
 
     transform t;
+
     t.M = m_view * m_mouseGlobalTX * m_transform.getMatrix();
 
     t.MVP = m_project * t.M;
@@ -269,6 +270,7 @@ void NGLScene::keyPressEvent(QKeyEvent *_event)
     //update and redraw
     update();
 }
+
 
 double m_elapsedTime =0.0;
 void NGLScene::timerEvent(QTimerEvent *_event)

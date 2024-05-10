@@ -39,7 +39,7 @@ int main(int argc, char **argv)
   window.resize(1024, 720);
   // and finally show
   window.show();
-
+  //loop till nothing left to execute
   return app.exec();
 }
 

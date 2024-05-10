@@ -104,16 +104,25 @@ void Block::draw(const std::string &_shader)
 }
 bool Block::isCaught(const ngl::Vec3 &_conePosition) const
 {
-    float margineCatch= 0.2;
-    //on block side length is 1, so .5 for each corner
-    //block center (0,0,0)
-    //block vertices
-    //(.5,.5,.5),(-.5,.5,.5),(-.5,-.5,.5),(.5,-.5,.5)
-    //(.5,.5,-.5),(-.5,.5,-.5),(-.5,-.5,-.5),(.5,-.5,-.5)
+    //determining hit box of the Block
+    if(m_type==0)
+    {
+        //if garbage (cube)
+        //on block side length is 1, so .5 for each corner
+        //block vertices
+        //(.5,.5,.5),(-.5,.5,.5),(-.5,-.5,.5),(.5,-.5,.5)
+        //(.5,.5,-.5),(-.5,.5,-.5),(-.5,-.5,-.5),(.5,-.5,-.5)
+
+    }
+    else
+    {
+        //if Block is any other type(sphere), radius is .5
+    }
     //calc cone box by a cylinder
-    //cone center (0,0,0)
-    //cone point(0,-1.5,0)
-    //cone rim(0,2,0)
-    //
+    //cone height =1
+    //starter scoop radius=.5
+    //radius=0.6
+    //total cone height~2
+
     return false;
 }
