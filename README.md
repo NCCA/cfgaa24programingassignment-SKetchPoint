@@ -76,7 +76,7 @@ double lag = 0.0;//ensures catch up of multipe updates occures gradually over ti
 - Taking a look at how someone that has handle keys in NGL and overall game loops, there's a few things that I need to implement such as processing holding a key down consistently to continually move  by processing the key pressed in the object you want to move and draw it in the paintGL.
 - REMINDER: copy ngl shaders edit config build
 - ----------------------------------------------------------------
--A common rounding error for calculating where the boundaries of the block (if an actual block is used) is a rounding error on the cone opsition and the block distance, where the calculated error is clipped as the distance is in a sphere shape for catchDistance and distance = (cone position - block position ) length  it would calc in a sphere shape instead of the actual geometry of a block
--anything outide of the sphere would read as if it didnt collide with the block unless further calculations are made
+- A common rounding error for calculating where the boundaries of the block (if an actual block is used) is a rounding error on the cone opsition and the block distance, where the calculated error is clipped as the distance is in a sphere shape for catchDistance and distance = (cone position - block position ) length  it would calc in a sphere shape instead of the actual geometry of a block
+- anything outide of the sphere would read as if it didnt collide with the block unless further calculations are made
 !["block with distance from center, collision in shape of sphere"](images/IllustrateCatchError.png)
 
