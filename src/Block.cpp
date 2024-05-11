@@ -177,16 +177,14 @@ bool Block::isCollidingGJK(const ngl::Vec3& coneCenter, float coneRadius, const 
     ngl::Vec3 a = support - coneCenter;
     ngl::Vec3 b;
     std::vector<ngl::Vec3> simplex = {a};
-
     while (true)
     {
-        //b=farthest point on the block in the opposite dir of a
-        b = negSupport;
+        // b = farthest point on the block in the opposite dir of a (modified with coneRadius)
+        b = negSupport + coneRadius * normalize(a);
         ngl::Vec3 ao = a - coneCenter;
         ngl::Vec3 ab = b - a;
-        // ao onto ab projection
         ngl::Vec3 abProjAo = dot(ab, ao) * ab / norm(ab);
-        //FLT_EPSILON difference in 1 and least val > 1
+        // FLT_EPSILON difference in 1 and least val > 1
         if (norm(abProjAo) < FLT_EPSILON)
         {
             // Simplex contains origin, indicating collision
@@ -194,10 +192,10 @@ bool Block::isCollidingGJK(const ngl::Vec3& coneCenter, float coneRadius, const 
         }
         a = abProjAo;
         simplex.push_back(a);
-        // Update simplex based on last two points (a, b)
+        // simplex based on last two points
         if (simplex.size() == 2)
         {
-            // Line segment case
+            // Line segment
             ngl::Vec3 abNormalized = normalize(ab);
             if (dot(ao, abNormalized) > 0.0f)
             {
@@ -223,9 +221,8 @@ bool Block::isCaught(const ngl::Vec3 &_conePosition)
     }
     //calc cone box by a cylinder
     //cone + initial scoop height~2
-    float coneHeight=1.0f;
-    float coneRadius=0.6f;
-    float blockRadius=0.5f;
+    //use sphere to check collisions
+    float coneRadius=1.5f;
     ngl::Vec3 direction=_conePosition - getPosition();
     //determining hit box of the Block
     if(m_type==0)
