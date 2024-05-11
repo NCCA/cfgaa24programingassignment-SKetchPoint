@@ -46,6 +46,10 @@ bool Block::getIsAlive() const
     //if shown or not, intractable or to delete, used in draw function
     return m_isAlive;
 }
+void Block::setIsAlive(bool _state)
+{
+    m_isAlive=_state;
+}
 ngl::Vec3 Block::getPosition() const
 {
     return m_position;
@@ -53,14 +57,6 @@ ngl::Vec3 Block::getPosition() const
 float Block::getSpeed() const
 {
     return m_initialSpeed;
-}
-void Block::update(float _deltaTime)
-{
-    //velocity= gravity (-9.81 m/s^2) * time
-    // Apply gravity to the block's speed
-    float gravity = 9.81f;
-    float speedWithGravity = getSpeed() + gravity * _deltaTime;
-    m_position.m_y -= speedWithGravity * _deltaTime;
 }
 void Block::draw(const std::string &_shader)
 {
@@ -97,10 +93,10 @@ void Block::draw(const std::string &_shader)
 
     }
 }
-ngl::Vec3 Block::support(const ngl::Vec3& direction, bool isBlock, bool isFarthest) const
+ngl::Vec3 Block::support(const ngl::Vec3& _direction, bool _isBlock, bool _isFarthest) const
 {
     // furthest corner of box OR just sphere pos, helps with GJK implementation
-    if (isBlock)
+    if (_isBlock)
     {
         // Find the corner with the maximum or minimum projection on direction
         float extremumProjection = FLT_MIN;  // For farthest corner (initialize with minimum)
@@ -108,22 +104,22 @@ ngl::Vec3 Block::support(const ngl::Vec3& direction, bool isBlock, bool isFarthe
         ngl::Vec3 extremeCorner;
 
         // Loop through all 8 corners of the box
-        for (float i = -1.0f; i <= 1.0f; i += 2.0f)
+        for (int i = -1; i <= 1; i += 2)
         {
 
-            for (float j = -1.0f; j <= 1.0f; j += 2.0f)
+            for (int j = -1; j <= 1; j += 2)
             {
-                for (float k = -1.0f; k <= 1.0f; k += 2.0f)
+                for (int k = -1; k <= 1; k += 2)
                 {
                     // Calc corner first from 0,0,0 then to m_position
-                    ngl::Vec3 corner = ngl::Vec3(0.5f * i, 0.5f * j, 0.5f * k);
+                    ngl::Vec3 corner = ngl::Vec3(0.5f * (float)i, 0.5f * (float)j, 0.5f * (float)k);
                     corner.m_x += m_position.m_x;
                     corner.m_y += m_position.m_y;
                     corner.m_z += m_position.m_z;
 
                     // Dot product to get projection on direction
-                    float projection = direction.dot(corner);
-                    if (isFarthest)
+                    float projection = _direction.dot(corner);
+                    if (_isFarthest)
                     {
                         if (projection > extremumProjection)
                         {
@@ -131,7 +127,7 @@ ngl::Vec3 Block::support(const ngl::Vec3& direction, bool isBlock, bool isFarthe
                             extremumProjection = projection;
                             extremeCorner = corner;
                         }
-                    } 
+                    }
                     else
                     {
                         if (projection < otherProjection)
@@ -152,36 +148,36 @@ ngl::Vec3 Block::support(const ngl::Vec3& direction, bool isBlock, bool isFarthe
         return getPosition();
     }
 }
-float Block::dot(const ngl::Vec3& a, const ngl::Vec3& b)
+float Block::dot(const ngl::Vec3& _a, const ngl::Vec3& _b)
 {
-    return a.m_x * b.m_x + a.m_y * b.m_y + a.m_z * b.m_z;
+    return _a.m_x * _b.m_x + _a.m_y * _b.m_y + _a.m_z * _b.m_z;
 }
-float Block::norm(const ngl::Vec3& a)
+float Block::norm(const ngl::Vec3& _a)
 {
-    return std::sqrt(dot(a, a));
+    return std::sqrt(dot(_a, _a));
 }
-ngl::Vec3 Block::normalize(const ngl::Vec3& a)
+ngl::Vec3 Block::normalize(const ngl::Vec3& _a)
 {
-    float mag = norm(a);
+    float mag = norm(_a);
     if (mag > FLT_EPSILON)
     {
         // Avoid division by zero
-        return a / mag;
+        return _a / mag;
     } else
     {
-        return a; // Return original vector if magnitude is very small
+        return _a; // Return original vector if magnitude is very small
     }
 }
-bool Block::circleIntersectRay(float cx, float cz, float cy, float radius,const ngl::Vec3& rayDirection)
+bool Block::circleIntersectRay(float _radius,const ngl::Vec3& _rayDirection)
 {
     // Distance between ray origin (cone center) and circle center
     float dx =0.0f;
     float dy =2.0f;
     float dz =0.0f;
     // Solve for the intersection point along the ray parameter `t`
-    float a = dot(rayDirection, rayDirection);
-    float b = 2.0f * (rayDirection.m_x * dx + rayDirection.m_z * dz);
-    float c = dx * dx + dy * dy + dz * dz - radius * radius; // Include dy for y-axis
+    float a = dot(_rayDirection, _rayDirection);
+    float b = 2.0f * (_rayDirection.m_x * dx + _rayDirection.m_z * dz);
+    float c = dx * dx + dy * dy + dz * dz - _radius * _radius; // Include dy for y-axis
     float determinant = b * b - 4.0f * a * c;
     // Check for intersection based on the discriminant
     if (determinant < 0.0f)
@@ -200,20 +196,17 @@ bool Block::circleIntersectRay(float cx, float cz, float cy, float radius,const 
         return (t1 > 0.0f || t2 > 0.0f);
     }
 }
-bool Block::isCollidingGJK(const ngl::Vec3& coneCenter, float coneRadius, const ngl::Vec3& support, const ngl::Vec3& negSupport)
+bool Block::isCollidingGJK(const ngl::Vec3& _coneCenter, float _coneRadius, const ngl::Vec3& _support, const ngl::Vec3& _negSupport)
 {
     // Initial direction towards cone
-    ngl::Vec3 a = support - coneCenter;
+    ngl::Vec3 a = _support - _coneCenter;
     ngl::Vec3 b;
     std::vector<ngl::Vec3> simplex = {a};
     ngl::Vec3 blockCenter = getPosition();
-    ngl::Vec3 rayDirection = blockCenter - coneCenter;
-    float coneHalfHeight = 1.0f; // Assuming cone height is known
-    float topY = coneCenter.m_y + coneHalfHeight;
-    float bottomY = coneCenter.m_y - coneHalfHeight;
+    ngl::Vec3 rayDirection = blockCenter - _coneCenter;
     // Use ngl library functions (or implement your own) for circle-ray intersection
-    bool intersectsTop = circleIntersectRay(coneCenter.m_x, coneCenter.m_z, topY, coneRadius,rayDirection);
-    bool intersectsBottom = circleIntersectRay(coneCenter.m_x, coneCenter.m_z, bottomY, coneRadius,rayDirection);
+    bool intersectsTop = circleIntersectRay(_coneRadius,rayDirection);
+    bool intersectsBottom = circleIntersectRay(_coneRadius,rayDirection);
 
     if (!intersectsTop || !intersectsBottom)
     {
@@ -224,8 +217,8 @@ bool Block::isCollidingGJK(const ngl::Vec3& coneCenter, float coneRadius, const 
     while (true)
     {
         // b = farthest point on the block in the opposite dir of a (modified with coneRadius)
-        b = negSupport + coneRadius * normalize(a);
-        ngl::Vec3 ao = a - coneCenter;
+        b = _negSupport + _coneRadius * normalize(a);
+        ngl::Vec3 ao = a - _coneCenter;
         ngl::Vec3 ab = b - a;
         ngl::Vec3 abProjAo = dot(ab, ao) * ab / norm(ab);
         // FLT_EPSILON difference in 1 and least val > 1
@@ -283,4 +276,12 @@ bool Block::isCaught(const ngl::Vec3 &_conePosition)
         returnCollision = isCollidingGJK(_conePosition,coneRadius,support(direction,false,true),support(direction,false,false));
     }
     return returnCollision;
+}
+void Block::update(float _deltaTime)
+{
+    //velocity= gravity (-9.81 m/s^2) * time
+    // Apply gravity to the block's speed
+    float gravity = 9.81f;
+    float speedWithGravity = getSpeed() + gravity * _deltaTime;
+    m_position.m_y -= speedWithGravity * _deltaTime;
 }

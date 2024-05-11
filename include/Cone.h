@@ -3,6 +3,7 @@
 
 #include <vector>
 #include "ngl/Vec3.h"
+#include "Block.h"
 #include  <ngl/AbstractVAO.h>
 #include <memory>
 #include <string_view>
@@ -35,7 +36,7 @@ public:
 
     // Collision -w- Blocks checked
     void updateScoreAndLives(int _scoreChange, int _livesChange);
-    bool checkCollision(const std::vector<ngl::Vec3> &_blockPositions);
+    bool checkCollision(Block*& _scoop);
     void draw(const std::string &_shader,float _r,float _g,float _b);
 
 private:

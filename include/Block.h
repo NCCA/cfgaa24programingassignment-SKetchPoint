@@ -13,24 +13,27 @@ public:
     int getType() const;
     int getPointVal()const;
     bool getIsAlive()const;
+    void setIsAlive(bool _state);
     ngl::Vec3 getPosition() const;
     //might delete getSpeed
     float getSpeed() const;
-
-    // Update block position based on time, position also bound by playable area x and z
-    //time in
-    void update(float _deltaTime);
     //drawing the block
     void draw(const std::string &_shader );
     //further corner for block calc for GJK
-    ngl::Vec3 support(const ngl::Vec3 &direction, bool isBlock, bool isFarthest) const;
+    ngl::Vec3 support(const ngl::Vec3 &_direction, bool _isBlock, bool _isFarthest) const;
     //functions for calcs in GJK
-    float dot(const ngl::Vec3 &a, const ngl::Vec3 &b);
-    float norm(const ngl::Vec3 &a);
-    ngl::Vec3 normalize(const ngl::Vec3 &a);
-    bool isCollidingGJK(const ngl::Vec3 &coneCenter, float coneRadius, const ngl::Vec3 &support,const ngl::Vec3& negSupport);
+    float dot(const ngl::Vec3 &_a, const ngl::Vec3 &_b);
+    float norm(const ngl::Vec3 &_a);
+    ngl::Vec3 normalize(const ngl::Vec3 &_a);
+    //helps collision w cone
+    bool circleIntersectRay( float _radius, const ngl::Vec3 &_rayDirection);
+    //GJK collision algorithm based for cone vs scoops
+    bool isCollidingGJK(const ngl::Vec3 &_coneCenter, float _coneRadius, const ngl::Vec3 &_support,const ngl::Vec3& _negSupport);
+    //indicates of the collision on cone is true or not
     bool isCaught(const ngl::Vec3 &_conePosition) ;
-    bool circleIntersectRay(float cx, float cz, float radius, float cy, const ngl::Vec3 &rayDirection);
+    // Update block position based on time, position also bound by playable area x and z
+    //time in
+    void update(float _deltaTime);
 
 private:
     int m_type;

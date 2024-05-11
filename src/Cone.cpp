@@ -45,12 +45,10 @@ float Cone::getSpeed() const
 {
     return m_speed;
 }
-
 void Cone::setSpeed(int _speed)
 {
     m_lives = _speed;
 }
-
 void Cone::draw(const std::string &_shader,float _r,float _g,float _b)
 {
 
@@ -59,7 +57,7 @@ void Cone::draw(const std::string &_shader,float _r,float _g,float _b)
     ngl::VAOPrimitives::draw("cone");
 }
 //limitations on xyz movement on cone based on walls
-///const float boundary=5;
+//const float boundary=5;
 //controls for how much to move the cone and sets it
 void Cone::move(float _x, float _y, float _z, float _boundary)
 {
@@ -79,12 +77,36 @@ void Cone::updateScoreAndLives(int _scoreChange, int _livesChange)
     // positive when successful catch good block
     //negative when good block hits ground or cone collides with bad block
     //if catch bad block, lives also change
-    m_points += _scoreChange;
-    m_lives += _livesChange;
+    setPoints(m_points+_scoreChange);
+    setLives(m_lives+_livesChange);
 }
-bool Cone::checkCollision(const std::vector<ngl::Vec3> &_blockPositions)
+bool Cone::checkCollision(Block* &_scoop)
 {
     // Implementation for collision checking
     //if area of block hits rim of cone & block does not hit ground, return true, else false
-    return false; // Placeholder
+    if(_scoop->isCaught(getPosition()))
+    {
+        switch (_scoop->getType())
+        {
+            //update lives and score for the player, then since it's caught, have the block disappear
+            case 0: // Trash
+                updateScoreAndLives(_scoop->getPointVal(),-1);
+                _scoop->setIsAlive(false);
+                break;
+            case 1: // Scoop
+                updateScoreAndLives(_scoop->getPointVal(),0);
+                _scoop->setIsAlive(false);
+                break;
+            case 2: // Bonus scoop
+                updateScoreAndLives(_scoop->getPointVal(),1);
+                _scoop->setIsAlive(false);
+                break;
+            default:
+                _scoop->setIsAlive(false);
+                std::cerr << "ERROR - Invalid block type: " << _scoop->getType() << std::endl;
+                break;
+        }
+        return true;
+    }
+    return false;
 }
