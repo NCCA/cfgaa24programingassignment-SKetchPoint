@@ -106,7 +106,6 @@ void NGLScene::loadMatricesToShader(const std::string &_shader)
     t.normalMatrix = t.M;
     t.normalMatrix.inverse().transpose();
     ngl::ShaderLib::setUniformBuffer("TransformUBO", sizeof(transform), &t.MVP.m_00);
-
     //ngl::ShaderLib::setUniform("lightPosition", (m_mouseGlobalTX * m_lightPos).toVec3());
 }
 
@@ -261,6 +260,7 @@ void NGLScene::keyPressEvent(QKeyEvent *_event)
             m_cone->move(m_cone->getSpeed(),0.0f,m_cone->getSpeed(),levelBoundary);
             break;
         case Qt::Key_Space:
+            m_cone->move(0.0f,-(m_cone->getSpeed()),0.0f,levelBoundary);
             std::cout << "Cone position: "
                       << m_cone->getPosition().m_x << ", "
                       << m_cone->getPosition().m_y << ", "

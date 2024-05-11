@@ -1,8 +1,9 @@
 #include "Block.h"
+#include <cmath>
 #include <iostream>
 #include <ngl/Transformation.h>
 #include <ngl/ShaderLib.h>
-
+#include<cfloat>
 
 Block::Block(int _type, bool _isAlive, const ngl::Vec3 &_position, float _initialSpeed)
 {
@@ -64,7 +65,7 @@ void Block::update(float _deltaTime)
     //velocity= gravity (-9.81 m/s^2) * time
     // Apply gravity to the block's speed
     float gravity = 9.81f;
-    float speedWithGravity = m_initialSpeed + gravity * _deltaTime;
+    float speedWithGravity = getSpeed() + gravity * _deltaTime;
     m_position.m_y -= speedWithGravity * _deltaTime;
 }
 void Block::draw(const std::string &_shader)
@@ -73,7 +74,7 @@ void Block::draw(const std::string &_shader)
     if(m_isAlive)
     {
         ngl::ShaderLib::use(_shader);
-        switch(m_type)
+        switch(getType())
         {
             case 0:
                 //trash=green
@@ -102,27 +103,143 @@ void Block::draw(const std::string &_shader)
 
     }
 }
-bool Block::isCaught(const ngl::Vec3 &_conePosition) const
+ngl::Vec3 Block::support(const ngl::Vec3& direction, bool isBlock, bool isFarthest) const
 {
+    // furthest corner of box OR just sphere pos, helps with GJK implementation
+    if (isBlock) {
+        // Find the corner with the maximum or minimum projection on direction
+        float extremumProjection = FLT_MIN;  // For farthest corner (initialize with minimum)
+        float otherProjection = FLT_MAX;     // For nearest corner (initialize with maximum)
+        ngl::Vec3 extremumCorner;
+
+        // Loop through all 8 corners of the box
+        for (int i = -1; i <= 1; i += 2) {
+            for (int j = -1; j <= 1; j += 2) {
+                for (int k = -1; k <= 1; k += 2) {
+                    // Calc corner first from 0,0,0 then to m_position
+                    ngl::Vec3 corner = ngl::Vec3(0.5f * i, 0.5f * j, 0.5f * k);
+                    corner.m_x += m_position.m_x;
+                    corner.m_y += m_position.m_y;
+                    corner.m_z += m_position.m_z;
+
+                    // Dot product to get projection on direction
+                    float projection = direction.dot(corner);
+                    if (isFarthest)
+                    {
+                        if (projection > extremumProjection)
+                        {
+                            //farthest
+                            extremumProjection = projection;
+                            extremumCorner = corner;
+                        }
+                    } else
+                    {
+                        if (projection < otherProjection)
+                        {
+                            //nearest
+                            otherProjection = projection;
+                            extremumCorner = corner;
+                        }
+                    }
+                }
+            }
+        }
+
+        return extremumCorner;
+    } else {
+        // Return center of sphere
+        return getPosition();
+    }
+}
+float Block::dot(const ngl::Vec3& a, const ngl::Vec3& b)
+{
+    return a.m_x * b.m_x + a.m_y * b.m_y + a.m_z * b.m_z;
+}
+float Block::norm(const ngl::Vec3& a)
+{
+    return std::sqrt(dot(a, a));
+}
+ngl::Vec3 Block::normalize(const ngl::Vec3& a)
+{
+    float mag = norm(a);
+    if (mag > FLT_EPSILON)
+    {
+        // Avoid division by zero
+        return a / mag;
+    } else
+    {
+        return a; // Return original vector if magnitude is very small
+    }
+}
+bool Block::isCollidingGJK(const ngl::Vec3& coneCenter, float coneRadius, const ngl::Vec3& support, const ngl::Vec3& negSupport)
+{
+    // Initial direction towards cone
+    ngl::Vec3 a = support - coneCenter;
+    ngl::Vec3 b;
+    std::vector<ngl::Vec3> simplex = {a};
+
+    while (true)
+    {
+        //b=farthest point on the block in the opposite dir of a
+        b = negSupport;
+        ngl::Vec3 ao = a - coneCenter;
+        ngl::Vec3 ab = b - a;
+        // ao onto ab projection
+        ngl::Vec3 abProjAo = dot(ab, ao) * ab / norm(ab);
+        //FLT_EPSILON difference in 1 and least val > 1
+        if (norm(abProjAo) < FLT_EPSILON)
+        {
+            // Simplex contains origin, indicating collision
+            return true;
+        }
+        a = abProjAo;
+        simplex.push_back(a);
+        // Update simplex based on last two points (a, b)
+        if (simplex.size() == 2)
+        {
+            // Line segment case
+            ngl::Vec3 abNormalized = normalize(ab);
+            if (dot(ao, abNormalized) > 0.0f)
+            {
+                simplex[0] = a;
+            } else
+            {
+                // No collision
+                return false;
+            }
+        }
+        //triangle case not calc
+    }
+    // Shouldn't reach here
+    return false;
+}
+bool Block::isCaught(const ngl::Vec3 &_conePosition)
+{
+    bool returnCollision= false;
+    if(!getIsAlive())
+    {
+        //no need to hit again, is already caught
+        return returnCollision;
+    }
+    //calc cone box by a cylinder
+    //cone + initial scoop height~2
+    float coneHeight=1.0f;
+    float coneRadius=0.6f;
+    float blockRadius=0.5f;
+    ngl::Vec3 direction=_conePosition - getPosition();
     //determining hit box of the Block
     if(m_type==0)
     {
-        //if garbage (cube)
+        //if garbage (it is a cube)
         //on block side length is 1, so .5 for each corner
-        //block vertices
-        //(.5,.5,.5),(-.5,.5,.5),(-.5,-.5,.5),(.5,-.5,.5)
-        //(.5,.5,-.5),(-.5,.5,-.5),(-.5,-.5,-.5),(.5,-.5,-.5)
-
+        //GJK collision detection algorithm
+        returnCollision = isCollidingGJK(_conePosition,coneRadius,support(direction,true,true),support(direction,true,false));
     }
     else
     {
-        //if Block is any other type(sphere), radius is .5
+        //if Block is any other type(it is a sphere), radius is .5
+        //GJK collision detection algorithm
+        returnCollision = isCollidingGJK(_conePosition,coneRadius,support(direction,false,true),support(direction,false,false));
     }
-    //calc cone box by a cylinder
-    //cone height =1
-    //starter scoop radius=.5
-    //radius=0.6
-    //total cone height~2
-
-    return false;
+    return returnCollision;
 }

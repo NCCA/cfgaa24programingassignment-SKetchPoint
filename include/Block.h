@@ -22,8 +22,14 @@ public:
     void update(float _deltaTime);
     //drawing the block
     void draw(const std::string &_shader );
-    //When touches ground plane or cone (checkCollision from Cone.h) ends life
-    bool isCaught(const ngl::Vec3 &_conePosition) const;
+    //further corner for block calc for GJK
+    ngl::Vec3 support(const ngl::Vec3 &direction, bool isBlock, bool isFarthest) const;
+    //functions for calcs in GJK
+    float dot(const ngl::Vec3 &a, const ngl::Vec3 &b);
+    float norm(const ngl::Vec3 &a);
+    ngl::Vec3 normalize(const ngl::Vec3 &a);
+    bool isCollidingGJK(const ngl::Vec3 &coneCenter, float coneRadius, const ngl::Vec3 &support,const ngl::Vec3& negSupport);
+    bool isCaught(const ngl::Vec3 &_conePosition) ;
 
 private:
     int m_type;
