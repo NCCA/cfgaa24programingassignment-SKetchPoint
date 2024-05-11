@@ -30,36 +30,30 @@ Block::Block(int _type, bool _isAlive, const ngl::Vec3 &_position, float _initia
     m_initialSpeed= _initialSpeed;
     m_position= _position;
 }
-
 int Block::getType() const
 {
     //Grabs to see if its trash, scoop, or bonus scoop
     //helpful to determine if life of cone needs to be reduced
     return m_type;
 }
-
 int Block::getPointVal() const
 {
     //sees point val, what to add or reduced to player when updating the score
     return m_pointVal;
 }
-
 bool Block::getIsAlive() const
 {
     //if shown or not, intractable or to delete, used in draw function
     return m_isAlive;
 }
-
 ngl::Vec3 Block::getPosition() const
 {
     return m_position;
 }
-
 float Block::getSpeed() const
 {
     return m_initialSpeed;
 }
-
 void Block::update(float _deltaTime)
 {
     //velocity= gravity (-9.81 m/s^2) * time
@@ -178,12 +172,55 @@ ngl::Vec3 Block::normalize(const ngl::Vec3& a)
         return a; // Return original vector if magnitude is very small
     }
 }
+bool Block::circleIntersectRay(float cx, float cz, float cy, float radius,const ngl::Vec3& rayDirection)
+{
+    // Distance between ray origin (cone center) and circle center
+    float dx =0.0f;
+    float dy =2.0f;
+    float dz =0.0f;
+    // Solve for the intersection point along the ray parameter `t`
+    float a = dot(rayDirection, rayDirection);
+    float b = 2.0f * (rayDirection.m_x * dx + rayDirection.m_z * dz);
+    float c = dx * dx + dy * dy + dz * dz - radius * radius; // Include dy for y-axis
+    float determinant = b * b - 4.0f * a * c;
+    // Check for intersection based on the discriminant
+    if (determinant < 0.0f)
+    {
+        // No intersection
+        return false;
+    } else if (determinant == 0.0f)
+    {
+        return true;
+    } else
+    {
+        // Two intersections (ray goes through the circle)
+        float t1 = (-b + std::sqrt(determinant)) / (2.0f * a);
+        float t2 = (-b - std::sqrt(determinant)) / (2.0f * a);
+        // Ensure the intersection point is along the positive ray direction (t > 0)
+        return (t1 > 0.0f || t2 > 0.0f);
+    }
+}
 bool Block::isCollidingGJK(const ngl::Vec3& coneCenter, float coneRadius, const ngl::Vec3& support, const ngl::Vec3& negSupport)
 {
     // Initial direction towards cone
     ngl::Vec3 a = support - coneCenter;
     ngl::Vec3 b;
     std::vector<ngl::Vec3> simplex = {a};
+    ngl::Vec3 blockCenter = getPosition();
+    ngl::Vec3 rayDirection = blockCenter - coneCenter;
+    float coneHalfHeight = 1.0f; // Assuming cone height is known
+    float topY = coneCenter.m_y + coneHalfHeight;
+    float bottomY = coneCenter.m_y - coneHalfHeight;
+    // Use ngl library functions (or implement your own) for circle-ray intersection
+    bool intersectsTop = circleIntersectRay(coneCenter.m_x, coneCenter.m_z, topY, coneRadius,rayDirection);
+    bool intersectsBottom = circleIntersectRay(coneCenter.m_x, coneCenter.m_z, bottomY, coneRadius,rayDirection);
+
+    if (!intersectsTop || !intersectsBottom)
+    {
+        // Ray misses the cylinder, no collision
+        return false;
+    }
+
     while (true)
     {
         // b = farthest point on the block in the opposite dir of a (modified with coneRadius)
@@ -218,7 +255,7 @@ bool Block::isCollidingGJK(const ngl::Vec3& coneCenter, float coneRadius, const 
     // Shouldn't reach here
     return false;
 }
-bool Block::isCaught(const ngl::Vec3 &_conePosition) const
+bool Block::isCaught(const ngl::Vec3 &_conePosition)
 {
     bool returnCollision= false;
     if(!getIsAlive())
