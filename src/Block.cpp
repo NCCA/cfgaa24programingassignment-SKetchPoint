@@ -106,16 +106,21 @@ void Block::draw(const std::string &_shader)
 ngl::Vec3 Block::support(const ngl::Vec3& direction, bool isBlock, bool isFarthest) const
 {
     // furthest corner of box OR just sphere pos, helps with GJK implementation
-    if (isBlock) {
+    if (isBlock)
+    {
         // Find the corner with the maximum or minimum projection on direction
         float extremumProjection = FLT_MIN;  // For farthest corner (initialize with minimum)
         float otherProjection = FLT_MAX;     // For nearest corner (initialize with maximum)
-        ngl::Vec3 extremumCorner;
+        ngl::Vec3 extremeCorner;
 
         // Loop through all 8 corners of the box
-        for (int i = -1; i <= 1; i += 2) {
-            for (int j = -1; j <= 1; j += 2) {
-                for (int k = -1; k <= 1; k += 2) {
+        for (float i = -1.0f; i <= 1.0f; i += 2.0f)
+        {
+
+            for (float j = -1.0f; j <= 1.0f; j += 2.0f)
+            {
+                for (float k = -1.0f; k <= 1.0f; k += 2.0f)
+                {
                     // Calc corner first from 0,0,0 then to m_position
                     ngl::Vec3 corner = ngl::Vec3(0.5f * i, 0.5f * j, 0.5f * k);
                     corner.m_x += m_position.m_x;
@@ -130,23 +135,25 @@ ngl::Vec3 Block::support(const ngl::Vec3& direction, bool isBlock, bool isFarthe
                         {
                             //farthest
                             extremumProjection = projection;
-                            extremumCorner = corner;
+                            extremeCorner = corner;
                         }
-                    } else
+                    } 
+                    else
                     {
                         if (projection < otherProjection)
                         {
                             //nearest
                             otherProjection = projection;
-                            extremumCorner = corner;
+                            extremeCorner = corner;
                         }
                     }
                 }
             }
         }
-
-        return extremumCorner;
-    } else {
+        return extremeCorner;
+    }
+    else
+    {
         // Return center of sphere
         return getPosition();
     }
@@ -211,7 +218,7 @@ bool Block::isCollidingGJK(const ngl::Vec3& coneCenter, float coneRadius, const 
     // Shouldn't reach here
     return false;
 }
-bool Block::isCaught(const ngl::Vec3 &_conePosition)
+bool Block::isCaught(const ngl::Vec3 &_conePosition) const
 {
     bool returnCollision= false;
     if(!getIsAlive())
