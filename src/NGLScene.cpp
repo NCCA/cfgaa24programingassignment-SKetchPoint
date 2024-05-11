@@ -87,6 +87,8 @@ void NGLScene::initializeGL()
     //creating the player controlled cone
     m_cone=std::make_unique<Cone>(3,10,0.1,ngl::Vec3(0.0f,1.5f,0.0f));
     m_starterScoop=std::make_unique<Block>(3,true,ngl::Vec3(0.0f,2.0f,0.0f),0.0);
+    //y=5-auto screen space, 10 more optimal if want to see board too, max tried 12
+    m_testScoop=std::make_unique<Block>(0,true,ngl::Vec3(3.0f,1.0f,0.0f),0.0);
 }
 void NGLScene::loadMatricesToShader(const std::string &_shader)
 {
@@ -195,6 +197,14 @@ void NGLScene::drawScene(const std::string &_shader)
     loadMatricesToShader(_shader);
     m_cone->draw(_shader,0.83f,0.43f,0.07f);//sets cone to brown color
     m_starterScoop->draw(_shader);
+    if(m_testScoop->getIsAlive())
+    {
+        m_transform.reset();
+        m_transform.setPosition(m_testScoop->getPosition());
+        loadMatricesToShader(_shader);
+        m_cone->checkCollision(m_testScoop);
+        m_testScoop->draw(_shader);
+    }
 
 }
 void NGLScene::paintGL()

@@ -81,19 +81,6 @@ double lag = 0.0;//ensures catch up of multipe updates occures gradually over ti
 !["block with distance from center, collision in shape of sphere"](images/IllustrateCatchError.png)
 -  lazyfoo.net. (n.d.). Lazy Foo’ Productions - Collision Detection. [online] Available at: https://lazyfoo.net/tutorials/SDL/27_collision_detection/index.php 
 - Looking at Lazyfoo's collision implementation,  we can use the center positions and the length that we want to calculate for our box collision inorder ro fix the roundng error if we used a radius of .5 to serve as the collision detection of the box
-- Mbayburt (2023). Walkthrough of the GJK Collision Detection Algorithm. [online] Medium. Available at: https://medium.com/@mbayburt/walkthrough-of-the-gjk-collision-detection-algorithm-80823ef5c774 [Accessed 11 May 2024].
-- Looking into specific collision algorithms that would allow for 3D calculation GJK detection where  there is the detection of the Minkowski diffrence, subracting one shape from the other point by point, which is useful for more complex shapes, not just spheres or cubes
-- Initial peudo:
-- function GJK_intersection(shape p, shape q, vector initial_axis):
-  vector  A = Support(p, initial_axis) − Support(q, −initial_axis)
-  simplex s = {A}
-  vector  D = −A
-
-  loop:
-  A = Support(p, D) − Support(q, −D)
-  if dot(A, D) < 0:
-  reject
-  s = s ∪ {A}
-  s, D, contains_origin := NearestSimplex(s)
-  if contains_origin:
-  accept
+- Initially I had attelpted to do a GJK collision algorithm, however because I continually got computational errors in my version trying to account for the cone and the initial scoop. However, due to there being an initial scoop on top and only needing to account for a box, I adjusted to go to the Anti Aliasing Bounding Box(AABB)
+- MDN Web Docs. (n.d.). 3D collision detection. [online] Available at: https://developer.mozilla.org/en-US/docs/Games/Techniques/3D_collision_detection.
+- MDN explains that the AABB is the quickest algorithm to detect whether two game entities are overlapping or not which is important for a game with real-time rendering (or as close as possible) and it covers 3 different types, point, sphere, and box type collisions

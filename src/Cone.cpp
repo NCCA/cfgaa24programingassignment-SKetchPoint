@@ -12,7 +12,7 @@ Cone::Cone(int _lives, int _points, float _speed, ngl::Vec3 _position)
 
 }
 //note: const prevents changes when it's intended to retrieve info
-ngl::Vec3 Cone::getPosition() const
+ngl::Vec3 Cone::getPosition()
 {
     return m_pos;
 }
@@ -47,7 +47,7 @@ float Cone::getSpeed() const
 }
 void Cone::setSpeed(int _speed)
 {
-    m_lives = _speed;
+    m_speed = _speed;
 }
 void Cone::draw(const std::string &_shader,float _r,float _g,float _b)
 {
@@ -80,33 +80,29 @@ void Cone::updateScoreAndLives(int _scoreChange, int _livesChange)
     setPoints(m_points+_scoreChange);
     setLives(m_lives+_livesChange);
 }
-bool Cone::checkCollision(Block* &_scoop)
+void Cone::checkCollision(std::unique_ptr<Block>&_scoop)
 {
     // Implementation for collision checking
-    //if area of block hits rim of cone & block does not hit ground, return true, else false
+    //if area of block hits player, it is caught, points/lives added or deducted accordingly
     if(_scoop->isCaught(getPosition()))
     {
+        std::cout << "Cone position: " << std::endl;
         switch (_scoop->getType())
         {
             //update lives and score for the player, then since it's caught, have the block disappear
             case 0: // Trash
                 updateScoreAndLives(_scoop->getPointVal(),-1);
-                _scoop->setIsAlive(false);
                 break;
             case 1: // Scoop
                 updateScoreAndLives(_scoop->getPointVal(),0);
-                _scoop->setIsAlive(false);
                 break;
             case 2: // Bonus scoop
                 updateScoreAndLives(_scoop->getPointVal(),1);
-                _scoop->setIsAlive(false);
                 break;
             default:
-                _scoop->setIsAlive(false);
                 std::cerr << "ERROR - Invalid block type: " << _scoop->getType() << std::endl;
                 break;
         }
-        return true;
+        _scoop->setIsAlive(false);
     }
-    return false;
 }

@@ -16,7 +16,7 @@ class Cone
 public:
     Cone(int _lives=3,int _points=10, float _speed=0.1f, ngl::Vec3 _position={0.0f,1.0f,0.0f});
 
-    ngl::Vec3 getPosition() const;
+    ngl::Vec3 getPosition();
     void setPosition( ngl::Vec3 _pos);
 
     //player lives, if hits 0 then ends game
@@ -36,18 +36,16 @@ public:
 
     // Collision -w- Blocks checked
     void updateScoreAndLives(int _scoreChange, int _livesChange);
-    bool checkCollision(Block*& _scoop);
+    void checkCollision(std::unique_ptr<Block>&_scoop);
     void draw(const std::string &_shader,float _r,float _g,float _b);
 
 private:
     ngl::Vec3 m_pos;
-    int m_lives; 
-    int m_points; 
+    int m_lives;
+    int m_points;
     float m_speed;
     ngl::Vec3 m_colour;
     ngl::Transformation m_transform;
-
 };
 
 #endif
-
