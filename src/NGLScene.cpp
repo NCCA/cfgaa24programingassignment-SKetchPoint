@@ -202,7 +202,7 @@ void NGLScene::drawScene(const std::string &_shader)
         m_transform.reset();
         m_transform.setPosition(m_testScoop->getPosition());
         loadMatricesToShader(_shader);
-        m_cone->checkCollision(m_testScoop);
+        m_cone->checkCollision(*m_testScoop, m_cone->getPosition());
         m_testScoop->draw(_shader);
     }
 

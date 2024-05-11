@@ -48,8 +48,6 @@ class NGLScene : public QOpenGLWindow
     /// @brief this is called everytime we resize the window
     //----------------------------------------------------------------------------------------------------------------------
     void resizeGL(int _w, int _h) override;
-    std::unique_ptr<Block>m_testScoop;
-
 private:
 
     //----------------------------------------------------------------------------------------------------------------------
@@ -118,6 +116,7 @@ private:
     int m_redrawTimer;
     std::unique_ptr<Cone> m_cone;
     std::unique_ptr<Block>m_starterScoop;
+    std::unique_ptr<Block>m_testScoop;
 };
 #endif
 

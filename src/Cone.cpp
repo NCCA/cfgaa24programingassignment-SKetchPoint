@@ -80,29 +80,32 @@ void Cone::updateScoreAndLives(int _scoreChange, int _livesChange)
     setPoints(m_points+_scoreChange);
     setLives(m_lives+_livesChange);
 }
-void Cone::checkCollision(std::unique_ptr<Block>&_scoop)
+void Cone::checkCollision(Block _block, const ngl::Vec3& _playerPosition)
 {
-    // Implementation for collision checking
-    //if area of block hits player, it is caught, points/lives added or deducted accordingly
-    if(_scoop->isCaught(getPosition()))
+    // Check if the block is caught by the player (using isCaught function)
+    if (_block.isCaught(_playerPosition))
     {
-        std::cout << "Cone position: " << std::endl;
-        switch (_scoop->getType())
+        // Print cone position for debugging (optional)
+        // std::cout << "caught TRUE " << std::endl;
+
+        // Update score and lives based on block type
+        switch (_block.getType())
         {
-            //update lives and score for the player, then since it's caught, have the block disappear
             case 0: // Trash
-                updateScoreAndLives(_scoop->getPointVal(),-1);
+                updateScoreAndLives(_block.getPointVal(), -1);
                 break;
             case 1: // Scoop
-                updateScoreAndLives(_scoop->getPointVal(),0);
+                updateScoreAndLives(_block.getPointVal(), 0);
                 break;
             case 2: // Bonus scoop
-                updateScoreAndLives(_scoop->getPointVal(),1);
+                updateScoreAndLives(_block.getPointVal(), 1);
                 break;
             default:
-                std::cerr << "ERROR - Invalid block type: " << _scoop->getType() << std::endl;
+                std::cerr << "ERROR - Invalid block type: " << _block.getType() << std::endl;
                 break;
         }
-        _scoop->setIsAlive(false);
+
+        // Deactivate the block (set isAlive to false)
+        _block.setIsAlive(false);
     }
 }

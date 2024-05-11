@@ -36,7 +36,7 @@ public:
 
     // Collision -w- Blocks checked
     void updateScoreAndLives(int _scoreChange, int _livesChange);
-    void checkCollision(std::unique_ptr<Block>&_scoop);
+    void checkCollision(Block _block, const ngl::Vec3& _playerPosition);
     void draw(const std::string &_shader,float _r,float _g,float _b);
 
 private:
