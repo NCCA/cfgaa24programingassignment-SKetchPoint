@@ -1,7 +1,9 @@
-#Savannah Kreider s5501023 CFGAA Assignment
-Assignment Ideas/Work Doc
+Savannah Kreider s5501023 CFGAA Assignment
+
+# Assignment Ideas/Work Doc
+## 3D scoops game 
 - ----------------------------------------------------------------------------------------------------------------------------------------------
-**Video:
+## Video:
 ------------------------------------------------------------------------------------------------------------------------------------
 -------------------------------------------------------------------------------------------------------------------------------------
 - Gameplay Controlls:
@@ -11,7 +13,7 @@ Assignment Ideas/Work Doc
 - left mouse button to rotate around scene, right mouse button to move scene up, down, left, or right
 ---------------------------------------------------------------------------------------------------
 ------------------------------------------------------------------------------------------------------
-Annotated Bibliography:
+##Annotated Bibliography:
 ----------------------------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------------------------
 - Scoops (2008)by NimbleBit:
@@ -93,3 +95,32 @@ double lag = 0.0;//ensures catch up of multipe updates occures gradually over ti
 - MDN Web Docs. (n.d.). 3D collision detection. [online] Available at: https://developer.mozilla.org/en-US/docs/Games/Techniques/3D_collision_detection.
 - MDN explains that the AABB is the quickest algorithm to detect whether two game entities are overlapping or not which is important for a game with real-time rendering (or as close as possible) and it covers 3 different types, point, sphere, and box type collisions
 - Once completing this, I realized creating an emmittr class for 
+- - ----------------------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------------------
+# Work Doc 
+-----------------------------------------------------------------------------------------------------------------------------------------
+## Initial Design of classes/structures:
+-
+- Main game class: initialize game playable area, handling input, update game state, render, game flow
+- Scene class: playable areas and wall generated, collisions to walls handled from cone and scoops
+- Block class:collectable blocks falling , properties include position, type either scoop or trash, initial speeds on axsis, points
+- Cone class :players movable cone, properties include positon, lives, points, movement input, collision detect from falling block, update score and lives
+-
+- Stretch Goals(if time allowed):
+- Game Menu class: manages game start, pause, and end, input for starting pausing and restarting the game
+- End Screen class: allows player to pick to either exit window(closing it) or to play again on a new game
+- Highs core class: saves the high score between game sessions
+- Pause Menu class: pausing and resuming game with e to pause the game and r to resume
+- Effect class:  manges visual effect of sparks for a successful landing
+-
+- Directory Structure:
+-
+- src:MainGame,Scene,Block,Cone
+- include:MainGame,Scene,Block,Cone
+- CMakeList.txt
+- .github (and .gitignore)
+- README.md
+-
+------------------------------------------------------------------------------------------------------------------------------------
+- Work Doc Thoughts
+- 
