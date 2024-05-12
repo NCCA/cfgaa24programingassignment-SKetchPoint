@@ -64,6 +64,7 @@ double lag = 0.0;//ensures catch up of multipe updates occures gradually over ti
 - MDN Web Docs. (n.d.). 3D collision detection. [online] Available at: https://developer.mozilla.org/en-US/docs/Games/Techniques/3D_collision_detection.
 - MDN explains that the AABB is the quickest algorithm to detect whether two game entities are overlapping or not which is important for a game with real-time rendering (or as close as possible) and it covers 3 different types, point, sphere, and box type collisions
 - Once completing this, I realized creating an emitter class for the scoops above the playable area would be the most efficient way of handling the generation of the falling Blocks to generate above the same area of the valid play box while only changing the y
+- However, instead of directly using an emmiter, I use a generateRandom scoop to generate a scoop every x time and put it into a list. Once the scoops move based on time downward then I can implement removing scoops that hit the floor ir collide, change points/lives depending on if they were supposed to catch or avoid
 - - ----------------------------------------------------------------------------------------------------------------------------------------------
 ----------------------------------------------------------------------------------------------------------------------------------------
 # Work Doc 
