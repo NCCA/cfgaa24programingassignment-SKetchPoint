@@ -83,20 +83,22 @@ void Cone::updateScoreAndLives(int _scoreChange, int _livesChange)
 float Cone::distanceBetweenVec(ngl::Vec3 &_point1, ngl::Vec3 _point2)
 {
     // Calculate squared distances for each dimension
+    //distance formula=sqrt((x2-x1)^2+(y2-y1)^2+(z2-z1)^2)
     float sqrX = (_point2.m_x - _point1.m_x) * (_point2.m_x - _point1.m_x);
     float sqrY = (_point2.m_y - _point1.m_y) * (_point2.m_y - _point1.m_y);
     float sqrZ = (_point2.m_z - _point1.m_z) * (_point2.m_z - _point1.m_z);
     float distanceSqr = sqrX + sqrY + sqrZ;
-    // Calculate and return the actual distance
     return sqrtf(distanceSqr);
 }
 
 bool Cone::checkCollision(ngl::Vec3 _blockPosition, int _blockType, int _pointVal, ngl::Vec3 _playerPosition)
 {
-    //implement AABB
+    //implement AABB based off of the block position
     bool isColliding = false;
-    if (_blockType == 0) {
+    if (_blockType == 0)
+    {
         // AABB collision for a 1*1*1 box centered at _blockPosition
+        //variables here for easy edit
         float halfBoxSize = 0.5f;
         float playerYOffset = 0.5f;
         float playerRadius = 0.5f;
@@ -104,8 +106,11 @@ bool Cone::checkCollision(ngl::Vec3 _blockPosition, int _blockType, int _pointVa
         isColliding = (std::abs(_blockPosition.m_x - _playerPosition.m_x) <= halfBoxSize + playerRadius) &&
                       (std::abs(_blockPosition.m_y - (_playerPosition.m_y + playerYOffset)) <= halfBoxSize + playerRadius) &&
                       (std::abs(_blockPosition.m_z - _playerPosition.m_z) <= halfBoxSize + playerRadius);
-    } else {
+    }
+    else
+    {
         // Sphere-sphere collision
+        //var here for easy edits
         float blockRadius = 0.5f;
         float playerYOffset = 0.5f;
         float playerRadius = 0.5f;
@@ -115,22 +120,25 @@ bool Cone::checkCollision(ngl::Vec3 _blockPosition, int _blockType, int _pointVa
     }
     if (isColliding)
     {
-        // Print cone position for debugging (optional)
         std::cout << "caught TRUE " << std::endl;
 
-        // Update score and lives based on block type
+        //update score and lives based on block type if it has collided
         switch (_blockType)
         {
-            case 0: // Trash
+            case 0:
+                // Trash
                 updateScoreAndLives(_pointVal, -1);
                 break;
-            case 1: // Scoop
+            case 1:
+                // Scoop
                 updateScoreAndLives(_pointVal, 0);
                 break;
-            case 2: // Bonus scoop
+            case 2:
+                // Bonus scoop
                 updateScoreAndLives(_pointVal, 1);
                 break;
             default:
+                //not a playable block type, something has gone wrong
                 std::cerr << "ERROR - Invalid block type: " <<_pointVal << std::endl;
                 break;
         }
@@ -138,6 +146,7 @@ bool Cone::checkCollision(ngl::Vec3 _blockPosition, int _blockType, int _pointVa
     }
     else
     {
+        //has not collided
         return false;
     }
 }

@@ -4,6 +4,12 @@ Assignment Ideas/Work Doc
 **Video:
 ------------------------------------------------------------------------------------------------------------------------------------
 -------------------------------------------------------------------------------------------------------------------------------------
+-Gameplay Controlls:
+-wsad key controlls to go in xz coordnates
+-qezx key controlls to go diagonally in xz coordnates
+- key 1 to reset viewport
+-left mouse button to rotate around scene, right mouse button to move scene up, down, left, or right
+---------------------------------------------------------------------------------------------------
 Annotated Bibliography:
 - 
 - Scoops (2008)by NimbleBit:
