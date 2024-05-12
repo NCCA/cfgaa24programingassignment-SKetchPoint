@@ -9,15 +9,16 @@
 #include<ngl/Transformation.h>
 
 #include <iostream>
+#include <random>
 
+using namespace std;
 
 NGLScene::NGLScene()
 {
     // re-size the widget to that of the parent (in this case the GLFrame passed in on construction)
     setTitle("NGL Scoops");
     m_updateConeTimer= startTimer(2);
-    m_redrawTimer=startTimer(16);
-    Emitter *m_emitter = new Emitter(10, 1.0f, 3.0f, -4.0f, 4.0f, 5.0f, 10.0f);
+    m_timer=startTimer(16);
 }
 
 NGLScene::~NGLScene()
@@ -89,7 +90,7 @@ void NGLScene::initializeGL()
     m_cone=std::make_unique<Cone>(3,10,0.1,ngl::Vec3(0.0f,1.5f,0.0f));
     m_starterScoop=std::make_unique<Block>(3,true,ngl::Vec3(0.0f,2.0f,0.0f),0.0);
     //y=5-auto screen space, 10 more optimal if want to see board too, max tried 12
-    //m_testScoop=std::make_unique<Block>(0,true,ngl::Vec3(3.0f,1.0f,0.0f),0.0);
+    ////m_testScoop=std::make_unique<Block>(0,true,ngl::Vec3(3.0f,1.0f,0.0f),0.0);
 }
 void NGLScene::loadMatricesToShader(const std::string &_shader)
 {
@@ -111,8 +112,7 @@ void NGLScene::loadMatricesToShader(const std::string &_shader)
     //ngl::ShaderLib::setUniform("lightPosition", (m_mouseGlobalTX * m_lightPos).toVec3());
 }
 
-void NGLScene::drawScene(const std::string &_shader)
-{
+void NGLScene::drawScene(const std::string &_shader) {
     //mouse rotation of scene
     ngl::ShaderLib::use(_shader);
     // Rotation based on the mouse position for our global transform
@@ -126,63 +126,57 @@ void NGLScene::drawScene(const std::string &_shader)
     m_mouseGlobalTX.m_m[3][2] = m_modelPos.m_z;
     m_transform.reset();
     m_transform.setPosition(0.0f, 0.0f, 0.0f);
-    ngl::ShaderLib::setUniform("albedo",0.0f, 0.2f,0.6f);//blue bg color
+    ngl::ShaderLib::setUniform("albedo", 0.0f, 0.2f, 0.6f);//blue bg color
     loadMatricesToShader(_shader);
     //building the base game box
     // Draw plane
     ngl::VAOPrimitives::draw("plane");
     // Loop to draw cubes around the perimeter
-    float m_cubeX=0.0f;
-    float m_cubeY=0.0f;
-    float m_cubeZ=0.0f;
-    for (int i = 0; i < 4; ++i)
-    {
+    float m_cubeX = 0.0f;
+    float m_cubeY = 0.0f;
+    float m_cubeZ = 0.0f;
+    for (int i = 0; i < 4; ++i) {
         // Adjust rotation and position for each side
-        switch (i)
-        {
+        switch (i) {
             case 0://right side
-                m_cubeX=5.5f;
-                m_cubeZ=6.5f;
+                m_cubeX = 5.5f;
+                m_cubeZ = 6.5f;
                 m_transform.reset();
-                for (int j=0;j<11;j++)
-                {
-                    m_cubeZ-=1.0f;
+                for (int j = 0; j < 11; j++) {
+                    m_cubeZ -= 1.0f;
                     m_transform.setPosition(m_cubeX, m_cubeY, m_cubeZ);
                     loadMatricesToShader(_shader);
                     ngl::VAOPrimitives::draw("cube");
                 }
                 break;
             case 1://bottom
-                m_cubeX=5.5f;
-                m_cubeZ=5.5f;
+                m_cubeX = 5.5f;
+                m_cubeZ = 5.5f;
                 m_transform.reset();
-                for (int j=0;j<11;j++)
-                {
-                    m_cubeX-=1.0f;
+                for (int j = 0; j < 11; j++) {
+                    m_cubeX -= 1.0f;
                     m_transform.setPosition(m_cubeX, m_cubeY, m_cubeZ);
                     loadMatricesToShader(_shader);
                     ngl::VAOPrimitives::draw("cube");
                 }
                 break;
             case 2: //left
-                m_cubeX=-5.5f;
-                m_cubeZ=5.5f;
+                m_cubeX = -5.5f;
+                m_cubeZ = 5.5f;
                 m_transform.reset();
-                for (int j=0;j<11;j++)
-                {
-                    m_cubeZ-=1.0f;
+                for (int j = 0; j < 11; j++) {
+                    m_cubeZ -= 1.0f;
                     m_transform.setPosition(m_cubeX, m_cubeY, m_cubeZ);
                     loadMatricesToShader(_shader);
                     ngl::VAOPrimitives::draw("cube");
                 }
                 break;
             case 3://top
-                m_cubeX=6.5f;
-                m_cubeZ-5.5f;
+                m_cubeX = 6.5f;
+                m_cubeZ - 5.5f;
                 m_transform.reset();
-                for (int j=0;j<11;j++)
-                {
-                    m_cubeX-=1.0f;
+                for (int j = 0; j < 11; j++) {
+                    m_cubeX -= 1.0f;
                     m_transform.setPosition(m_cubeX, m_cubeY, m_cubeZ);
                     loadMatricesToShader(_shader);
                     ngl::VAOPrimitives::draw("cube");
@@ -193,47 +187,51 @@ void NGLScene::drawScene(const std::string &_shader)
     // Draw the cone with a scoop on top
     m_transform.reset();
     m_transform.setPosition(m_cone->getPosition());
-    m_transform.setRotation(ngl::Vec3(90.0f,0.0f,0.0f));
+    m_transform.setRotation(ngl::Vec3(90.0f, 0.0f, 0.0f));
     loadMatricesToShader(_shader);
-    m_cone->draw(_shader,0.83f,0.43f,0.07f);//sets cone to brown color
+    m_cone->draw(_shader, 0.83f, 0.43f, 0.07f);//sets cone to brown color
     m_starterScoop->draw(_shader);
+    // Generate new scoops periodically (adjust interval as needed)
+    //    //falling scoops
 
-    //falling scoops
-//    bool checkCollide = m_cone->checkCollision(m_testScoop->getPosition(), m_testScoop->getType(), m_testScoop->getPointVal(), m_cone->getPosition());
-//    //if it collides, has to update the score and set alive as false
-//    if(checkCollide&& m_testScoop->getIsAlive())
-//    {
-//        //if it collides AND is still alive, update the score based on the type of scoop
-//        switch (m_testScoop->getType())
-//        {
-//            case 0:
-//                // Trash
-//                m_cone->updateScoreAndLives(m_testScoop->getPointVal(), -1);
-//                break;
-//            case 1:
-//                // Scoop
-//                m_cone->updateScoreAndLives(m_testScoop->getPointVal(), 0);
-//                break;
-//            case 2:
-//                // Bonus scoop
-//                m_cone->updateScoreAndLives(m_testScoop->getPointVal(), 1);
-//                break;
-//            default:
-//                //not a playable block type, something has gone wrong
-//                std::cerr << "ERROR - Invalid block type: " <<m_testScoop->getPointVal() << std::endl;
-//                break;
-//        }
-//        m_testScoop->setIsAlive(false);
-//    }
-//    //draw the scoop only if it's alive
-//    if(m_testScoop->getIsAlive())
-//    {
-//        m_transform.reset();
-//        m_transform.setPosition(m_testScoop->getPosition());
-//        loadMatricesToShader(_shader);
-//        m_testScoop->draw(_shader);
-//    }
-
+    // Loop through the list of scoops and draw each one
+    for (const auto& scoop : m_scoops)
+    {
+        bool checkCollide = m_cone->checkCollision(scoop->getPosition(), scoop->getType(), scoop->getPointVal(), m_cone->getPosition());
+        //if it collides, has to update the score and set alive as false
+        if(checkCollide&& scoop->getIsAlive())
+        {
+            //if it collides AND is still alive, update the score based on the type of scoop
+            switch (scoop->getType())
+            {
+                case 0:
+                    // Trash
+                    m_cone->updateScoreAndLives(scoop->getPointVal(), -1);
+                    break;
+                case 1:
+                    // Scoop
+                    m_cone->updateScoreAndLives(scoop->getPointVal(), 0);
+                    break;
+                case 2:
+                    // Bonus scoop
+                    m_cone->updateScoreAndLives(scoop->getPointVal(), 1);
+                    break;
+                default:
+                    //not a playable block type, something has gone wrong
+                    std::cerr << "ERROR - Invalid block type: " <<scoop->getPointVal() << std::endl;
+                    break;
+            }
+            scoop->setIsAlive(false);
+        }
+        //draw the scoop only if it's alive
+        if(scoop->getIsAlive())
+        {
+            m_transform.reset();
+            m_transform.setPosition(scoop->getPosition());
+            loadMatricesToShader(_shader);
+            scoop->draw(_shader);
+        }
+    }
 }
 //shows the lives and points in the title
 void NGLScene::updateWindowTitle()
@@ -311,7 +309,7 @@ void NGLScene::keyPressEvent(QKeyEvent *_event)
             m_cone->move(m_cone->getSpeed(),0.0f,m_cone->getSpeed(),levelBoundary);
             break;
         case Qt::Key_Space:
-            m_cone->move(0.0f,-(m_cone->getSpeed()),0.0f,levelBoundary);
+            //checking position of cone for debug purpose
             std::cout << "Cone position: "
                       << m_cone->getPosition().m_x << ", "
                       << m_cone->getPosition().m_y << ", "
@@ -322,13 +320,34 @@ void NGLScene::keyPressEvent(QKeyEvent *_event)
     update();
 }
 
-
-double m_elapsedTime =0.0;
+void NGLScene::generateRandomScoop()
+{
+    //minimum and maximum positions for the scoop(boundaries of gameplay box approximately
+    float minX = -5.0f;
+    float maxX = 5.0f;
+    float minZ = -5.0f;
+    float maxZ = 6.5f;
+    random_device rd;
+    mt19937 gen(rd());
+    // random x and z positions within the defined boundaries
+    uniform_real_distribution<float> disX(minX, maxX);
+    uniform_real_distribution<float> disZ(minZ, maxZ);
+    float randomX = disX(gen);
+    float randomZ = disZ(gen);
+    // Choose a random scoop type reminder-(0: Trash, 1: Scoop, 2: Bonus)
+    int scoopType = rand() % 3;
+    // Create a new scoop obj -w- generated position + type
+    std::unique_ptr<Block> newScoop = std::make_unique<Block>(scoopType, true, ngl::Vec3(randomX, 12.0f, randomZ), 0.0);
+    m_scoops.push_back(std::move(newScoop));
+}
+float m_elapsedTime =0.0f;
 void NGLScene::timerEvent(QTimerEvent *_event)
 {
-    m_elapsedTime += 0.016;
-    //get user input
-    //user input of WSAD to move the cone around the scene
-    //updateGameElements(input)
-    //renderGame
+    m_elapsedTime +=0.16f;
+
+    if (_event->timerId() == m_timer && m_elapsedTime >= 300.0f)
+    {
+        generateRandomScoop();
+        m_elapsedTime = 0.0f; // Reset elapsed time after generating a scoop
+    }
 }

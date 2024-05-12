@@ -41,8 +41,7 @@ add_executable(${TargetName}
         include/Block.h
         src/Block.cpp
         src/Cone.cpp
-        include/Emitter.h
-        src/Emitter.cpp)
+)
 
 # Add NGL include path
 include_directories(include $ENV{HOME}/NGL/include)

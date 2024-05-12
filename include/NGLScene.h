@@ -4,7 +4,6 @@
 #include "WindowParams.h"
 #include "Cone.h"
 #include "Block.h"
-#include "Emitter.h"
 // this must be included after NGL includes else we get a clash with gl libs
 #include <QOpenGLWindow>
 #include<memory>
@@ -51,6 +50,7 @@ class NGLScene : public QOpenGLWindow
     void resizeGL(int _w, int _h) override;
     ///Allowing the title to update as lives and points are added/deducted
     void updateWindowTitle();
+    void generateRandomScoop();
 private:
 
     //----------------------------------------------------------------------------------------------------------------------
@@ -116,13 +116,15 @@ private:
     ngl::Real m_lightAngle{};
     ///updating scene in timer event, the game loop that is calculated each time
     int m_updateConeTimer;
-    int m_redrawTimer;
+    int m_timer;
+
     //player cone to control
     std::unique_ptr<Cone> m_cone;
     //scoop that sits ontop of the player controlls
     std::unique_ptr<Block>m_starterScoop;
     //tester scoop for collision
     //std::unique_ptr<Block>m_testScoop;
+    std::list<std::unique_ptr<Block>> m_scoops;
 };
 #endif
 
