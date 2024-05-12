@@ -326,7 +326,7 @@ void NGLScene::generateRandomScoop()
     float minX = -5.0f;
     float maxX = 5.0f;
     float minZ = -5.0f;
-    float maxZ = 6.5f;
+    float maxZ = 5.0f;
     random_device rd;
     mt19937 gen(rd());
     // random x and z positions within the defined boundaries
@@ -336,8 +336,8 @@ void NGLScene::generateRandomScoop()
     float randomZ = disZ(gen);
     // Choose a random scoop type reminder-(0: Trash, 1: Scoop, 2: Bonus)
     int scoopType = rand() % 3;
-    // Create a new scoop obj -w- generated position + type
-    std::unique_ptr<Block> newScoop = std::make_unique<Block>(scoopType, true, ngl::Vec3(randomX, 12.0f, randomZ), 0.0);
+    // Create a new scoop obj -w- generated position + type at height 14
+    std::unique_ptr<Block> newScoop = std::make_unique<Block>(scoopType, true, ngl::Vec3(randomX, 14.0f, randomZ), 0.0);
     m_scoops.push_back(std::move(newScoop));
 }
 float m_elapsedTime =0.0f;
