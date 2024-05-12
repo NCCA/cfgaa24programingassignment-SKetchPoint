@@ -31,6 +31,7 @@ Block::Block(int _type, bool _isAlive, ngl::Vec3 _position, float _initialSpeed)
     m_initialSpeed= _initialSpeed;
     m_position= _position;
 }
+//getter and setter methods
 int Block::getType() const
 {
     //Grabs to see if its trash, scoop, or bonus scoop
@@ -49,6 +50,7 @@ bool Block::getIsAlive() const
 }
 void Block::setIsAlive(bool _state)
 {
+    //indicator if it draws or not
     m_isAlive=_state;
 }
 ngl::Vec3 Block::getPosition()const
@@ -59,6 +61,7 @@ float Block::getSpeed() const
 {
     return m_initialSpeed;
 }
+//render the scoops/blocks only if they are alive, type determines color
 void Block::draw(const std::string &_shader)
 {
     //draws blocks that are alive only
@@ -98,7 +101,7 @@ void Block::update(float _deltaTime)
 {
     //velocity= gravity (-9.81 m/s^2) * time
     // Apply gravity to the block's speed
-    float gravity = 9.81f;
+    float gravity = 0.981f;
     float speedWithGravity = getSpeed() + gravity * _deltaTime;
     m_position.m_y -= speedWithGravity * _deltaTime;
 }

@@ -92,3 +92,4 @@ double lag = 0.0;//ensures catch up of multipe updates occures gradually over ti
 - Initially I had attelpted to do a GJK collision algorithm, however because I continually got computational errors in my version trying to account for the cone and the initial scoop. However, due to there being an initial scoop on top and only needing to account for a box, I adjusted to go to the Anti Aliasing Bounding Box(AABB)
 - MDN Web Docs. (n.d.). 3D collision detection. [online] Available at: https://developer.mozilla.org/en-US/docs/Games/Techniques/3D_collision_detection.
 - MDN explains that the AABB is the quickest algorithm to detect whether two game entities are overlapping or not which is important for a game with real-time rendering (or as close as possible) and it covers 3 different types, point, sphere, and box type collisions
+- Once completing this, I realized creating an emmittr class for 

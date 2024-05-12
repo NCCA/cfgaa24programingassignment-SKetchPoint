@@ -88,7 +88,7 @@ void NGLScene::initializeGL()
     m_cone=std::make_unique<Cone>(3,10,0.1,ngl::Vec3(0.0f,1.5f,0.0f));
     m_starterScoop=std::make_unique<Block>(3,true,ngl::Vec3(0.0f,2.0f,0.0f),0.0);
     //y=5-auto screen space, 10 more optimal if want to see board too, max tried 12
-    m_testScoop=std::make_unique<Block>(0,true,ngl::Vec3(3.0f,1.0f,0.0f),0.0);
+    //m_testScoop=std::make_unique<Block>(0,true,ngl::Vec3(3.0f,1.0f,0.0f),0.0);
 }
 void NGLScene::loadMatricesToShader(const std::string &_shader)
 {
@@ -101,9 +101,8 @@ void NGLScene::loadMatricesToShader(const std::string &_shader)
     };
 
     transform t;
-
+    //updating via mouse rotations to get our view of the scene
     t.M = m_view * m_mouseGlobalTX * m_transform.getMatrix();
-
     t.MVP = m_project * t.M;
     t.normalMatrix = t.M;
     t.normalMatrix.inverse().transpose();
@@ -197,20 +196,32 @@ void NGLScene::drawScene(const std::string &_shader)
     loadMatricesToShader(_shader);
     m_cone->draw(_shader,0.83f,0.43f,0.07f);//sets cone to brown color
     m_starterScoop->draw(_shader);
-    bool checkCollide = m_cone->checkCollision(m_testScoop->getPosition(), m_testScoop->getType(), m_testScoop->getPointVal(), m_cone->getPosition());
-    if(checkCollide)
-    {
-        m_testScoop->setIsAlive(false);
-    }
-    if(m_testScoop->getIsAlive())
-    {
-        m_transform.reset();
-        m_transform.setPosition(m_testScoop->getPosition());
-        loadMatricesToShader(_shader);
-        m_testScoop->draw(_shader);
-    }
+//    bool checkCollide = m_cone->checkCollision(m_testScoop->getPosition(), m_testScoop->getType(), m_testScoop->getPointVal(), m_cone->getPosition());
+//    if(checkCollide)
+//    {
+//        m_testScoop->setIsAlive(false);
+//    }
+//    if(m_testScoop->getIsAlive())
+//    {
+//        m_transform.reset();
+//        m_transform.setPosition(m_testScoop->getPosition());
+//        loadMatricesToShader(_shader);
+//        m_testScoop->draw(_shader);
+//    }
 
 }
+//shows the lives and points in the title
+void NGLScene::updateWindowTitle()
+{
+    // Get the current cone lives and points
+    int lives = m_cone->getLives();
+    int points = m_cone->getPoints();
+    // Format string
+    std::string title = "︶꒷꒦︶︶꒷Lives: " + std::to_string(lives) + " Points: " + std::to_string(points)+"NGL SCOOPS︶꒷꒦︶ ๋ ";
+    // Set the window title
+    setTitle(QString::fromStdString(title));
+}
+
 void NGLScene::paintGL()
 {
     // clear the screen and depth buffer
@@ -218,6 +229,7 @@ void NGLScene::paintGL()
     glViewport(0, 0, m_win.width, m_win.height);
     //update the entire scene (base platform, cone)
     drawScene("PBR");
+    updateWindowTitle();
 }
 
 

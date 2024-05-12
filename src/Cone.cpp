@@ -11,7 +11,7 @@ Cone::Cone(int _lives, int _points, float _speed, ngl::Vec3 _position)
     m_pos=_position;
 
 }
-//note: const prevents changes when it's intended to retrieve info
+//getter and setter methods
 ngl::Vec3 Cone::getPosition()
 {
     return m_pos;
@@ -51,7 +51,7 @@ void Cone::setSpeed(int _speed)
 }
 void Cone::draw(const std::string &_shader,float _r,float _g,float _b)
 {
-
+    //draws out the cone in the desired RGB vals
     ngl::ShaderLib::use(_shader);
     ngl::ShaderLib::setUniform("albedo", _r, _g,_b);
     ngl::VAOPrimitives::draw("cone");
@@ -87,8 +87,9 @@ float Cone::distanceBetweenVec(ngl::Vec3 &_point1, ngl::Vec3 _point2)
     float sqrX = (_point2.m_x - _point1.m_x) * (_point2.m_x - _point1.m_x);
     float sqrY = (_point2.m_y - _point1.m_y) * (_point2.m_y - _point1.m_y);
     float sqrZ = (_point2.m_z - _point1.m_z) * (_point2.m_z - _point1.m_z);
-    float distanceSqr = sqrX + sqrY + sqrZ;
-    return sqrtf(distanceSqr);
+    float distanceSquare= sqrX + sqrY + sqrZ;
+    //return the square root of our distance that is still in its squared state
+    return sqrtf(distanceSquare);
 }
 
 bool Cone::checkCollision(ngl::Vec3 _blockPosition, int _blockType, int _pointVal, ngl::Vec3 _playerPosition)
@@ -114,7 +115,7 @@ bool Cone::checkCollision(ngl::Vec3 _blockPosition, int _blockType, int _pointVa
         float blockRadius = 0.5f;
         float playerYOffset = 0.5f;
         float playerRadius = 0.5f;
-
+        //calcs based on distance since it is radius based
         float distance =distanceBetweenVec(_blockPosition, _playerPosition + ngl::Vec3(0.0f, playerYOffset, 0.0f));
         isColliding = distance <= blockRadius + playerRadius;
     }
@@ -142,6 +143,7 @@ bool Cone::checkCollision(ngl::Vec3 _blockPosition, int _blockType, int _pointVa
                 std::cerr << "ERROR - Invalid block type: " <<_pointVal << std::endl;
                 break;
         }
+        //return the bool value as yes, there is a collision and handles updates for the player
         return true;
     }
     else
@@ -150,3 +152,14 @@ bool Cone::checkCollision(ngl::Vec3 _blockPosition, int _blockType, int _pointVa
         return false;
     }
 }
+//  .-"`'"-.
+// /        \
+// |        |
+// /'---'--`\
+//|          |
+//\.--.---.-./
+//(_.--._.-._)
+//  \=-=-=-/
+//   \=-=-/
+//    \=-/
+//     \/

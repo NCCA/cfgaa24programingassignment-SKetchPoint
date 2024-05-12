@@ -48,9 +48,8 @@ class NGLScene : public QOpenGLWindow
     /// @brief this is called everytime we resize the window
     //----------------------------------------------------------------------------------------------------------------------
     void resizeGL(int _w, int _h) override;
-    std::unique_ptr<Cone> m_cone;
-    std::unique_ptr<Block>m_starterScoop;
-    std::unique_ptr<Block>m_testScoop;
+    ///Allowing the title to update as lives and points are added/deducted
+    void updateWindowTitle();
 private:
 
     //----------------------------------------------------------------------------------------------------------------------
@@ -117,6 +116,12 @@ private:
     ///updating scene in timer event, the game loop that is calculated each time
     int m_updateConeTimer;
     int m_redrawTimer;
+    //player cone to control
+    std::unique_ptr<Cone> m_cone;
+    //scoop that sits ontop of the player controlls
+    std::unique_ptr<Block>m_starterScoop;
+    //tester scoop for collision
+    //std::unique_ptr<Block>m_testScoop;
 };
 #endif
 
