@@ -17,6 +17,7 @@ NGLScene::NGLScene()
     setTitle("NGL Scoops");
     m_updateConeTimer= startTimer(2);
     m_redrawTimer=startTimer(16);
+    Emitter *m_emitter = new Emitter(10, 1.0f, 3.0f, -4.0f, 4.0f, 5.0f, 10.0f);
 }
 
 NGLScene::~NGLScene()

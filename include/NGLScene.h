@@ -4,6 +4,7 @@
 #include "WindowParams.h"
 #include "Cone.h"
 #include "Block.h"
+#include "Emitter.h"
 // this must be included after NGL includes else we get a clash with gl libs
 #include <QOpenGLWindow>
 #include<memory>
