@@ -19,8 +19,6 @@ public:
     float getSpeed() const;
     //drawing the block
     void draw(const std::string &_shader);
-    //making a distance formula where sqrt((x2-x1)^2+(y2-y1)^2) but in 3D
-    static float distanceBetweenVec(ngl::Vec3 &_point1,ngl::Vec3 &_point2);
     //indicates of the collision on cone is true or not
     bool isCaught(ngl::Vec3 _conePosition);
     // Update block position based on time, position also bound by playable area x and z

@@ -80,32 +80,64 @@ void Cone::updateScoreAndLives(int _scoreChange, int _livesChange)
     setPoints(m_points+_scoreChange);
     setLives(m_lives+_livesChange);
 }
-void Cone::checkCollision(Block _block, const ngl::Vec3& _playerPosition)
+float Cone::distanceBetweenVec(ngl::Vec3 &_point1, ngl::Vec3 _point2)
 {
-    // Check if the block is caught by the player (using isCaught function)
-    if (_block.isCaught(_playerPosition))
+    // Calculate squared distances for each dimension
+    float sqrX = (_point2.m_x - _point1.m_x) * (_point2.m_x - _point1.m_x);
+    float sqrY = (_point2.m_y - _point1.m_y) * (_point2.m_y - _point1.m_y);
+    float sqrZ = (_point2.m_z - _point1.m_z) * (_point2.m_z - _point1.m_z);
+    float distanceSqr = sqrX + sqrY + sqrZ;
+    // Calculate and return the actual distance
+    return sqrtf(distanceSqr);
+}
+
+bool Cone::checkCollision(ngl::Vec3 _blockPosition, int _blockType, int _pointVal, ngl::Vec3 _playerPosition)
+{
+    //implement AABB
+    bool isColliding = false;
+    if (_blockType == 0) {
+        // AABB collision for a 1*1*1 box centered at _blockPosition
+        float halfBoxSize = 0.5f;
+        float playerYOffset = 0.5f;
+        float playerRadius = 0.5f;
+        // Check for overlap on each axis
+        isColliding = (std::abs(_blockPosition.m_x - _playerPosition.m_x) <= halfBoxSize + playerRadius) &&
+                      (std::abs(_blockPosition.m_y - (_playerPosition.m_y + playerYOffset)) <= halfBoxSize + playerRadius) &&
+                      (std::abs(_blockPosition.m_z - _playerPosition.m_z) <= halfBoxSize + playerRadius);
+    } else {
+        // Sphere-sphere collision
+        float blockRadius = 0.5f;
+        float playerYOffset = 0.5f;
+        float playerRadius = 0.5f;
+
+        float distance =distanceBetweenVec(_blockPosition, _playerPosition + ngl::Vec3(0.0f, playerYOffset, 0.0f));
+        isColliding = distance <= blockRadius + playerRadius;
+    }
+    if (isColliding)
     {
         // Print cone position for debugging (optional)
-        // std::cout << "caught TRUE " << std::endl;
+        std::cout << "caught TRUE " << std::endl;
 
         // Update score and lives based on block type
-        switch (_block.getType())
+        switch (_blockType)
         {
             case 0: // Trash
-                updateScoreAndLives(_block.getPointVal(), -1);
+                updateScoreAndLives(_pointVal, -1);
                 break;
             case 1: // Scoop
-                updateScoreAndLives(_block.getPointVal(), 0);
+                updateScoreAndLives(_pointVal, 0);
                 break;
             case 2: // Bonus scoop
-                updateScoreAndLives(_block.getPointVal(), 1);
+                updateScoreAndLives(_pointVal, 1);
                 break;
             default:
-                std::cerr << "ERROR - Invalid block type: " << _block.getType() << std::endl;
+                std::cerr << "ERROR - Invalid block type: " <<_pointVal << std::endl;
                 break;
         }
-
-        // Deactivate the block (set isAlive to false)
-        _block.setIsAlive(false);
+        return true;
+    }
+    else
+    {
+        return false;
     }
 }

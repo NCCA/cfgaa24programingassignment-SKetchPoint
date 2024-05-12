@@ -94,42 +94,6 @@ void Block::draw(const std::string &_shader)
 
     }
 }
-float Block::distanceBetweenVec(ngl::Vec3 &_point1,ngl::Vec3 &_point2)
-{
-    float distance = sqrtf(_point2.m_x+_point1.m_x)+sqrtf(_point2.m_y+_point1.m_y)+sqrtf(_point2.m_z+_point1.m_z);
-    distance= sqrtf(distance);
-    return distance;
-}
-
-bool Block::isCaught(ngl::Vec3 _conePosition)
-{
-    //implement AABB
-    //cone has a sphere on top making cone position have a +0.5 in the y direction in cone position
-    ngl::Vec3 userScoop={_conePosition.m_x,_conePosition.m_y+0.5f,_conePosition.m_z};
-    // Define AABB based on block type
-    if (getType() == 0)
-    {
-        // AABB for a cube with side length 1, centered at origin
-        ngl::Vec3 aabbMin(_conePosition.m_x-0.5f, _conePosition.m_y, _conePosition.m_z-0.5f);  // Minimum corner
-        ngl::Vec3 aabbMax(_conePosition.m_x+0.5f, _conePosition.m_y+1.0f, _conePosition.m_z+0.5f);   // Maximum corner
-
-        // Check for cone position inside AABB
-        return(_conePosition.m_x >= aabbMin.m_x &&
-                           _conePosition.m_x <= aabbMax.m_x &&
-                           _conePosition.m_y >= aabbMin.m_y &&
-                           _conePosition.m_y <= aabbMax.m_y &&
-                           _conePosition.m_z >= aabbMin.m_z &&
-                           _conePosition.m_z <= aabbMax.m_z);
-    }
-    else
-    {
-        float sphereRadius=0.5;
-        float distance = distanceBetweenVec(_conePosition, userScoop);
-        // Check if squared distance is less than or equal to squared radius
-        return (distance >= sphereRadius*sphereRadius);
-    }
-    return false;
-}
 void Block::update(float _deltaTime)
 {
     //velocity= gravity (-9.81 m/s^2) * time

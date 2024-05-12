@@ -197,12 +197,16 @@ void NGLScene::drawScene(const std::string &_shader)
     loadMatricesToShader(_shader);
     m_cone->draw(_shader,0.83f,0.43f,0.07f);//sets cone to brown color
     m_starterScoop->draw(_shader);
+    bool checkCollide = m_cone->checkCollision(m_testScoop->getPosition(), m_testScoop->getType(), m_testScoop->getPointVal(), m_cone->getPosition());
+    if(checkCollide)
+    {
+        m_testScoop->setIsAlive(false);
+    }
     if(m_testScoop->getIsAlive())
     {
         m_transform.reset();
         m_transform.setPosition(m_testScoop->getPosition());
         loadMatricesToShader(_shader);
-        m_cone->checkCollision(*m_testScoop, m_cone->getPosition());
         m_testScoop->draw(_shader);
     }
 
