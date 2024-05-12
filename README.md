@@ -55,8 +55,6 @@ double lag = 0.0;//ensures catch up of multipe updates occures gradually over ti
 - Jon Macey (2012). Jon’s Teapot: Getting Started with the Programming Assignment Pt 4 The SpaceShip. [online] Jon’s Teapot. Available at: http://jonmacey.blogspot.com/2012/02/getting-started-with-programming_8527.html
 - 
 - Taking a look at how someone that has handle keys in NGL and overall game loops, there's a few things that I need to implement such as processing holding a key down consistently to continually move  by processing the key pressed in the object you want to move and draw it in the paintGL.
-- REMINDER: copy ngl shaders edit config build
-- -------------------------------------------------------------------------------------------------------------------------------
 - A common rounding error for calculating where the boundaries of the block (if an actual block is used) is a rounding error on the cone opsition and the block distance, where the calculated error is clipped as the distance is in a sphere shape for catchDistance and distance = (cone position - block position ) length  it would calc in a sphere shape instead of the actual geometry of a block
 - anything outide of the sphere would read as if it didnt collide with the block unless further calculations are made
 !["block with distance from center, collision in shape of sphere"](images/IllustrateCatchError.png)
@@ -116,5 +114,5 @@ double lag = 0.0;//ensures catch up of multipe updates occures gradually over ti
 - Peatersen, A. (n.d.). Patterns In C - Part 4: OBSERVER. [online] Available at:https://www.google.com/url?sa=t&source=web&rct=j&opi=89978449&url=https://www.adamtornhill.com/Patterns%2520in%2520C%25204,%2520OBSERVER.pdf&ved=2ahUKEwjpkcDnveCFAxVSS0EAHYC9AcAQFnoECBYQAQ&usg=AOvVaw2TBLtvxukUpHV0Czg4XXXw
 -
 - From my understanding of observer from reading Patterns in C, it could be beneficial for inputs to help manage these two things in my game. Things such as player stats like points, scoring overall, lives , all displayed as player stats visually too would use more of an Observer pattern. Observer pattter could handle specific events such as the player moving around for my game. However, I could expand it to collision detection that triggers an event from the wall or to the blocks falling, UI elements clicking , power ups, and enviroment changes potentially. I could split up inputs into player inputs and menu input handeler as well, however, I'm still very unsure until I start handelling these things if it would be worth putting in at an early stage.
--
+-- REMINDER: copy ngl shaders edit config build
 ------------------------------------------------------------------------------------------------------------------------------------
