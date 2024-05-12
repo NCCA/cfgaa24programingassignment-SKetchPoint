@@ -54,9 +54,9 @@ double lag = 0.0;//ensures catch up of multipe updates occures gradually over ti
 - Jon's Teapot: Getting Started with the Programming Assignment The SpaceShip
 - Jon Macey (2012). Jon’s Teapot: Getting Started with the Programming Assignment Pt 4 The SpaceShip. [online] Jon’s Teapot. Available at: http://jonmacey.blogspot.com/2012/02/getting-started-with-programming_8527.html
 - 
-- Taking a look at how someone that has handle keys in NGL and overall game loops, there's a few things that I need to implement such as processing holding a key down consistently to continually move  by processing the key pressed in the object you want to move and draw it in the paintGL.
+- Taking a look at how someone that has handle keys in NGL and overall game loops, there's a few things that I need to implement such as processing holding a key down consistently to continually move  by processing the key pressed in the object you want to move and draw it in the paintGL with a game loop.
 - A common rounding error for calculating where the boundaries of the block (if an actual block is used) is a rounding error on the cone opsition and the block distance, where the calculated error is clipped as the distance is in a sphere shape for catchDistance and distance = (cone position - block position ) length  it would calc in a sphere shape instead of the actual geometry of a block
-- anything outide of the sphere would read as if it didnt collide with the block unless further calculations are made
+- anything outside of the sphere would read as if it didn't collide with the block unless further calculations are made
 !["block with distance from center, collision in shape of sphere"](images/IllustrateCatchError.png)
 -  lazyfoo.net. (n.d.). Lazy Foo’ Productions - Collision Detection. [online] Available at: https://lazyfoo.net/tutorials/SDL/27_collision_detection/index.php 
 - Looking at Lazyfoo's collision implementation,  we can use the center positions and the length that we want to calculate for our box collision inorder ro fix the roundng error if we used a radius of .5 to serve as the collision detection of the box
