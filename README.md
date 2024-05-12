@@ -4,14 +4,16 @@ Assignment Ideas/Work Doc
 **Video:
 ------------------------------------------------------------------------------------------------------------------------------------
 -------------------------------------------------------------------------------------------------------------------------------------
--Gameplay Controlls:
--wsad key controlls to go in xz coordnates
--qezx key controlls to go diagonally in xz coordnates
+- Gameplay Controlls:
+- wsad key controlls to go in xz coordnates
+- qezx key controlls to go diagonally in xz coordnates
 - key 1 to reset viewport
--left mouse button to rotate around scene, right mouse button to move scene up, down, left, or right
+- left mouse button to rotate around scene, right mouse button to move scene up, down, left, or right
 ---------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------
 Annotated Bibliography:
-- 
+----------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
 - Scoops (2008)by NimbleBit:
 - MobyGames. (n.d.). Scoops (2008). [online] Available at: https://www.mobygames.com/game/49407/scoops/.
 - 
