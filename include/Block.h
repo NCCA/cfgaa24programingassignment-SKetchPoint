@@ -19,8 +19,6 @@ public:
     float getSpeed() const;
     //drawing the block
     void draw(const std::string &_shader);
-    //indicates of the collision on cone is true or not
-    bool isCaught(ngl::Vec3 _conePosition);
     // Update block position based on time, position also bound by playable area x and z
     //time in
     void update(float _deltaTime);

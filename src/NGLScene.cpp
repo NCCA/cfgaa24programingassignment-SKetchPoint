@@ -196,11 +196,35 @@ void NGLScene::drawScene(const std::string &_shader)
     loadMatricesToShader(_shader);
     m_cone->draw(_shader,0.83f,0.43f,0.07f);//sets cone to brown color
     m_starterScoop->draw(_shader);
+
+    //falling scoops
 //    bool checkCollide = m_cone->checkCollision(m_testScoop->getPosition(), m_testScoop->getType(), m_testScoop->getPointVal(), m_cone->getPosition());
-//    if(checkCollide)
+//    //if it collides, has to update the score and set alive as false
+//    if(checkCollide&& m_testScoop->getIsAlive())
 //    {
+//        //if it collides AND is still alive, update the score based on the type of scoop
+//        switch (m_testScoop->getType())
+//        {
+//            case 0:
+//                // Trash
+//                m_cone->updateScoreAndLives(m_testScoop->getPointVal(), -1);
+//                break;
+//            case 1:
+//                // Scoop
+//                m_cone->updateScoreAndLives(m_testScoop->getPointVal(), 0);
+//                break;
+//            case 2:
+//                // Bonus scoop
+//                m_cone->updateScoreAndLives(m_testScoop->getPointVal(), 1);
+//                break;
+//            default:
+//                //not a playable block type, something has gone wrong
+//                std::cerr << "ERROR - Invalid block type: " <<m_testScoop->getPointVal() << std::endl;
+//                break;
+//        }
 //        m_testScoop->setIsAlive(false);
 //    }
+//    //draw the scoop only if it's alive
 //    if(m_testScoop->getIsAlive())
 //    {
 //        m_transform.reset();
@@ -217,7 +241,7 @@ void NGLScene::updateWindowTitle()
     int lives = m_cone->getLives();
     int points = m_cone->getPoints();
     // Format string
-    std::string title = "︶꒷꒦︶︶꒷Lives: " + std::to_string(lives) + " Points: " + std::to_string(points)+"NGL SCOOPS︶꒷꒦︶ ๋ ";
+    std::string title = "︶꒦*꒷︶    NGL SCOOPS        Lives: " + std::to_string(lives) + "        Points: " + std::to_string(points)+"          ︶꒷*꒦꒷︶";
     // Set the window title
     setTitle(QString::fromStdString(title));
 }

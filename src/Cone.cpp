@@ -119,38 +119,7 @@ bool Cone::checkCollision(ngl::Vec3 _blockPosition, int _blockType, int _pointVa
         float distance =distanceBetweenVec(_blockPosition, _playerPosition + ngl::Vec3(0.0f, playerYOffset, 0.0f));
         isColliding = distance <= blockRadius + playerRadius;
     }
-    if (isColliding)
-    {
-        std::cout << "caught TRUE " << std::endl;
-
-        //update score and lives based on block type if it has collided
-        switch (_blockType)
-        {
-            case 0:
-                // Trash
-                updateScoreAndLives(_pointVal, -1);
-                break;
-            case 1:
-                // Scoop
-                updateScoreAndLives(_pointVal, 0);
-                break;
-            case 2:
-                // Bonus scoop
-                updateScoreAndLives(_pointVal, 1);
-                break;
-            default:
-                //not a playable block type, something has gone wrong
-                std::cerr << "ERROR - Invalid block type: " <<_pointVal << std::endl;
-                break;
-        }
-        //return the bool value as yes, there is a collision and handles updates for the player
-        return true;
-    }
-    else
-    {
-        //has not collided
-        return false;
-    }
+    return isColliding;
 }
 //  .-"`'"-.
 // /        \
