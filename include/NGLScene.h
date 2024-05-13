@@ -116,7 +116,16 @@ private:
     ngl::Real m_lightAngle{};
     ///updating scene in timer event, the game loop that is calculated each time
     int m_updateConeTimer;
-    int m_timer;
+    int m_drawTimer;
+    int m_scoopTimer;
+    //movement of cone key event
+    bool m_isKeyPressed;
+    // if continual movement, creates a vec to have linear interpolation
+    ngl::Vec3 m_moveVec;
+    //player control settings
+    bool coneIsContinualMove;
+    //boundary of the level determined, wont go past absolute val of level boundary
+    float levelBoundary;
 
     //player cone to control
     std::unique_ptr<Cone> m_cone;

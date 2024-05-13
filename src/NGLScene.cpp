@@ -17,8 +17,17 @@ NGLScene::NGLScene()
 {
     // re-size the widget to that of the parent (in this case the GLFrame passed in on construction)
     setTitle("NGL Scoops");
-    m_updateConeTimer= startTimer(2);
-    m_timer=startTimer(16);
+    //for updating the cone
+    m_updateConeTimer= startTimer(02);
+    //drawing the scene
+    m_drawTimer=startTimer(16);
+    //generating new falling scoops
+    m_scoopTimer=startTimer(16);
+    //trying to improve movement
+    m_isKeyPressed = false;
+    m_moveVec = ngl::Vec3::zero();
+    coneIsContinualMove = true;
+    levelBoundary = 4.7f;
 }
 
 NGLScene::~NGLScene()
@@ -164,7 +173,8 @@ void NGLScene::drawScene(const std::string &_shader) {
                 m_cubeX = -5.5f;
                 m_cubeZ = 5.5f;
                 m_transform.reset();
-                for (int j = 0; j < 11; j++) {
+                for (int j = 0; j < 11; j++)
+                {
                     m_cubeZ -= 1.0f;
                     m_transform.setPosition(m_cubeX, m_cubeY, m_cubeZ);
                     loadMatricesToShader(_shader);
@@ -263,7 +273,7 @@ void NGLScene::keyPressEvent(QKeyEvent *_event)
     // this method is called every time the main window receives a key event.
     // we then switch on the key value and set the camera in the GLWindow
     ngl::Vec3 currentPosition = m_transform.getPosition();
-    float levelBoundary = 4.7f;
+    //float levelBoundary = 4.7f;
     // Define the movement speed
     switch (_event->key())
     {
@@ -274,40 +284,6 @@ void NGLScene::keyPressEvent(QKeyEvent *_event)
             m_win.spinYFace=0;
             m_modelPos.set(ngl::Vec3::zero());
             break;
-        //WSAD control of cone, one dir at a time
-        case Qt::Key_W:
-            //up
-            m_cone->move(0.0f,0.0f,-(m_cone->getSpeed()),levelBoundary);
-            break;
-        case Qt::Key_S:
-            //down
-            m_cone->move(0.0f,0.0f,m_cone->getSpeed(),levelBoundary);
-            break;
-        case Qt::Key_A:
-            //left
-            m_cone->move(-(m_cone->getSpeed()),0.0f,0.0f,levelBoundary);
-            break;
-        case Qt::Key_D:
-            //right
-            m_cone->move(m_cone->getSpeed(),0.0f,0.0f,levelBoundary);
-            break;
-        //Diagonal movement QEZX(less of a pause)
-        case Qt::Key_Q:
-            //up + left
-            m_cone->move(-(m_cone->getSpeed()),0.0f,-(m_cone->getSpeed()),levelBoundary);
-            break;
-        case Qt::Key_E:
-            //up + right
-            m_cone->move(m_cone->getSpeed(),0.0f,-(m_cone->getSpeed()),levelBoundary);
-            break;
-        case Qt::Key_Z:
-            //down + left
-            m_cone->move(-(m_cone->getSpeed()),0.0f,m_cone->getSpeed(),levelBoundary);
-            break;
-        case Qt::Key_X:
-            //down + right
-            m_cone->move(m_cone->getSpeed(),0.0f,m_cone->getSpeed(),levelBoundary);
-            break;
         case Qt::Key_Space:
             //checking position of cone for debug purpose
             std::cout << "Cone position: "
@@ -315,6 +291,80 @@ void NGLScene::keyPressEvent(QKeyEvent *_event)
                       << m_cone->getPosition().m_y << ", "
                       << m_cone->getPosition().m_z << std::endl;
         default : break;
+    }
+    //determining movement of cone type is either continually moving on the screen or completely user controlled
+    if (coneIsContinualMove)
+    {
+        float movementSpeed = m_cone->getSpeed() *4 ;
+        switch (_event->key())
+        {
+            case Qt::Key_W:
+            case Qt::Key_S:
+            case Qt::Key_A:
+            case Qt::Key_D:
+            case Qt::Key_Q:
+            case Qt::Key_E:
+            case Qt::Key_Z:
+            case Qt::Key_X:
+                // Set movement vector based on pressed key
+                m_isKeyPressed = true;
+                m_moveVec = ngl::Vec3::zero();
+                if (_event->key() == Qt::Key_W || _event->key() == Qt::Key_Q || _event->key() == Qt::Key_E) {
+                    m_moveVec.m_z = -movementSpeed;
+                } else if (_event->key() == Qt::Key_S || _event->key() == Qt::Key_Z || _event->key() == Qt::Key_X) {
+                    m_moveVec.m_z = movementSpeed;
+                }
+                if (_event->key() == Qt::Key_A || _event->key() == Qt::Key_Q || _event->key() == Qt::Key_Z) {
+                    m_moveVec.m_x = -movementSpeed;
+                } else if (_event->key() == Qt::Key_D || _event->key() == Qt::Key_E || _event->key() == Qt::Key_X) {
+                    m_moveVec.m_x = movementSpeed;
+                }
+                break;
+            default:
+                break;
+        }
+    }
+    else
+    {
+        switch(_event->key())
+        {
+            //WSAD control of cone, one dir at a time
+            case Qt::Key_W:
+                //up
+                m_cone->move(0.0f,0.0f,-(m_cone->getSpeed()),levelBoundary);
+                break;
+            case Qt::Key_S:
+                //down
+                m_cone->move(0.0f,0.0f,m_cone->getSpeed(),levelBoundary);
+                break;
+            case Qt::Key_A:
+                //left
+                m_cone->move(-(m_cone->getSpeed()),0.0f,0.0f,levelBoundary);
+                break;
+            case Qt::Key_D:
+                //right
+                m_cone->move(m_cone->getSpeed(),0.0f,0.0f,levelBoundary);
+                break;
+                //Diagonal movement QEZX(first overcome less of a pause)
+            case Qt::Key_Q:
+                //up + left
+                m_cone->move(-(m_cone->getSpeed()),0.0f,-(m_cone->getSpeed()),levelBoundary);
+                break;
+            case Qt::Key_E:
+                //up + right
+                m_cone->move(m_cone->getSpeed(),0.0f,-(m_cone->getSpeed()),levelBoundary);
+                break;
+            case Qt::Key_Z:
+                //down + left
+                m_cone->move(-(m_cone->getSpeed()),0.0f,m_cone->getSpeed(),levelBoundary);
+                break;
+            case Qt::Key_X:
+                //down + right
+                m_cone->move(m_cone->getSpeed(),0.0f,m_cone->getSpeed(),levelBoundary);
+                break;
+            default:
+                break;
+        }
     }
     //update and redraw
     update();
@@ -340,14 +390,33 @@ void NGLScene::generateRandomScoop()
     std::unique_ptr<Block> newScoop = std::make_unique<Block>(scoopType, true, ngl::Vec3(randomX, 14.0f, randomZ), 0.0);
     m_scoops.push_back(std::move(newScoop));
 }
+
 float m_elapsedTime =0.0f;
 void NGLScene::timerEvent(QTimerEvent *_event)
 {
+    //timers trigger events such as movement, scoop generation,and updating draw
     m_elapsedTime +=0.16f;
 
-    if (_event->timerId() == m_timer && m_elapsedTime >= 300.0f)
+    if (_event->timerId() == m_scoopTimer && m_elapsedTime >= 200.0f)
     {
         generateRandomScoop();
         m_elapsedTime = 0.0f; // Reset elapsed time after generating a scoop
+    }
+    //user choice if they want the scoop to continually move or to be more direct control
+    if (coneIsContinualMove)
+    {
+        if (_event->timerId() == m_updateConeTimer)
+        {
+            if (m_isKeyPressed)
+            {
+                // Update cone position based on movement vector and elapsed time
+                float elapsedTime = 0.016f; // Assuming timer fires every 16 milliseconds
+                m_cone->move(m_moveVec.m_x * elapsedTime, 0.0f, m_moveVec.m_z * elapsedTime, levelBoundary);
+            }
+        }
+    }
+    if (_event->timerId() == m_drawTimer)
+    {
+        update();
     }
 }
