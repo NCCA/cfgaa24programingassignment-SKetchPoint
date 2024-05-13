@@ -224,7 +224,7 @@ void NGLScene::drawScene(const std::string &_shader) {
                     break;
                 case 2:
                     // Bonus scoop
-                    m_cone->updateScoreAndLives(scoop->getPointVal(), 1);
+                    m_cone->updateScoreAndLives(scoop->getPointVal(), 2);
                     break;
                 default:
                     //not a playable block type, something has gone wrong
@@ -420,8 +420,10 @@ void NGLScene::timerEvent(QTimerEvent *_event)
         //blocks move during update
         for (auto& block : m_scoops)
         {
+            //blocks update based on change in time, small amount of speed up
             float deltaY=0.2f;
             block->update(deltaY);
+            //checks if it was caught before hitting ground
             if(block->getPosition().m_y<=0.0f&&block->getIsAlive())
             {
                 //block is lower or has hit 0 and is still alive, delete
