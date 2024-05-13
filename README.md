@@ -9,7 +9,30 @@ Savannah Kreider s5501023 CFGAA Assignment
 - qezx key controlls to go diagonally in xz coordnates
 - key 1 to reset viewport
 - left mouse button to rotate around scene, right mouse button to move scene up, down, left, or right
----------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------------------------
+## Initial Design of classes/structures:
+-
+- Main game class: initialize game playable area, handling input, update game state, render, game flow
+- Scene class: playable areas and wall generated, collisions to walls handled from cone and scoops
+- Block class:collectable blocks falling , properties include position, type either scoop or trash, initial speeds on axis, points
+- Cone class :players movable cone, properties include positon, lives, points, movement input, collision detect from falling block, update score and lives
+-
+- Stretch Goals(if time allowed):
+- Game Menu class: manages game start, pause, and end, input for starting pausing and restarting the game
+- End Screen class: allows player to pick to either exit window(closing it) or to play again on a new game
+- Highs core class: saves the high score between game sessions
+- Pause Menu class: pausing and resuming game with e to pause the game and r to resume
+- Effect class:  manges visual effect of sparks for a successful landing
+-
+- Directory Structure:
+-
+- src:MainGame,Scene,Block,Cone
+- include:MainGame,Scene,Block,Cone
+- CMakeList.txt
+- .github (and .gitignore)
+- README.md
+- -----------------------------------------------------------------------------------------
+
 ## Annotated Bibliography:
 ----------------------------------------------------------------------------------------------------
 - Scoops (2008)by NimbleBit:
@@ -65,29 +88,7 @@ double lag = 0.0;//ensures catch up of multipe updates occures gradually over ti
 - However, instead of directly using an emitter, I use a generateRandom scoop to generate a scoop every x time and put it into a list. Once the scoops move based on time downward then I can implement removing scoops that hit the floor ir collide, change points/lives depending on if they were supposed to catch or avoid
 - - ----------------------------------------------------------------------------------------------------------------------------------------------
 ----------------------------------------------------------------------------------------------------------------------------------------
-# Work Doc 
------------------------------------------------------------------------------------------------------------------------------------------
-## Initial Design of classes/structures:
--
-- Main game class: initialize game playable area, handling input, update game state, render, game flow
-- Scene class: playable areas and wall generated, collisions to walls handled from cone and scoops
-- Block class:collectable blocks falling , properties include position, type either scoop or trash, initial speeds on axsis, points
-- Cone class :players movable cone, properties include positon, lives, points, movement input, collision detect from falling block, update score and lives
--
-- Stretch Goals(if time allowed):
-- Game Menu class: manages game start, pause, and end, input for starting pausing and restarting the game
-- End Screen class: allows player to pick to either exit window(closing it) or to play again on a new game
-- Highs core class: saves the high score between game sessions
-- Pause Menu class: pausing and resuming game with e to pause the game and r to resume
-- Effect class:  manges visual effect of sparks for a successful landing
--
-- Directory Structure:
--
-- src:MainGame,Scene,Block,Cone
-- include:MainGame,Scene,Block,Cone
-- CMakeList.txt
-- .github (and .gitignore)
-- README.md
+
 ## Initial Research
 
 - Sky Burger (2009) by NimbelBit:
@@ -104,5 +105,5 @@ double lag = 0.0;//ensures catch up of multipe updates occures gradually over ti
 - Peatersen, A. (n.d.). Patterns In C - Part 2: STATE. [online] Available at: https://www.google.com/url?sa=t&source=web&rct=j&opi=89978449&url=https://www.adamtornhill.com/Patterns%2520in%2520C%25202,%2520STATE.pdf&ved=2ahUKEwjilNbAveCFAxVgXEEAHXbIAYUQFnoECBIQAQ&usg=AOvVaw214ZWxK1HMAcGCyseQ0b7i.
 - Patterns in C- Part 4 :Observer:
 - Peatersen, A. (n.d.). Patterns In C - Part 4: OBSERVER. [online] Available at:https://www.google.com/url?sa=t&source=web&rct=j&opi=89978449&url=https://www.adamtornhill.com/Patterns%2520in%2520C%25204,%2520OBSERVER.pdf&ved=2ahUKEwjpkcDnveCFAxVSS0EAHYC9AcAQFnoECBYQAQ&usg=AOvVaw2TBLtvxukUpHV0Czg4XXXw
-- Basing my bame off of the two patterns State and Observer for things such as the menu, player event  inorder to reduce complexity while building flexibility in the game's development, while state is used for collisions of the blocks  and user inputs
+- Basing my game off of the two patterns State and Observer for things such as the menu, player event  inorder to reduce complexity while building flexibility in the game's development, while state is used for collisions of the blocks  and user inputs
 ------------------------------------------------------------------------------------------------------------------------------------
