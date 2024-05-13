@@ -15,7 +15,7 @@ public:
     bool getIsAlive()const;
     void setIsAlive(bool _state);
     ngl::Vec3 getPosition()const;
-    //might delete getSpeed
+    ngl::Vec3 setPosition(ngl::Vec3 _newPosition);
     float getSpeed() const;
     //drawing the block
     void draw(const std::string &_shader);
@@ -29,7 +29,6 @@ private:
     int m_pointVal;
     ngl::Vec3 m_position;
     float m_initialSpeed;
-
 };
 
 #endif // BLOCK_H

@@ -57,6 +57,10 @@ ngl::Vec3 Block::getPosition()const
 {
     return m_position;
 }
+ngl::Vec3 Block::setPosition(ngl::Vec3 _newPosition)
+{
+    m_position=_newPosition;
+}
 float Block::getSpeed() const
 {
     return m_initialSpeed;
@@ -101,7 +105,7 @@ void Block::update(float _deltaTime)
 {
     //velocity= gravity (-9.81 m/s^2) * time
     // Apply gravity to the block's speed
-    float gravity = 0.981f;
+    float gravity = 0.0981f;
     float speedWithGravity = getSpeed() + gravity * _deltaTime;
     m_position.m_y -= speedWithGravity * _deltaTime;
 }

@@ -96,7 +96,7 @@ void NGLScene::initializeGL()
     ngl::VAOPrimitives::createTrianglePlane("plane", 10, 10, 1,1, ngl::Vec3(0.353, 0.42, 0.612));//baseplate for gameplay
     ngl::VAOPrimitives::createCone("cone", 0.5, 1.4f, 20, 20);//cone
     //creating the player controlled cone
-    m_cone=std::make_unique<Cone>(3,10,0.1,ngl::Vec3(0.0f,1.5f,0.0f));
+    m_cone=std::make_unique<Cone>(3,10,0.2,ngl::Vec3(0.0f,1.5f,0.0f));
     m_starterScoop=std::make_unique<Block>(3,true,ngl::Vec3(0.0f,2.0f,0.0f),0.0);
     //y=5-auto screen space, 10 more optimal if want to see board too, max tried 12
     ////m_testScoop=std::make_unique<Block>(0,true,ngl::Vec3(3.0f,1.0f,0.0f),0.0);
@@ -295,13 +295,14 @@ void NGLScene::keyPressEvent(QKeyEvent *_event)
     //determining movement of cone type is either continually moving on the screen or completely user controlled
     if (coneIsContinualMove)
     {
-        float movementSpeed = m_cone->getSpeed() *4 ;
+        float movementSpeed = m_cone->getSpeed() *5 ;
         switch (_event->key())
         {
             case Qt::Key_W:
             case Qt::Key_S:
             case Qt::Key_A:
             case Qt::Key_D:
+                //more distance covered in qezx, but harder for user
             case Qt::Key_Q:
             case Qt::Key_E:
             case Qt::Key_Z:
@@ -326,6 +327,7 @@ void NGLScene::keyPressEvent(QKeyEvent *_event)
     }
     else
     {
+        //original controls
         switch(_event->key())
         {
             //WSAD control of cone, one dir at a time
@@ -400,12 +402,13 @@ void NGLScene::timerEvent(QTimerEvent *_event)
     if (_event->timerId() == m_scoopTimer && m_elapsedTime >= 200.0f)
     {
         generateRandomScoop();
-        m_elapsedTime = 0.0f; // Reset elapsed time after generating a scoop
+        // Reset elapsed time after generating a scoop
+        m_elapsedTime = 0.0f;
     }
-    //user choice if they want the scoop to continually move or to be more direct control
-    if (coneIsContinualMove)
+    if (_event->timerId() == m_updateConeTimer)
     {
-        if (_event->timerId() == m_updateConeTimer)
+        //user choice if they want the scoop to continually move or to be more direct control
+        if (coneIsContinualMove)
         {
             if (m_isKeyPressed)
             {
@@ -414,6 +417,38 @@ void NGLScene::timerEvent(QTimerEvent *_event)
                 m_cone->move(m_moveVec.m_x * elapsedTime, 0.0f, m_moveVec.m_z * elapsedTime, levelBoundary);
             }
         }
+        //blocks move during update
+        for (auto& block : m_scoops)
+        {
+            float deltaY=0.2f;
+            block->update(deltaY);
+            if(block->getPosition().m_y<=0.0f&&block->getIsAlive())
+            {
+                //block is lower or has hit 0 and is still alive, delete
+                int blockType = block->getType();
+                int points = block->getPointVal();
+                switch (blockType)
+                {
+                    case 0:
+                        // Trash
+                        m_cone->updateScoreAndLives(-points,0);
+                        break;
+                    case 1:
+                        // Scoop
+                        m_cone->updateScoreAndLives(-points, -1);
+                        break;
+                    case 2:
+                        // Bonus scoop
+                        m_cone->updateScoreAndLives(-points, -1);
+                        break;
+                    default:
+                        std::cerr << "ERROR - Invalid block type: " << points << std::endl;
+                        break;
+                }
+                block->setIsAlive(false);
+            }
+        }
+
     }
     if (_event->timerId() == m_drawTimer)
     {
