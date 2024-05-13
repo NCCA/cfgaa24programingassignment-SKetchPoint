@@ -1,5 +1,6 @@
 #include <QMouseEvent>
 #include <QGuiApplication>
+#include <QPushButton>
 
 #include "NGLScene.h"
 #include <ngl/NGLInit.h>
