@@ -24,15 +24,12 @@ Savannah Kreider s5501023 CFGAA Assignment
 - (in CLion have CMakeLists.txt, ParticleNGL and build ParticleNGLCopy Shaders)
 -----------------------------------------------------------------------------------------------------------------------------------------
 ##  Design of classes/structures:
--
 - Block.cpp- stores type, if the falling block is alive, initial speed, position, movement over change in time, point value, drawing the block
 - Cone.cpp- stores lives, player points, speed of controlled cone, updating score and lives, distance between vectors to aid in collision checking, modifying states and values based on collision, drawing out the user controlled item
 - main.cpp- creating the playable window, another window for button settings, and continually playinf till it closes
 - NGLScene.cpp- drawing the entire scene, setting up shader,  timers for game play, true collision changes of updating the cone based on collided scoop and ending the scoop, key controlled cone, generation of falling scoops, and game loop via time event
 - NGLSceneMouseControls.cpp- allowing rotation of the scene through  left and right clicks of the mouse
-
-- Directory Structure:
--
+## Directory Structure:
 - src: main.cpp, NGLScene.cpp, NGLSceneMouseControls.cpp, Block.cpp, Cone.pp
 - include:main.h, NGLScene.h , Block.h ,Cone.h
 - CMakeList.txt
