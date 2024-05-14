@@ -7,8 +7,14 @@ Savannah Kreider s5501023 CFGAA Assignment
 - Gameplay Controlls:
 - wsad key controlls to go in xz coordnates
 - qezx key controlls to go diagonally in xz coordnates
-- key 1 to reset viewport
+- key 1 to reset viewport, key 2 for control type direct, key 3 for control type continual movement
 - left mouse button to rotate around scene, right mouse button to move scene up, down, left, or right
+- when player runs out of lives, the scene resets
+- 
+- Button Menu:
+- [||]- pause game/ resume game
+- Controlls- swithc between the two type of controlls over the cone (continual or direct)
+- Reset- resets the entire game, including stats
 -------------------------------------------------------------------------------------------------------------------
 - Requires BRFORE build:
 - c++ compiler supporting C++17, Qt5 (or) Qt6, NGL (NCCA Graphics Library),and vcpkg
