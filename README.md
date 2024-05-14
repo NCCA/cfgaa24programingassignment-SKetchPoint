@@ -12,9 +12,9 @@ Savannah Kreider s5501023 CFGAA Assignment
 - when player runs out of lives, the scene resets
 - 
 - Button Menu:
-- [||]- pause game/ resume game
-- Controlls- swithc between the two type of controlls over the cone (continual or direct)
-- Reset- resets the entire game, including stats
+- [[  |  |  ]]- pause game/ resume game
+- [Controlls]- swithc between the two type of controlls over the cone (continual or direct)
+- [Reset]- resets the entire game, including stats
 -------------------------------------------------------------------------------------------------------------------
 - Requires BRFORE build:
 - c++ compiler supporting C++17, Qt5 (or) Qt6, NGL (NCCA Graphics Library),and vcpkg
