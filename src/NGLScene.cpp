@@ -1,6 +1,6 @@
 #include <QMouseEvent>
 #include <QGuiApplication>
-#include <QPushButton>
+
 
 #include "NGLScene.h"
 #include <ngl/NGLInit.h>
@@ -372,7 +372,7 @@ void NGLScene::keyPressEvent(QKeyEvent *_event)
     //update and redraw
     update();
 }
-
+//-----------------------------------------------------------------------------------------------------
 void NGLScene::generateRandomScoop()
 {
     //minimum and maximum positions for the scoop(boundaries of gameplay box approximately
@@ -393,7 +393,6 @@ void NGLScene::generateRandomScoop()
     std::unique_ptr<Block> newScoop = std::make_unique<Block>(scoopType, true, ngl::Vec3(randomX, 14.0f, randomZ), 0.0);
     m_scoops.push_back(std::move(newScoop));
 }
-
 float m_elapsedTime =0.0f;
 void NGLScene::timerEvent(QTimerEvent *_event)
 {
@@ -457,4 +456,26 @@ void NGLScene::timerEvent(QTimerEvent *_event)
     {
         update();
     }
+}
+//-----------------------------------------------------------------------------------------------------------------
+
+void NGLScene::pauseButtonClicked()
+{
+    // Implement your pause functionality here
+    std::cout << "Pause button clicked!" << std::endl;
+}
+void NGLScene::controllsButtonClicked()
+{
+    // Implement your reset functionality here
+    std::cout << "Controlls button clicked!" << std::endl;
+}
+void NGLScene::asciButtonClicked()
+{
+    // Implement your reset functionality here
+    std::cout << "Asci button clicked!" << std::endl;
+}
+void NGLScene::resetButtonClicked()
+{
+    // Implement your reset functionality here
+    std::cout << "Reset button clicked!" << std::endl;
 }

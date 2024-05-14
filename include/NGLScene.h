@@ -51,6 +51,11 @@ class NGLScene : public QOpenGLWindow
     ///Allowing the title to update as lives and points are added/deducted
     void updateWindowTitle();
     void generateRandomScoop();
+public slots:
+    void pauseButtonClicked();
+    void controllsButtonClicked();
+    void asciButtonClicked();
+    void resetButtonClicked();
 private:
 
     //----------------------------------------------------------------------------------------------------------------------
@@ -134,6 +139,8 @@ private:
     //tester scoop for collision
     //std::unique_ptr<Block>m_testScoop;
     std::list<std::unique_ptr<Block>> m_scoops;
+
 };
+
 #endif
 

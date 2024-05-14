@@ -5,7 +5,9 @@ basic OpenGL demo modified from http://qt-project.org/doc/qt-5.0/qtgui/openglwin
 #include <iostream>
 #include "NGLScene.h"
 
-
+#include <QApplication>
+#include <QPushButton>
+#include <QObject>
 
 int main(int argc, char **argv)
 {
@@ -33,14 +35,41 @@ int main(int argc, char **argv)
   NGLScene window;
   // and set the OpenGL format
   window.setFormat(format);
+
   // we can now query the version to see if it worked
   std::cout<<"Profile is "<<format.majorVersion()<<" "<<format.minorVersion()<<"\n";
   // set the window size
   window.resize(1024, 720);
-  // and finally show
+
+  //2nd window for button(s)
+  QApplication app2 (argc, argv);
+  QWidget window2;
+  window2.resize(120, 700);
+  window2.move(1100,100);
+  //button creation and geometry
+  QPushButton *pauseBtn = new QPushButton("[ | | ]", &window2);
+  QPushButton *resetBtn = new QPushButton("Reset", &window2);
+  QPushButton *asciBtn = new QPushButton(" _--````--_\n"
+                                            "|              |\n"
+                                            " \\.--.---.-./\n"
+                                            " (_.--._.-._)\n"
+                                            "  \\=-=-=-/\n"
+                                            "  \\=-=-/\n"
+                                            "   \\=-/\n"
+                                            "   \\/", &window2);
+  QPushButton *controllsBtn = new QPushButton("Controlls", &window2);
+  //buttons moved and sized
+  pauseBtn->setGeometry(35, 10, 50, 30);
+  controllsBtn->setGeometry(20, 50, 80, 30);
+  asciBtn->setGeometry(10,480,100,150);
+  resetBtn->setGeometry(20, 650, 80, 30);
+  //connecting the buttons to actions
+  
+  //show the two windows and keep them open
   window.show();
+  window2.show();
   //loop till nothing left to execute
-  return app.exec();
+  return app.exec() && app2.exec();
 }
 
 
