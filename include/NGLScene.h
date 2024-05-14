@@ -51,8 +51,16 @@ class NGLScene : public QOpenGLWindow
     ///Allowing the title to update as lives and points are added/deducted
     void updateWindowTitle();
     void generateRandomScoop();
-    //player control settings
+    //before buttons was private, however need to modify
+    //switch of either cone is always moving or strictly user controlled
     bool m_coneIsContinualMove;
+    //player cone to control
+    std::unique_ptr<Cone> m_cone;
+    //scoop that sits ontop of the player controlls
+    std::unique_ptr<Block>m_starterScoop;
+    //tester scoop for collision
+    //std::unique_ptr<Block>m_testScoop;
+    std::list<std::unique_ptr<Block>> m_scoops;
 public slots:
     void pauseButtonClicked();
     void controllsButtonClicked();
@@ -131,15 +139,6 @@ private:
     ngl::Vec3 m_moveVec;
     //boundary of the level determined, wont go past absolute val of level boundary
     float levelBoundary;
-
-    //player cone to control
-    std::unique_ptr<Cone> m_cone;
-    //scoop that sits ontop of the player controlls
-    std::unique_ptr<Block>m_starterScoop;
-    //tester scoop for collision
-    //std::unique_ptr<Block>m_testScoop;
-    std::list<std::unique_ptr<Block>> m_scoops;
-
 };
 
 #endif

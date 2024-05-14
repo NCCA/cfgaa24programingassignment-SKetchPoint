@@ -205,7 +205,7 @@ void NGLScene::drawScene(const std::string &_shader) {
     //    //falling scoops
 
     // Loop through the list of scoops and draw each one
-    for (const auto& scoop    // Implement your reset functionality here : m_scoops)
+    for (const auto& scoop : m_scoops)
     {
         bool checkCollide = m_cone->checkCollision(scoop->getPosition(), scoop->getType(), scoop->getPointVal(), m_cone->getPosition());
         //if it collides, has to update the score and set alive as false
@@ -453,6 +453,17 @@ void NGLScene::timerEvent(QTimerEvent *_event)
                         break;
                 }
                 block->setIsAlive(false);
+                if (m_cone->getPoints()<0)
+                {
+                    //if there are no more points to deduct from, deduct a life and set points to 0
+                    m_cone->setLives(m_cone->getLives()-1);
+                    m_cone->setPoints(0);
+                }
+                if (m_cone->getLives()<1)
+                {
+                    //if lives reach 0, reset the scene
+                    resetButtonClicked();
+                }
             }
         }
 
@@ -486,4 +497,11 @@ void NGLScene::resetButtonClicked()
 {
     // Implement your reset functionality here
     std::cout << "Reset button clicked!" << std::endl;
+    //reset scoops, and stats
+    m_scoops.clear();
+    m_cone->setLives(3);
+    m_cone->setPoints(10);
+    m_cone->setPosition(ngl::Vec3(0.0f,1.5f,0.0f));
+    //reset timer
+
 }

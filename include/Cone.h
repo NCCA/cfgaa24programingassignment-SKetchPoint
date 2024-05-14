@@ -27,7 +27,6 @@ public:
     //allows for points of player to be reduced or added based on type of block caught
     //if check collision
     //getPoints+block.getPointVal
-    //elsebu
     void setPoints(int _points);
     //movement
     float getSpeed() const;
