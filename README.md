@@ -9,25 +9,32 @@ Savannah Kreider s5501023 CFGAA Assignment
 - qezx key controlls to go diagonally in xz coordnates
 - key 1 to reset viewport
 - left mouse button to rotate around scene, right mouse button to move scene up, down, left, or right
+-------------------------------------------------------------------------------------------------------------------cd
+- Requires BRFORE build:
+- c++ compiler supporting C++17, Qt5 (or) Qt6, NGL (NCCA Graphics Library),and vcpkg
+- 
+- Building- make sure that you have CMakeLists.txt file, type into terminal:
+- mkdir build
+- cd build
+- cmake ..
+- make
+- 
+- OR in your terminal:
+- clion .
+-(in CLion have CMakeLists.txt, ParticleNGL and build ParticleNGLCopy Shaders)
 -----------------------------------------------------------------------------------------------------------------------------------------
-## Initial Design of classes/structures:
+##  Design of classes/structures:
 -
-- Main game class: initialize game playable area, handling input, update game state, render, game flow
-- Scene class: playable areas and wall generated, collisions to walls handled from cone and scoops
-- Block class:collectable blocks falling , properties include position, type either scoop or trash, initial speeds on axis, points
-- Cone class :players movable cone, properties include positon, lives, points, movement input, collision detect from falling block, update score and lives
--
-- Stretch Goals(if time allowed):
-- Game Menu: manages game start, pause, and end, input for starting pausing and restarting the game
-- End Screen: allows player to pick to either exit window(closing it) or to play again on a new game
-- Highs score: saves the high score between game sessions
-- Pause Menu/Button: pausing and resuming game with e to pause the game and r to resume
-- Effect:  manges visual effect of sparks for a successful landing
--
+- Block.cpp- stores type, if the falling block is alive, initial speed, position, movement over change in time, point value, drawing the block
+- Cone.cpp- stores lives, player points, speed of controlled cone, updating score and lives, distance between vectors to aid in collision checking, modifying states and values based on collision, drawing out the user controlled item
+- main.cpp- creating the playable window, another window for button settings, and continually playinf till it closes
+- NGLScene.cpp- drawing the entire scene, setting up shader,  timers for game play, true collision changes of updating the cone based on collided scoop and ending the scoop, key controlled cone, generation of falling scoops, and game loop via time event
+- NGLSceneMouseControls.cpp- allowing rotation of the scene through  left and right clicks of the mouse
+
 - Directory Structure:
 -
-- src:MainGame,Scene,Block,Cone
-- include:MainGame,Scene,Block,Cone
+- src: main.cpp, NGLScene.cpp, NGLSceneMouseControls.cpp, Block.cpp, Cone.pp
+- include:main.h, NGLScene.h , Block.h ,Cone.h
 - CMakeList.txt
 - .github (and .gitignore)
 - README.md
