@@ -51,6 +51,7 @@ class NGLScene : public QOpenGLWindow
     ///Allowing the title to update as lives and points are added/deducted
     void updateWindowTitle();
     void generateRandomScoop();
+
 public slots:
     void pauseButtonClicked();
     void controllsButtonClicked();

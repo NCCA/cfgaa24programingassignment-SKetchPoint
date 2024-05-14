@@ -43,6 +43,7 @@ int main(int argc, char **argv)
 
   //2nd window for button(s)
   QApplication app2 (argc, argv);
+  NGLScene scene;
   QWidget window2;
   window2.resize(120, 700);
   window2.move(1100,100);
@@ -64,8 +65,11 @@ int main(int argc, char **argv)
   asciBtn->setGeometry(10,480,100,150);
   resetBtn->setGeometry(20, 650, 80, 30);
   //connecting the buttons to actions
-
-  //show the two windows and keep them open
+  QObject::connect(pauseBtn, &QPushButton::clicked, &scene, &NGLScene::pauseButtonClicked);
+  QObject::connect(controllsBtn, &QPushButton::clicked, &scene, &NGLScene::controllsButtonClicked);
+  QObject::connect(asciBtn, &QPushButton::clicked, &scene, &NGLScene::asciButtonClicked);
+  QObject::connect(resetBtn, &QPushButton::clicked, &scene, &NGLScene::resetButtonClicked);
+    //show the two windows and keep them open
   window.show();
   window2.show();
   //loop till nothing left to execute
