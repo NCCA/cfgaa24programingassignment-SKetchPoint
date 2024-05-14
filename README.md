@@ -18,11 +18,11 @@ Savannah Kreider s5501023 CFGAA Assignment
 - Cone class :players movable cone, properties include positon, lives, points, movement input, collision detect from falling block, update score and lives
 -
 - Stretch Goals(if time allowed):
-- Game Menu class: manages game start, pause, and end, input for starting pausing and restarting the game
-- End Screen class: allows player to pick to either exit window(closing it) or to play again on a new game
-- Highs core class: saves the high score between game sessions
-- Pause Menu class: pausing and resuming game with e to pause the game and r to resume
-- Effect class:  manges visual effect of sparks for a successful landing
+- Game Menu: manages game start, pause, and end, input for starting pausing and restarting the game
+- End Screen: allows player to pick to either exit window(closing it) or to play again on a new game
+- Highs score: saves the high score between game sessions
+- Pause Menu/Button: pausing and resuming game with e to pause the game and r to resume
+- Effect:  manges visual effect of sparks for a successful landing
 -
 - Directory Structure:
 -

@@ -64,7 +64,7 @@ int main(int argc, char **argv)
   asciBtn->setGeometry(10,480,100,150);
   resetBtn->setGeometry(20, 650, 80, 30);
   //connecting the buttons to actions
-  
+
   //show the two windows and keep them open
   window.show();
   window2.show();
