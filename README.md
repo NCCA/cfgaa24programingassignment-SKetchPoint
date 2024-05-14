@@ -9,7 +9,7 @@ Savannah Kreider s5501023 CFGAA Assignment
 - qezx key controlls to go diagonally in xz coordnates
 - key 1 to reset viewport
 - left mouse button to rotate around scene, right mouse button to move scene up, down, left, or right
--------------------------------------------------------------------------------------------------------------------cd
+-------------------------------------------------------------------------------------------------------------------
 - Requires BRFORE build:
 - c++ compiler supporting C++17, Qt5 (or) Qt6, NGL (NCCA Graphics Library),and vcpkg
 - 
@@ -21,7 +21,7 @@ Savannah Kreider s5501023 CFGAA Assignment
 - 
 - OR in your terminal:
 - clion .
--(in CLion have CMakeLists.txt, ParticleNGL and build ParticleNGLCopy Shaders)
+- (in CLion have CMakeLists.txt, ParticleNGL and build ParticleNGLCopy Shaders)
 -----------------------------------------------------------------------------------------------------------------------------------------
 ##  Design of classes/structures:
 -
