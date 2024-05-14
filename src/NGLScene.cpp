@@ -27,7 +27,8 @@ NGLScene::NGLScene()
     //trying to improve movement
     m_isKeyPressed = false;
     m_moveVec = ngl::Vec3::zero();
-    levelBoundary = 4.0f;
+    levelBoundary = 4.5f;
+    m_isPaused=false;
 }
 
 NGLScene::~NGLScene()
@@ -121,7 +122,8 @@ void NGLScene::loadMatricesToShader(const std::string &_shader)
     //ngl::ShaderLib::setUniform("lightPosition", (m_mouseGlobalTX * m_lightPos).toVec3());
 }
 
-void NGLScene::drawScene(const std::string &_shader) {
+void NGLScene::drawScene(const std::string &_shader)
+{
     //mouse rotation of scene
     ngl::ShaderLib::use(_shader);
     // Rotation based on the mouse position for our global transform
@@ -408,6 +410,22 @@ void NGLScene::timerEvent(QTimerEvent *_event)
     {
         generateRandomScoop();
         // Reset elapsed time after generating a scoop
+        if (m_cone->getPoints()<0)
+        {
+            //if there are no more points to deduct from, deduct a life and set points to 0
+            m_cone->setLives(m_cone->getLives()-1);
+            m_cone->setPoints(0);
+        }
+        if (m_cone->getLives()<=0)
+        {
+            //if lives reach 0, reset the scene
+            std::cout << "You have died, resetting play" << std::endl;
+            m_scoops.clear();
+            m_cone->setLives(3);
+            m_cone->setPoints(10);
+            m_cone->setPosition(ngl::Vec3(0.0f,1.5f,0.0f));
+
+        }
         m_elapsedTime = 0.0f;
     }
     if (_event->timerId() == m_updateConeTimer)
@@ -453,20 +471,8 @@ void NGLScene::timerEvent(QTimerEvent *_event)
                         break;
                 }
                 block->setIsAlive(false);
-                if (m_cone->getPoints()<0)
-                {
-                    //if there are no more points to deduct from, deduct a life and set points to 0
-                    m_cone->setLives(m_cone->getLives()-1);
-                    m_cone->setPoints(0);
-                }
-                if (m_cone->getLives()<1)
-                {
-                    //if lives reach 0, reset the scene
-                    resetButtonClicked();
-                }
             }
         }
-
     }
     if (_event->timerId() == m_drawTimer)
     {
@@ -479,6 +485,26 @@ void NGLScene::pauseButtonClicked()
 {
     // Implement your pause functionality here
     std::cout << "Pause button clicked!" << std::endl;
+    m_isPaused = !m_isPaused;  // Toggle pause state
+    if (m_isPaused)
+    {
+        //was actived, is now paused
+        killTimer(m_scoopTimer);
+        killTimer(m_updateConeTimer);
+        killTimer(m_drawTimer);
+    } else
+    {
+        // was paused, resumed
+        if (m_elapsedTime > 0.0f)
+        {
+            // Reset elapsed time to avoid immediate scoop generation on resume
+            m_elapsedTime = 0.0f;
+        }
+        startTimer(16); // m_scoopTimer
+        startTimer(02); // m_updateConeTimer
+        startTimer(16); // m_drawTimer
+    }
+    update();
 }
 void NGLScene::controllsButtonClicked()
 {

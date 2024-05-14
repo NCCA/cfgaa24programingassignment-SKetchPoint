@@ -61,6 +61,12 @@ class NGLScene : public QOpenGLWindow
     //tester scoop for collision
     //std::unique_ptr<Block>m_testScoop;
     std::list<std::unique_ptr<Block>> m_scoops;
+    //ability to pause scene
+    bool m_isPaused;
+    //timers
+    int m_updateConeTimer;
+    int m_drawTimer;
+    int m_scoopTimer;
 public slots:
     void pauseButtonClicked();
     void controllsButtonClicked();
@@ -130,9 +136,6 @@ private:
     //----------------------------------------------------------------------------------------------------------------------
     ngl::Real m_lightAngle{};
     ///updating scene in timer event, the game loop that is calculated each time
-    int m_updateConeTimer;
-    int m_drawTimer;
-    int m_scoopTimer;
     //movement of cone key event
     bool m_isKeyPressed;
     // if continual movement, creates a vec to have linear interpolation
