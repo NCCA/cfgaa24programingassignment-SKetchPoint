@@ -43,8 +43,8 @@ Savannah Kreider s5501023 CFGAA Assignment
 - MobyGames. (n.d.). Scoops (2008). [online] Available at: https://www.mobygames.com/game/49407/scoops/.
 - 
 - Originally, the game that I had in mind to expand upon was Scoops. You tilt your phone side to side to move the cone back and forth on the screen in doing so avoiding trash but collecting scoops to build the tower up. - - However, making it 3D means moving up the orthographic camera isnt as viable for a perspective as eventually it becomes too tiny to see everything properly either the board and/or the falling objects. So trying to come up with a more creative workaround to implement a game to this. While it does give me a basis as to powerups being special scoops, trash to avoid taking a life, and stackable scoops that earn point, it requires modification to be changed to 3D on a computer. Having controlls be on a common wsad movement, allowing to use the mouse to rotate around the enviroment, and trying to see how I can still collect without running into visual issues with the game is what I need to further explore.
--Overall, this game gives me the basic framework of my game, its general rules that I can then compare to similar games like this one , and add on my own solutions to the issues mentioned.
--
+- Overall, this game gives me the basic framework of my game, its general rules that I can then compare to similar games like this one , and add on my own solutions to the issues mentioned.
+- 
 - Game Programming Patterns:
 - Gameprogrammingpatterns.com. (2014). Game Loop · Sequencing Patterns · Game Programming Patterns. [online] Available at: https://gameprogrammingpatterns.com/game-loop.html.
 - 
@@ -77,7 +77,7 @@ double lag = 0.0;//ensures catch up of multipe updates occures gradually over ti
 
   render(lag / MS_PER_UPDATE);
 }
--
+
 - Jon's Teapot: Getting Started with the Programming Assignment The SpaceShip
 - Jon Macey (2012). Jon’s Teapot: Getting Started with the Programming Assignment Pt 4 The SpaceShip. [online] Jon’s Teapot. Available at: http://jonmacey.blogspot.com/2012/02/getting-started-with-programming_8527.html
 - 
@@ -92,7 +92,7 @@ double lag = 0.0;//ensures catch up of multipe updates occures gradually over ti
 - However, instead of directly using an emitter, I use a generateRandom scoop to generate a scoop every x time and put it into a list. Once the scoops move based on time downward then I can implement removing scoops that hit the floor ir collide, change points/lives depending on if they were supposed to catch or avoid
 - Noticing the irregularities in speed when holding down buttons, I attempted to do a lerp on the cone movement and found out having a continually moving cove vs strictly user controlled crated two different types of game play for the user to balance.
 - Due to the sizing of the scoops and the limitations of seeing the scene till about they 10.0f at y, I opted to have the scoop collect as opposed to stacking in 3D for fear of the player losing the cone scoop and control. Thus, I decided to modify from the inspired game with a similar game that also catches fallen objects
-- - ----------------------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------------------------
 ----------------------------------------------------------------------------------------------------------------------------------------
 
 ## Initial Research
