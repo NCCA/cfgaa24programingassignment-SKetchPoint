@@ -43,10 +43,9 @@ int main(int argc, char **argv)
 
   //2nd window for button(s)
   QApplication app2 (argc, argv);
-  NGLScene scene;
   QWidget window2;
   window2.resize(120, 700);
-  window2.move(1100,100);
+  window2.move(1050,30);
   //button creation and geometry
   QPushButton *pauseBtn = new QPushButton("[ | | ]", &window2);
   QPushButton *resetBtn = new QPushButton("Reset", &window2);
@@ -65,13 +64,13 @@ int main(int argc, char **argv)
   asciBtn->setGeometry(10,480,100,150);
   resetBtn->setGeometry(20, 650, 80, 30);
   //connecting the buttons to actions
-  QObject::connect(pauseBtn, &QPushButton::clicked, &scene, &NGLScene::pauseButtonClicked);
-  QObject::connect(controllsBtn, &QPushButton::clicked, &scene, &NGLScene::controllsButtonClicked);
-  QObject::connect(asciBtn, &QPushButton::clicked, &scene, &NGLScene::asciButtonClicked);
-  QObject::connect(resetBtn, &QPushButton::clicked, &scene, &NGLScene::resetButtonClicked);
+  QObject::connect(pauseBtn, &QPushButton::clicked, &window, &NGLScene::pauseButtonClicked);
+  QObject::connect(controllsBtn, &QPushButton::clicked, &window, &NGLScene::controllsButtonClicked);
+  QObject::connect(asciBtn, &QPushButton::clicked, &window, &NGLScene::asciButtonClicked);
+  QObject::connect(resetBtn, &QPushButton::clicked, &window, &NGLScene::resetButtonClicked);
     //show the two windows and keep them open
-  window.show();
   window2.show();
+  window.show();
   //loop till nothing left to execute
   return app.exec() && app2.exec();
 }

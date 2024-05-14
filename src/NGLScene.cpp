@@ -27,8 +27,7 @@ NGLScene::NGLScene()
     //trying to improve movement
     m_isKeyPressed = false;
     m_moveVec = ngl::Vec3::zero();
-    coneIsContinualMove = true;
-    levelBoundary = 4.7f;
+    levelBoundary = 4.0f;
 }
 
 NGLScene::~NGLScene()
@@ -206,7 +205,7 @@ void NGLScene::drawScene(const std::string &_shader) {
     //    //falling scoops
 
     // Loop through the list of scoops and draw each one
-    for (const auto& scoop : m_scoops)
+    for (const auto& scoop    // Implement your reset functionality here : m_scoops)
     {
         bool checkCollide = m_cone->checkCollision(scoop->getPosition(), scoop->getType(), scoop->getPointVal(), m_cone->getPosition());
         //if it collides, has to update the score and set alive as false
@@ -285,6 +284,12 @@ void NGLScene::keyPressEvent(QKeyEvent *_event)
             m_win.spinYFace=0;
             m_modelPos.set(ngl::Vec3::zero());
             break;
+        case Qt::Key_2:
+            m_coneIsContinualMove=false;
+            break;
+        case Qt::Key_3:
+            m_coneIsContinualMove=true;
+            break;
         case Qt::Key_Space:
             //checking position of cone for debug purpose
             std::cout << "Cone position: "
@@ -294,7 +299,7 @@ void NGLScene::keyPressEvent(QKeyEvent *_event)
         default : break;
     }
     //determining movement of cone type is either continually moving on the screen or completely user controlled
-    if (coneIsContinualMove)
+    if (m_coneIsContinualMove)
     {
         float movementSpeed = m_cone->getSpeed() *5 ;
         switch (_event->key())
@@ -408,7 +413,7 @@ void NGLScene::timerEvent(QTimerEvent *_event)
     if (_event->timerId() == m_updateConeTimer)
     {
         //user choice if they want the scoop to continually move or to be more direct control
-        if (coneIsContinualMove)
+        if (m_coneIsContinualMove)
         {
             if (m_isKeyPressed)
             {
@@ -466,9 +471,12 @@ void NGLScene::pauseButtonClicked()
 }
 void NGLScene::controllsButtonClicked()
 {
-    // Implement your reset functionality here
+    //able to switch control types in addition to 2
     std::cout << "Controlls button clicked!" << std::endl;
+    m_coneIsContinualMove=!m_coneIsContinualMove;
+    update();
 }
+
 void NGLScene::asciButtonClicked()
 {
     // Implement your reset functionality here

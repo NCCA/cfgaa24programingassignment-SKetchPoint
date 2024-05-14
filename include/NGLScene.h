@@ -51,7 +51,8 @@ class NGLScene : public QOpenGLWindow
     ///Allowing the title to update as lives and points are added/deducted
     void updateWindowTitle();
     void generateRandomScoop();
-
+    //player control settings
+    bool m_coneIsContinualMove;
 public slots:
     void pauseButtonClicked();
     void controllsButtonClicked();
@@ -128,8 +129,6 @@ private:
     bool m_isKeyPressed;
     // if continual movement, creates a vec to have linear interpolation
     ngl::Vec3 m_moveVec;
-    //player control settings
-    bool coneIsContinualMove;
     //boundary of the level determined, wont go past absolute val of level boundary
     float levelBoundary;
 
