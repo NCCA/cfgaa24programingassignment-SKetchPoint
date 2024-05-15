@@ -327,6 +327,9 @@ void NGLScene:: pauseGame()
         startTimer(02); // m_updateConeTimer
         startTimer(16); // m_drawTimer
     }
+    //speed up punishment
+    m_cone->setSpeed( m_cone->getSpeed() *5);
+
 }
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -366,7 +369,6 @@ void NGLScene::keyPressEvent(QKeyEvent *_event)
     //determining movement of cone type is either continually moving on the screen or completely user controlled
     if (m_coneIsContinualMove)
     {
-        float movementSpeed = m_cone->getSpeed() *5 ;
         switch (_event->key())
         {
             case Qt::Key_W:
@@ -382,14 +384,14 @@ void NGLScene::keyPressEvent(QKeyEvent *_event)
                 m_isKeyPressed = true;
                 m_moveVec = ngl::Vec3::zero();
                 if (_event->key() == Qt::Key_W || _event->key() == Qt::Key_Q || _event->key() == Qt::Key_E) {
-                    m_moveVec.m_z = -movementSpeed;
+                    m_moveVec.m_z = -m_cone->getSpeed()*5;
                 } else if (_event->key() == Qt::Key_S || _event->key() == Qt::Key_Z || _event->key() == Qt::Key_X) {
-                    m_moveVec.m_z = movementSpeed;
+                    m_moveVec.m_z = m_cone->getSpeed()*5;
                 }
                 if (_event->key() == Qt::Key_A || _event->key() == Qt::Key_Q || _event->key() == Qt::Key_Z) {
-                    m_moveVec.m_x = -movementSpeed;
+                    m_moveVec.m_x = -m_cone->getSpeed()*5;
                 } else if (_event->key() == Qt::Key_D || _event->key() == Qt::Key_E || _event->key() == Qt::Key_X) {
-                    m_moveVec.m_x = movementSpeed;
+                    m_moveVec.m_x =m_cone->getSpeed()*5;
                 }
                 break;
             default:
