@@ -49,7 +49,7 @@ void Cone::setSpeed(int _speed)
 {
     m_speed = _speed;
 }
-void Cone::draw(const std::string &_shader,float _r,float _g,float _b)
+void Cone::draw( const std::string &_shader,float _r,float _g,float _b)
 {
     //draws out the cone in the desired RGB vals
     ngl::ShaderLib::use(_shader);

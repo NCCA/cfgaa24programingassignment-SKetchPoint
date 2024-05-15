@@ -38,6 +38,10 @@ int Block::getType() const
     //helpful to determine if life of cone needs to be reduced
     return m_type;
 }
+void Block::setType(int _newType)
+{
+    m_type=_newType;
+}
 int Block::getPointVal() const
 {
     //sees point val, what to add or reduced to player when updating the score
@@ -57,7 +61,7 @@ ngl::Vec3 Block::getPosition()const
 {
     return m_position;
 }
-ngl::Vec3 Block::setPosition(ngl::Vec3 _newPosition)
+void Block::setPosition(ngl::Vec3 _newPosition)
 {
     m_position=_newPosition;
 }
@@ -66,7 +70,7 @@ float Block::getSpeed() const
     return m_initialSpeed;
 }
 //render the scoops/blocks only if they are alive, type determines color
-void Block::draw(const std::string &_shader)
+void Block::draw(const std::string&_shader)
 {
     //draws blocks that are alive only
     if(m_isAlive)

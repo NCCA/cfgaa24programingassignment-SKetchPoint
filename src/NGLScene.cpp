@@ -238,6 +238,7 @@ void NGLScene::drawScene(const std::string &_shader)
                     break;
             }
             scoop->setIsAlive(false);
+            m_starterScoop->setType(scoop->getType());
         }
         //draw the scoop only if it's alive
         if(scoop->getIsAlive())

@@ -11,11 +11,15 @@ public:
     //type 0=trash ,1=scoop, 2=bonus scoop
     //type determines point val too
     int getType() const;
+    //setting type for initial scoop to change to what you most recently hit
+    void setType(int _newType);
+    //getting point value of the scoop to update to cone
     int getPointVal()const;
+    //
     bool getIsAlive()const;
     void setIsAlive(bool _state);
     ngl::Vec3 getPosition()const;
-    ngl::Vec3 setPosition(ngl::Vec3 _newPosition);
+    void setPosition(ngl::Vec3 _newPosition);
     float getSpeed() const;
     //drawing the block
     void draw(const std::string &_shader);

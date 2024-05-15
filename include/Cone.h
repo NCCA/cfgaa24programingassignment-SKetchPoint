@@ -38,7 +38,7 @@ public:
     //making a distance formula where sqrt((x2-x1)^2+(y2-y1)^2) but in 3D
     float distanceBetweenVec(ngl::Vec3 &_point1, ngl::Vec3 _point2);
     bool checkCollision(ngl::Vec3 _blockPosition, int _blockType, int _pointVal, ngl::Vec3 _playerPosition);
-    void draw(const std::string &_shader,float _r,float _g,float _b);
+    void draw( const std::string &_shader,float _r,float _g,float _b);
 
 private:
     ngl::Vec3 m_pos;
