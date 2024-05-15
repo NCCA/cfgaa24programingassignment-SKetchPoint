@@ -100,7 +100,7 @@ void NGLScene::initializeGL()
     ngl::VAOPrimitives::createTrianglePlane("plane", 10, 10, 1,1, ngl::Vec3(0.353, 0.42, 0.612));//baseplate for gameplay
     ngl::VAOPrimitives::createCone("cone", 0.5, 1.4f, 20, 20);//cone
     //creating the player controlled cone
-    m_cone=std::make_unique<Cone>(3,10,0.2,ngl::Vec3(0.0f,1.5f,0.0f));
+    m_cone=std::make_unique<Cone>(3,10,0.3,ngl::Vec3(0.0f,1.5f,0.0f));
     m_starterScoop=std::make_unique<Block>(3,true,ngl::Vec3(0.0f,2.0f,0.0f),0.0);
     //y=5-auto screen space, 10 more optimal if want to see board too, max tried 12
     ////m_testScoop=std::make_unique<Block>(0,true,ngl::Vec3(3.0f,1.0f,0.0f),0.0);
@@ -291,7 +291,7 @@ void NGLScene::generateRandomScoop()
     // Choose a random scoop type reminder-(0: Trash, 1: Scoop, 2: Bonus)
     int scoopType = rand() % 3;
     // Create a new scoop obj -w- generated position + type at height 14
-    std::unique_ptr<Block> newScoop = std::make_unique<Block>(scoopType, true, ngl::Vec3(randomX, 14.0f, randomZ), 0.0f);
+    std::unique_ptr<Block> newScoop = std::make_unique<Block>(scoopType, true, ngl::Vec3(randomX, 14.0f, randomZ), 0.05f);
     m_scoops.push_back(std::move(newScoop));
 }
 
@@ -300,6 +300,7 @@ void NGLScene:: resetGame()
     //resetting the game, helps if lives reach 0 (needs to check before) and resets the cone position,
     // lives, points and generated scoops
     m_scoops.clear();
+    generateRandomScoop();
     m_cone->setLives(3);
     m_cone->setPoints(10);
     m_cone->setPosition(ngl::Vec3(0.0f,1.5f,0.0f));
@@ -327,7 +328,12 @@ void NGLScene:: pauseGame()
         startTimer(16); // m_scoopTimer
         startTimer(02); // m_updateConeTimer
         startTimer(16); // m_drawTimer
+        for (auto& block : m_scoops)
+        {
+            block->setSpeed(block->getSpeed()*1.015f);
+        }
     }
+    m_elapsedTime +=0.16f;
 }
 //----------------------------------------------------------------------------------------------------------------------
 
