@@ -50,23 +50,17 @@ class NGLScene : public QOpenGLWindow
     void resizeGL(int _w, int _h) override;
     ///Allowing the title to update as lives and points are added/deducted
     void updateWindowTitle();
+    /// generation of scoops on  a 2D plane in random spots at a constant time
     void generateRandomScoop();
-    //before buttons was private, however need to modify
-    //switch of either cone is always moving or strictly user controlled
-    bool m_coneIsContinualMove;
-    //player cone to control
-    std::unique_ptr<Cone> m_cone;
-    //scoop that sits ontop of the player controlls
-    std::unique_ptr<Block>m_starterScoop;
-    //tester scoop for collision
-    //std::unique_ptr<Block>m_testScoop;
-    std::list<std::unique_ptr<Block>> m_scoops;
-    //ability to pause scene
-    bool m_isPaused;
-    //timers
-    int m_updateConeTimer;
-    int m_drawTimer;
-    int m_scoopTimer;
+    ///getting the value of m_coneIsContinualMove for buttons
+    bool isConeIsContinual();
+    ///reversing the setting of continual/ direct cone movement
+    void reverseConeIsContinualMove();
+    ///resetting the game for the reset button and if lives reach 0
+    void resetGame();
+    ///Pausing game either through the keyboard or through menu bar with pause button
+    void pauseGame();
+
 public slots:
     void pauseButtonClicked();
     void controllsButtonClicked();
@@ -142,6 +136,25 @@ private:
     ngl::Vec3 m_moveVec;
     //boundary of the level determined, wont go past absolute val of level boundary
     float levelBoundary;
+    //helper for the event timer for indicating updates
+    float m_elapsedTime;
+    //switch of either cone is always moving or strictly user controlled
+    bool m_coneIsContinualMove;
+    //ability to pause scene
+    bool m_isPaused;
+    //timers
+    int m_updateConeTimer;
+    int m_drawTimer;
+    int m_scoopTimer;
+    //player cone to control
+    std::unique_ptr<Cone> m_cone;
+    //scoop that sits ontop of the player controlls
+    std::unique_ptr<Block>m_starterScoop;
+    //tester scoop for collision
+    //std::unique_ptr<Block>m_testScoop;
+    std::list<std::unique_ptr<Block>> m_scoops;
+
+
 };
 
 #endif

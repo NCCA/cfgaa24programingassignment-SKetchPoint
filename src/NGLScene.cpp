@@ -29,6 +29,7 @@ NGLScene::NGLScene()
     m_moveVec = ngl::Vec3::zero();
     levelBoundary = 4.5f;
     m_isPaused=false;
+    m_elapsedTime =0.0f;
 }
 
 NGLScene::~NGLScene()
@@ -42,6 +43,7 @@ void NGLScene::resizeGL(int _w , int _h)
     m_win.height = static_cast<int>( _h * devicePixelRatio() );
     m_project = ngl::perspective(45.0f, float(_w)/float(_h),0.1f,200);
 }
+
 void NGLScene::createShaderProgram(const std::string& shaderName, float r,float g,float b,ngl::Vec3 from)
 {
     //Creating a different shader program to assign when drawing objects
@@ -70,6 +72,7 @@ void NGLScene::createShaderProgram(const std::string& shaderName, float r,float 
     ngl::ShaderLib::setUniform("roughness", 1.0f);
     ngl::ShaderLib::setUniform("ao", 0.4f);
 }
+
 void NGLScene::initializeGL()
 {
     // we must call that first before any other GL commands to load and link the
@@ -102,6 +105,7 @@ void NGLScene::initializeGL()
     //y=5-auto screen space, 10 more optimal if want to see board too, max tried 12
     ////m_testScoop=std::make_unique<Block>(0,true,ngl::Vec3(3.0f,1.0f,0.0f),0.0);
 }
+
 void NGLScene::loadMatricesToShader(const std::string &_shader)
 {
     ngl::ShaderLib::use(_shader);
@@ -245,9 +249,10 @@ void NGLScene::drawScene(const std::string &_shader)
         }
     }
 }
-//shows the lives and points in the title
+
 void NGLScene::updateWindowTitle()
 {
+    //shows the lives and points in the title
     // Get the current cone lives and points
     int lives = m_cone->getLives();
     int points = m_cone->getPoints();
@@ -267,7 +272,62 @@ void NGLScene::paintGL()
     updateWindowTitle();
 }
 
+//-----------------------------------------------------------------------------------------------------
+void NGLScene::generateRandomScoop()
+{
+    //minimum and maximum positions for the scoop(boundaries of gameplay box approximately
+    float minX = -5.0f;
+    float maxX = 5.0f;
+    float minZ = -5.0f;
+    float maxZ = 5.0f;
+    random_device rd;
+    mt19937 gen(rd());
+    // random x and z positions within the defined boundaries
+    uniform_real_distribution<float> disX(minX, maxX);
+    uniform_real_distribution<float> disZ(minZ, maxZ);
+    float randomX = disX(gen);
+    float randomZ = disZ(gen);
+    // Choose a random scoop type reminder-(0: Trash, 1: Scoop, 2: Bonus)
+    int scoopType = rand() % 3;
+    // Create a new scoop obj -w- generated position + type at height 14
+    std::unique_ptr<Block> newScoop = std::make_unique<Block>(scoopType, true, ngl::Vec3(randomX, 14.0f, randomZ), 0.0);
+    m_scoops.push_back(std::move(newScoop));
+}
 
+void NGLScene:: resetGame()
+{
+    //resetting the game, helps if lives reach 0 (needs to check before) and resets the cone position,
+    // lives, points and generated scoops
+    m_scoops.clear();
+    m_cone->setLives(3);
+    m_cone->setPoints(10);
+    m_cone->setPosition(ngl::Vec3(0.0f,1.5f,0.0f));
+}
+
+void NGLScene:: pauseGame()
+{
+    // Toggle pause state
+    m_isPaused = !m_isPaused;
+    //setting timers to either pause or resume
+    if (m_isPaused)
+    {
+        //was actived, is now paused
+        killTimer(m_scoopTimer);
+        killTimer(m_updateConeTimer);
+        killTimer(m_drawTimer);
+    } else
+    {
+        // was paused, resumed
+        if (m_elapsedTime > 0.0f)
+        {
+            // Reset elapsed time to avoid immediate scoop generation on resume
+            m_elapsedTime = 0.0f;
+        }
+        startTimer(16); // m_scoopTimer
+        startTimer(02); // m_updateConeTimer
+        startTimer(16); // m_drawTimer
+    }
+}
 //----------------------------------------------------------------------------------------------------------------------
 
 void NGLScene::keyPressEvent(QKeyEvent *_event)
@@ -291,6 +351,9 @@ void NGLScene::keyPressEvent(QKeyEvent *_event)
             break;
         case Qt::Key_3:
             m_coneIsContinualMove=true;
+            break;
+        case Qt:: Key_4:
+            pauseGame();
             break;
         case Qt::Key_Space:
             //checking position of cone for debug purpose
@@ -380,27 +443,6 @@ void NGLScene::keyPressEvent(QKeyEvent *_event)
     update();
 }
 //-----------------------------------------------------------------------------------------------------
-void NGLScene::generateRandomScoop()
-{
-    //minimum and maximum positions for the scoop(boundaries of gameplay box approximately
-    float minX = -5.0f;
-    float maxX = 5.0f;
-    float minZ = -5.0f;
-    float maxZ = 5.0f;
-    random_device rd;
-    mt19937 gen(rd());
-    // random x and z positions within the defined boundaries
-    uniform_real_distribution<float> disX(minX, maxX);
-    uniform_real_distribution<float> disZ(minZ, maxZ);
-    float randomX = disX(gen);
-    float randomZ = disZ(gen);
-    // Choose a random scoop type reminder-(0: Trash, 1: Scoop, 2: Bonus)
-    int scoopType = rand() % 3;
-    // Create a new scoop obj -w- generated position + type at height 14
-    std::unique_ptr<Block> newScoop = std::make_unique<Block>(scoopType, true, ngl::Vec3(randomX, 14.0f, randomZ), 0.0);
-    m_scoops.push_back(std::move(newScoop));
-}
-float m_elapsedTime =0.0f;
 void NGLScene::timerEvent(QTimerEvent *_event)
 {
     //timers trigger events such as movement, scoop generation,and updating draw
@@ -420,11 +462,7 @@ void NGLScene::timerEvent(QTimerEvent *_event)
         {
             //if lives reach 0, reset the scene
             std::cout << "You have died, resetting play" << std::endl;
-            m_scoops.clear();
-            m_cone->setLives(3);
-            m_cone->setPoints(10);
-            m_cone->setPosition(ngl::Vec3(0.0f,1.5f,0.0f));
-
+            resetGame();
         }
         m_elapsedTime = 0.0f;
     }
@@ -480,37 +518,30 @@ void NGLScene::timerEvent(QTimerEvent *_event)
     }
 }
 //-----------------------------------------------------------------------------------------------------------------
-
+//functions aiding button controls
+//getting the variable m_coneIsContinualMove state
+bool NGLScene::isConeIsContinual()
+{
+    return m_coneIsContinualMove;
+}
+//reversing whatever m_coneIsContinualMove is automatically
+void NGLScene::reverseConeIsContinualMove()
+{
+    m_coneIsContinualMove= !m_coneIsContinualMove;
+}
+//-----------------------------------------------------------------------------------------------------------------
 void NGLScene::pauseButtonClicked()
 {
-    // Implement your pause functionality here
+    // pausing the game through a Qt button
     std::cout << "Pause button clicked!" << std::endl;
-    m_isPaused = !m_isPaused;  // Toggle pause state
-    if (m_isPaused)
-    {
-        //was actived, is now paused
-        killTimer(m_scoopTimer);
-        killTimer(m_updateConeTimer);
-        killTimer(m_drawTimer);
-    } else
-    {
-        // was paused, resumed
-        if (m_elapsedTime > 0.0f)
-        {
-            // Reset elapsed time to avoid immediate scoop generation on resume
-            m_elapsedTime = 0.0f;
-        }
-        startTimer(16); // m_scoopTimer
-        startTimer(02); // m_updateConeTimer
-        startTimer(16); // m_drawTimer
-    }
+    pauseGame();
     update();
 }
 void NGLScene::controllsButtonClicked()
 {
     //able to switch control types in addition to 2
-    std::cout << "Controlls button clicked!" << std::endl;
-    m_coneIsContinualMove=!m_coneIsContinualMove;
+    std::cout << "Controlls button clicked! Setting is: " <<isConeIsContinual()<< std::endl;
+    reverseConeIsContinualMove();
     update();
 }
 
@@ -524,10 +555,7 @@ void NGLScene::resetButtonClicked()
     // Implement your reset functionality here
     std::cout << "Reset button clicked!" << std::endl;
     //reset scoops, and stats
-    m_scoops.clear();
-    m_cone->setLives(3);
-    m_cone->setPoints(10);
-    m_cone->setPosition(ngl::Vec3(0.0f,1.5f,0.0f));
+    resetGame();
     //reset timer
 
 }
