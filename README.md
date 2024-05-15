@@ -7,7 +7,7 @@ Savannah Kreider s5501023 CFGAA Assignment
 - Gameplay Controlls:
 - wsad key controlls to go in xz coordnates
 - qezx key controlls to go diagonally in xz coordnates
-- key 1 to reset viewport, key 2 for control type direct, key 3 for control type continual movement
+- key 1 to reset viewport, key 2 for control type direct, key 3 for control type continual movement, key 4 to pause/resume game
 - left mouse button to rotate around scene, right mouse button to move scene up, down, left, or right
 - when player runs out of lives, the scene resets
 - 

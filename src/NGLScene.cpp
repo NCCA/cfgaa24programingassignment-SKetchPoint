@@ -536,6 +536,7 @@ void NGLScene::reverseConeIsContinualMove()
     m_coneIsContinualMove= !m_coneIsContinualMove;
 }
 //-----------------------------------------------------------------------------------------------------------------
+//buttons pressed
 void NGLScene::pauseButtonClicked()
 {
     // pausing the game through a Qt button
@@ -555,6 +556,7 @@ void NGLScene::asciButtonClicked()
 {
     // Implement your reset functionality here
     std::cout << "Asci button clicked!" << std::endl;
+    
 }
 void NGLScene::resetButtonClicked()
 {
