@@ -213,7 +213,7 @@ void NGLScene::drawScene(const std::string &_shader)
     // Loop through the list of scoops and draw each one
     for (const auto& scoop : m_scoops)
     {
-        bool checkCollide = m_cone->checkCollision(scoop->getPosition(), scoop->getType(), scoop->getPointVal(), m_cone->getPosition());
+        bool checkCollide = m_cone->checkCollision(scoop->getPosition(), scoop->getType(), m_cone->getPosition());
         //if it collides, has to update the score and set alive as false
         if(checkCollide&& scoop->getIsAlive())
         {
@@ -328,9 +328,6 @@ void NGLScene:: pauseGame()
         startTimer(02); // m_updateConeTimer
         startTimer(16); // m_drawTimer
     }
-    //speed up punishment
-    m_cone->setSpeed( m_cone->getSpeed() *5);
-
 }
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -512,6 +509,11 @@ void NGLScene::timerEvent(QTimerEvent *_event)
                         break;
                 }
                 block->setIsAlive(false);
+            }
+            if(!block->getIsAlive())
+            {
+                //if the scoop isn't alive, no reason to keep it in the list
+                m_scoops.remove(block);
             }
         }
     }

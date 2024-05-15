@@ -92,7 +92,7 @@ float Cone::distanceBetweenVec(ngl::Vec3 &_point1, ngl::Vec3 _point2)
     return sqrtf(distanceSquare);
 }
 
-bool Cone::checkCollision(ngl::Vec3 _blockPosition, int _blockType, int _pointVal, ngl::Vec3 _playerPosition)
+bool Cone::checkCollision(ngl::Vec3 _blockPosition, int _blockType, ngl::Vec3 _playerPosition)
 {
     //implement AABB based off of the block position
     bool isColliding = false;

@@ -37,7 +37,9 @@ public:
     void updateScoreAndLives(int _scoreChange, int _livesChange);
     //making a distance formula where sqrt((x2-x1)^2+(y2-y1)^2) but in 3D
     float distanceBetweenVec(ngl::Vec3 &_point1, ngl::Vec3 _point2);
-    bool checkCollision(ngl::Vec3 _blockPosition, int _blockType, int _pointVal, ngl::Vec3 _playerPosition);
+    //checks if the block collides with the cone, if so then it determins based on block type what the geometry of the block
+    bool checkCollision(ngl::Vec3 _blockPosition, int _blockType, ngl::Vec3 _playerPosition);
+    //draws out player cone
     void draw( const std::string &_shader,float _r,float _g,float _b);
 
 private:

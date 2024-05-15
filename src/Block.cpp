@@ -69,6 +69,10 @@ float Block::getSpeed() const
 {
     return m_initialSpeed;
 }
+void Block::setSpeed(float _newSpeed)
+{
+    m_initialSpeed=_newSpeed;
+}
 //render the scoops/blocks only if they are alive, type determines color
 void Block::draw(const std::string&_shader)
 {
@@ -95,7 +99,7 @@ void Block::draw(const std::string&_shader)
                 break;
             case 3:
                 //scoop on top of cone at the start
-                ngl::ShaderLib::setUniform("albedo", 0.933f,0.898f,0.898f);
+                ngl::ShaderLib::setUniform("albedo", 0.008f,0.004f,0.0f);
                 ngl::VAOPrimitives::draw("sphere");
                 break;
             default:
