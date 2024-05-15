@@ -291,7 +291,7 @@ void NGLScene::generateRandomScoop()
     // Choose a random scoop type reminder-(0: Trash, 1: Scoop, 2: Bonus)
     int scoopType = rand() % 3;
     // Create a new scoop obj -w- generated position + type at height 14
-    std::unique_ptr<Block> newScoop = std::make_unique<Block>(scoopType, true, ngl::Vec3(randomX, 14.0f, randomZ), 0.0);
+    std::unique_ptr<Block> newScoop = std::make_unique<Block>(scoopType, true, ngl::Vec3(randomX, 14.0f, randomZ), 0.0f);
     m_scoops.push_back(std::move(newScoop));
 }
 
@@ -510,12 +510,13 @@ void NGLScene::timerEvent(QTimerEvent *_event)
                 }
                 block->setIsAlive(false);
             }
-            if(!block->getIsAlive())
-            {
-                //if the scoop isn't alive, no reason to keep it in the list
-                m_scoops.remove(block);
-            }
         }
+        auto scoop = std::remove_if(m_scoops.begin(), m_scoops.end(),
+                                 [](const std::unique_ptr<Block>& block)
+                                 {
+                                     return !block->getIsAlive();
+                                 });
+        m_scoops.erase(scoop, m_scoops.end());
     }
     if (_event->timerId() == m_drawTimer)
     {
@@ -525,7 +526,7 @@ void NGLScene::timerEvent(QTimerEvent *_event)
 //-----------------------------------------------------------------------------------------------------------------
 //functions aiding button controls
 //getting the variable m_coneIsContinualMove state
-bool NGLScene::isConeIsContinual()
+bool NGLScene::isConeIsContinual() const
 {
     return m_coneIsContinualMove;
 }

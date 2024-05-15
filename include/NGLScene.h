@@ -53,7 +53,7 @@ class NGLScene : public QOpenGLWindow
     /// generation of scoops on  a 2D plane in random spots at a constant time
     void generateRandomScoop();
     ///getting the value of m_coneIsContinualMove for buttons
-    bool isConeIsContinual();
+    bool isConeIsContinual() const;
     ///reversing the setting of continual/ direct cone movement
     void reverseConeIsContinualMove();
     ///resetting the game for the reset button and if lives reach 0
