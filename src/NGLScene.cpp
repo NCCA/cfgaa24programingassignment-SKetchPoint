@@ -555,8 +555,19 @@ void NGLScene::controllsButtonClicked()
 void NGLScene::asciButtonClicked()
 {
     // Implement your reset functionality here
-    std::cout << "Asci button clicked!" << std::endl;
-    
+    std::cout << "Asci button clicked!\n"
+                 "- Gameplay Controlls:\n"
+                 "- wsad key controlls to go in xz coordnates\n"
+                 "- qezx key controlls to go diagonally in xz coordnates\n"
+                 "- key 1 to reset viewport, key 2 for control type direct, key 3 for control type continual movement, key 4 to pause/resume game\n"
+                 "- left mouse button to rotate around scene, right mouse button to move scene up, down, left, or right\n"
+                 "- when player runs out of lives, the scene resets\n"
+                 "- \n"
+                 "- Button Menu:\n"
+                 "- [[  |  |  ]]- pause game/ resume game\n"
+                 "- [Controlls]- swithc between the two type of controlls over the cone (continual or direct)\n"
+                 "- [Reset]- resets the entire game, including stats" << std::endl;
+
 }
 void NGLScene::resetButtonClicked()
 {
