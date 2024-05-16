@@ -62,10 +62,14 @@ class NGLScene : public QOpenGLWindow
     void pauseGame();
 
 public slots:
+    //button functions for main  event performed
     void pauseButtonClicked();
     void controllsButtonClicked();
     void asciButtonClicked();
     void resetButtonClicked();
+    //slider and dial
+    void setYOffset(int _newOffsetCatch);
+    void setSceneSpeed(int _newSceneSpeed);
 private:
 
     //----------------------------------------------------------------------------------------------------------------------
@@ -133,12 +137,14 @@ private:
     ///updating scene in timer event, the game loop that is calculated each time
     //movement of cone key event
     bool m_isKeyPressed;
-    // if continual movement, creates a vec to have linear interpolation
-    ngl::Vec3 m_moveVec;
     //boundary of the level determined, wont go past absolute val of level boundary
     float levelBoundary;
     //helper for the event timer for indicating updates
     float m_elapsedTime;
+    //catching offset can be controlled
+    float m_catchOffsetY;
+    //scene speed
+    float m_sceneSpeed;
     //switch of either cone is always moving or strictly user controlled
     bool m_coneIsContinualMove;
     //ability to pause scene
@@ -147,6 +153,8 @@ private:
     int m_updateConeTimer;
     int m_drawTimer;
     int m_scoopTimer;
+    // if continual movement, creates a vec to have linear interpolation
+    ngl::Vec3 m_moveVec;
     //player cone to control
     std::unique_ptr<Cone> m_cone;
     //scoop that sits ontop of the player controlls

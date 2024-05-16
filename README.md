@@ -98,6 +98,7 @@ double lag = 0.0;//ensures catch up of multipe updates occures gradually over ti
 - However, instead of directly using an emitter, I use a generateRandom scoop to generate a scoop every x time and put it into a list. Once the scoops move based on time downward then I can implement removing scoops that hit the floor ir collide, change points/lives depending on if they were supposed to catch or avoid
 - Noticing the irregularities in speed when holding down buttons, I attempted to do a lerp on the cone movement and found out having a continually moving cove vs strictly user controlled crated two different types of game play for the user to balance.
 - Due to the sizing of the scoops and the limitations of seeing the scene till about they 10.0f at y, I opted to have the scoop collect as opposed to stacking in 3D for fear of the player losing the cone scoop and control. Thus, I decided to modify from the inspired game with a similar game that also catches fallen objects
+- Inorder to get UI for the buttons and other functions, I utilized QT documentation(https://doc.qt.io/) for things like windows, buttons and other UI features
 ----------------------------------------------------------------------------------------------------------------------------------------------
 ----------------------------------------------------------------------------------------------------------------------------------------
 

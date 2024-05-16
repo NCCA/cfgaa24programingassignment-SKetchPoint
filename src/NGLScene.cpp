@@ -24,12 +24,14 @@ NGLScene::NGLScene()
     m_drawTimer=startTimer(16);
     //generating new falling scoops
     m_scoopTimer=startTimer(16);
-    //trying to improve movement
+    //needed vals for gameplay
     m_isKeyPressed = false;
     m_moveVec = ngl::Vec3::zero();
     levelBoundary = 4.5f;
     m_isPaused=false;
     m_elapsedTime =0.0f;
+    m_catchOffsetY=0.1f;
+    m_coneIsContinualMove=false;
 }
 
 NGLScene::~NGLScene()
@@ -39,6 +41,7 @@ NGLScene::~NGLScene()
 
 void NGLScene::resizeGL(int _w , int _h)
 {
+    //resizing window with height and adjust display of project based on ratio
     m_win.width  = static_cast<int>( _w * devicePixelRatio() );
     m_win.height = static_cast<int>( _h * devicePixelRatio() );
     m_project = ngl::perspective(45.0f, float(_w)/float(_h),0.1f,200);
@@ -78,7 +81,7 @@ void NGLScene::initializeGL()
     // we must call that first before any other GL commands to load and link the
     // gl commands from the lib, if that is not done program will crash
     ngl::NGLInit::initialize();
-    glClearColor(0.7f, 0.7f, 0.7f, 1.0f);			   // Grey Background
+    glClearColor(0.7f, 0.7f, 0.7f, 1.0f);// Grey Background
     // enable depth testing for drawing
     glEnable(GL_DEPTH_TEST);
     // enable multisampling for smoother drawing
@@ -209,11 +212,10 @@ void NGLScene::drawScene(const std::string &_shader)
     m_starterScoop->draw(_shader);
     // Generate new scoops periodically (adjust interval as needed)
     //    //falling scoops
-
     // Loop through the list of scoops and draw each one
     for (const auto& scoop : m_scoops)
     {
-        bool checkCollide = m_cone->checkCollision(scoop->getPosition(), scoop->getType(), m_cone->getPosition());
+        bool checkCollide = m_cone->checkCollision(scoop->getPosition(), scoop->getType(), m_cone->getPosition(), m_catchOffsetY);
         //if it collides, has to update the score and set alive as false
         if(checkCollide&& scoop->getIsAlive())
         {
@@ -291,7 +293,7 @@ void NGLScene::generateRandomScoop()
     // Choose a random scoop type reminder-(0: Trash, 1: Scoop, 2: Bonus)
     int scoopType = rand() % 3;
     // Create a new scoop obj -w- generated position + type at height 14
-    std::unique_ptr<Block> newScoop = std::make_unique<Block>(scoopType, true, ngl::Vec3(randomX, 14.0f, randomZ), 0.05f);
+    std::unique_ptr<Block> newScoop = std::make_unique<Block>(scoopType, true, ngl::Vec3(randomX, 14.0f, randomZ), m_sceneSpeed);
     m_scoops.push_back(std::move(newScoop));
 }
 
@@ -300,10 +302,13 @@ void NGLScene:: resetGame()
     //resetting the game, helps if lives reach 0 (needs to check before) and resets the cone position,
     // lives, points and generated scoops
     m_scoops.clear();
-    generateRandomScoop();
+    //generateRandomScoop();
     m_cone->setLives(3);
     m_cone->setPoints(10);
     m_cone->setPosition(ngl::Vec3(0.0f,1.5f,0.0f));
+    //resets position, stats and starter scoop
+    m_starterScoop->setType(3);
+    drawScene("PBR");
 }
 
 void NGLScene:: pauseGame()
@@ -314,10 +319,11 @@ void NGLScene:: pauseGame()
     if (m_isPaused)
     {
         //was actived, is now paused
-        killTimer(m_scoopTimer);
         killTimer(m_updateConeTimer);
         killTimer(m_drawTimer);
-    } else
+        killTimer(m_scoopTimer);
+    }
+    else
     {
         // was paused, resumed
         if (m_elapsedTime > 0.0f)
@@ -325,16 +331,19 @@ void NGLScene:: pauseGame()
             // Reset elapsed time to avoid immediate scoop generation on resume
             m_elapsedTime = 0.0f;
         }
-        startTimer(16); // m_scoopTimer
-        startTimer(02); // m_updateConeTimer
-        startTimer(16); // m_drawTimer
+        m_updateConeTimer= startTimer(02);
+        //drawing the scene
+        m_drawTimer=startTimer(16);
+        //generating new falling scoops
+        m_scoopTimer=startTimer(16);
         for (auto& block : m_scoops)
         {
-            block->setSpeed(block->getSpeed()*1.015f);
+            block->setSpeed(m_sceneSpeed);
         }
     }
     m_elapsedTime +=0.16f;
 }
+
 //----------------------------------------------------------------------------------------------------------------------
 
 void NGLScene::keyPressEvent(QKeyEvent *_event)
@@ -514,14 +523,16 @@ void NGLScene::timerEvent(QTimerEvent *_event)
                         std::cerr << "ERROR - Invalid block type: " << points << std::endl;
                         break;
                 }
+                //since it has collided, it is no longer alive
                 block->setIsAlive(false);
             }
         }
+        //remove the scoop if the block is not alive
         auto scoop = std::remove_if(m_scoops.begin(), m_scoops.end(),
-                                 [](const std::unique_ptr<Block>& block)
-                                 {
-                                     return !block->getIsAlive();
-                                 });
+                                    [](const std::unique_ptr<Block>& block)
+                                    {
+                                        return !block->getIsAlive();
+                                    });
         m_scoops.erase(scoop, m_scoops.end());
     }
     if (_event->timerId() == m_drawTimer)
@@ -542,18 +553,18 @@ void NGLScene::reverseConeIsContinualMove()
     m_coneIsContinualMove= !m_coneIsContinualMove;
 }
 //-----------------------------------------------------------------------------------------------------------------
-//buttons pressed
+//buttons, slider, and dial functions
 void NGLScene::pauseButtonClicked()
 {
     // pausing the game through a Qt button
-    std::cout << "Pause button clicked!" << std::endl;
+    std::cout << "Pause button clicked" << std::endl;
     pauseGame();
     update();
 }
 void NGLScene::controllsButtonClicked()
 {
     //able to switch control types in addition to 2
-    std::cout << "Controlls button clicked! Setting is: " <<isConeIsContinual()<< std::endl;
+    std::cout << "Controlls button clicked."<< std::endl;
     reverseConeIsContinualMove();
     update();
 }
@@ -572,7 +583,11 @@ void NGLScene::asciButtonClicked()
                  "- Button Menu:\n"
                  "- [[  |  |  ]]- pause game/ resume game\n"
                  "- [Controlls]- swithc between the two type of controlls over the cone (continual or direct)\n"
-                 "- [Reset]- resets the entire game, including stats" << std::endl;
+                 "- [Reset]- resets the entire game, including stats"
+                 "\n"
+                 "Sliders:"
+                 "Y Offset: offset of catch bounding, can be adjusted to catch scoops faster"
+                 "Scene Speed: speed of the falling scoops can be increased or decreased" << std::endl;
 
 }
 void NGLScene::resetButtonClicked()
@@ -583,4 +598,17 @@ void NGLScene::resetButtonClicked()
     resetGame();
     //reset timer
 
+}
+void NGLScene::setYOffset(int _newOffsetCatch)
+{
+    m_catchOffsetY=(float)_newOffsetCatch/10.0f;
+}
+void NGLScene::setSceneSpeed(int _newSceneSpeed)
+{
+    for (auto& block : m_scoops)
+    {
+        block->setSpeed((float)_newSceneSpeed/300.0f);
+    }
+    m_sceneSpeed=(float)_newSceneSpeed/300.0f;
+    update();
 }

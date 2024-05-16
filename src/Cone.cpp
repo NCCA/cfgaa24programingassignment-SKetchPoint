@@ -92,7 +92,7 @@ float Cone::distanceBetweenVec(ngl::Vec3 &_point1, ngl::Vec3 _point2)
     return sqrtf(distanceSquare);
 }
 
-bool Cone::checkCollision(ngl::Vec3 _blockPosition, int _blockType, ngl::Vec3 _playerPosition)
+bool Cone::checkCollision(ngl::Vec3 _blockPosition, int _blockType, ngl::Vec3 _playerPosition, float _playerYOffset)
 {
     //implement AABB based off of the block position
     bool isColliding = false;
@@ -101,11 +101,10 @@ bool Cone::checkCollision(ngl::Vec3 _blockPosition, int _blockType, ngl::Vec3 _p
         // AABB collision for a 1*1*1 box centered at _blockPosition
         //variables here for easy edit
         float halfBoxSize = 0.5f;
-        float playerYOffset = 0.5f;
         float playerRadius = 0.5f;
         // Check for overlap on each axis
         isColliding = (std::abs(_blockPosition.m_x - _playerPosition.m_x) <= halfBoxSize + playerRadius) &&
-                      (std::abs(_blockPosition.m_y - (_playerPosition.m_y + playerYOffset)) <= halfBoxSize + playerRadius) &&
+                      (std::abs(_blockPosition.m_y - (_playerPosition.m_y + _playerYOffset)) <= halfBoxSize + playerRadius) &&
                       (std::abs(_blockPosition.m_z - _playerPosition.m_z) <= halfBoxSize + playerRadius);
     }
     else
@@ -113,10 +112,9 @@ bool Cone::checkCollision(ngl::Vec3 _blockPosition, int _blockType, ngl::Vec3 _p
         // Sphere-sphere collision
         //var here for easy edits
         float blockRadius = 0.5f;
-        float playerYOffset = 0.5f;
         float playerRadius = 0.5f;
         //calcs based on distance since it is radius based
-        float distance =distanceBetweenVec(_blockPosition, _playerPosition + ngl::Vec3(0.0f, playerYOffset, 0.0f));
+        float distance =distanceBetweenVec(_blockPosition, _playerPosition + ngl::Vec3(0.0f, _playerYOffset, 0.0f));
         isColliding = distance <= blockRadius + playerRadius;
     }
     return isColliding;

@@ -98,7 +98,7 @@ void Block::draw(const std::string&_shader)
                 ngl::VAOPrimitives::draw("sphere");
                 break;
             case 3:
-                //scoop on top of cone at the start
+                //initial scoop on top of cone at the start = brown
                 ngl::ShaderLib::setUniform("albedo", 0.008f,0.004f,0.0f);
                 ngl::VAOPrimitives::draw("sphere");
                 break;

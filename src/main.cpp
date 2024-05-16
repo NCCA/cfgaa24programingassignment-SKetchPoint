@@ -8,6 +8,9 @@ basic OpenGL demo modified from http://qt-project.org/doc/qt-5.0/qtgui/openglwin
 #include <QApplication>
 #include <QPushButton>
 #include <QObject>
+#include <QSlider>
+#include<QBoxLayout>
+#include<QLabel>
 
 int main(int argc, char **argv)
 {
@@ -44,8 +47,11 @@ int main(int argc, char **argv)
   //2nd window for button(s)
   QApplication app2 (argc, argv);
   QWidget window2;
-  window2.resize(120, 700);
-  window2.move(1050,30);
+  window2.setWindowTitle("︶ Settings ︶꒦*꒷");
+  window2.resize(200, 400);
+  window2.move(1025,25);
+  //creating vertical layout
+  QVBoxLayout* layout = new QVBoxLayout(&window2);
   //button creation and geometry
   QPushButton *pauseBtn = new QPushButton("[ | | ]", &window2);
   QPushButton *resetBtn = new QPushButton("Reset", &window2);
@@ -68,6 +74,35 @@ int main(int argc, char **argv)
   QObject::connect(controllsBtn, &QPushButton::clicked, &window, &NGLScene::controllsButtonClicked);
   QObject::connect(asciBtn, &QPushButton::clicked, &window, &NGLScene::asciButtonClicked);
   QObject::connect(resetBtn, &QPushButton::clicked, &window, &NGLScene::resetButtonClicked);
+
+  QSlider* yOffsetSlider = new QSlider(Qt::Horizontal, &window2);
+  yOffsetSlider->setRange(0, 5); // Adjust range as needed for your Y offset
+  yOffsetSlider->setValue(0); // Set initial value
+
+  QSlider* sceneSpeedSlider = new QSlider(Qt::Horizontal, &window2);
+  yOffsetSlider->setRange(1, 100); // Adjust range as needed for your Y offset
+  yOffsetSlider->setValue(1); // Set initial value
+
+  //connect dial and slider to settings
+  QObject::connect(yOffsetSlider, &QSlider::valueChanged, &window,&NGLScene::setYOffset);
+  QObject::connect(sceneSpeedSlider, &QSlider::valueChanged, &window, &NGLScene::setSceneSpeed);
+  //titles of labels
+  QLabel* yOffsetLabel = new QLabel("Y Offset:");
+  QLabel* sceneSpeedLabel = new QLabel("Scene Speed:");
+  //slider layout
+  layout->addWidget(pauseBtn, 0, Qt::AlignTop);
+  layout->addWidget(controllsBtn, 0, Qt::AlignTop);
+
+  layout->addWidget(yOffsetLabel, 0, Qt::AlignTop);
+  layout->addWidget(yOffsetSlider, 0, Qt::AlignTop);
+
+  layout->addWidget(sceneSpeedLabel, 0, Qt::AlignTop);
+  layout->addWidget(sceneSpeedSlider, 0, Qt::AlignTop);
+
+  layout->addWidget(asciBtn, 0, Qt::AlignBottom);
+
+  layout->addWidget(resetBtn, 0, Qt::AlignBottom);
+
     //show the two windows and keep them open
   window2.show();
   window.show();
