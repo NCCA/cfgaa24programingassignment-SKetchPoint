@@ -3,7 +3,9 @@ Savannah Kreider s5501023 CFGAA Assignment
 # Assignment Ideas/Work Doc : 3D scoops game 
 - ----------------------------------------------------------------------------------------------------------------------------------------------
 ## Video:(Itterations in Video-Tests folder)
-------------------------------------------------------------------------------------------------------------------------------------
+[V3-gamePlayFull.webm](https://github.com/NCCA/cfgaa24programingassignment-SKetchPoint/assets/124518080/d9803373-649d-4e06-a336-44a88256c065)
+
+---------------------------------------------------------------------------------------------------------------------------
 - Gameplay Controlls:
 - wsad key controlls to go in xz coordnates
 - qezx key controlls to go diagonally in xz coordnates
