@@ -14,7 +14,7 @@ basic OpenGL demo modified from http://qt-project.org/doc/qt-5.0/qtgui/openglwin
 
 int main(int argc, char **argv)
 {
-  QGuiApplication app(argc, argv);
+  QApplication app(argc, argv);
   // create an OpenGL format specifier
   QSurfaceFormat format;
   // set the number of samples for multisampling
@@ -45,7 +45,6 @@ int main(int argc, char **argv)
   window.resize(1024, 720);
 
   //2nd window for button(s)
-  QApplication app2 (argc, argv);
   QWidget window2;
   window2.setWindowTitle("︶ Settings ︶꒦*꒷");
   window2.resize(200, 400);
@@ -107,7 +106,7 @@ int main(int argc, char **argv)
   window2.show();
   window.show();
   //loop till nothing left to execute
-  return app.exec() && app2.exec();
+  return app.exec() ;
 }
 
 
